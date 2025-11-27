@@ -774,7 +774,8 @@ async function checkMaxButton(page, timestamp, expectedAmount, testLabel) {
     await page.waitForTimeout(100);
     await page.mouse.click(maxButtonInfo.x, maxButtonInfo.y);
     await page.waitForTimeout(1500);
-    const amountAfter = await getDisplayedAmount(page, amountBefore);
+    // 使用 expectedAmount 作為參考，確保我們找到的是變更後的 Bet 金額，而不是 Balance
+    const amountAfter = await getDisplayedAmount(page, expectedAmount);
     
     const shot = path.join(debugDir, `test2-max-${testLabel}-${timestamp}.png`);
     await page.screenshot({ path: shot, fullPage: false }).catch(() => {});
@@ -832,7 +833,8 @@ async function checkMinButton(page, timestamp, expectedAmount) {
     const amountBefore = await getDisplayedAmount(page);
     await page.mouse.click(minButtonInfo.x, minButtonInfo.y);
     await page.waitForTimeout(800);
-    const amountAfter = await getDisplayedAmount(page, amountBefore);
+    // 使用 expectedAmount 作為參考
+    const amountAfter = await getDisplayedAmount(page, expectedAmount);
     
     const shot = path.join(debugDir, `test2-min-${timestamp}.png`);
     await page.screenshot({ path: shot, fullPage: false }).catch(() => {});
