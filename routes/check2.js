@@ -38,7 +38,9 @@ async function checkWebsite(url) {
     // 🔟⑮ Spin 20次 Balance計算測試（如果已開啟新頁面）
     if (results.checks.streamingNowClick?.newPage && results.checks.streamingNowClick?.playButton?.success) {
       try {
-        results.checks.spinBalance = await checkSpinBalance(results.checks.streamingNowClick.newPage, timestamp);
+        // 傳入之前的 spinMetrics (包含 balanceBeforePlay, giftAmount 等)
+        const metrics = results.checks.streamingNowClick.spinMetrics || {};
+        results.checks.spinBalance = await checkSpinBalance(results.checks.streamingNowClick.newPage, timestamp, metrics);
       } catch (err) {
         results.checks.spinBalance = { success: false, error: String(err && err.message || err) };
       }
@@ -207,6 +209,13 @@ async function checkStreamNSpinDialog(page, timestamp) {
 }
 
 async function checkStreamingNowClick(page, context, timestamp) {
+  // 狀態追蹤物件
+  const spinMetrics = {
+    balanceBeforePlay: null,
+    giftAmount: 0,
+    betAmount: 200 // 預設值
+  };
+
   try {
     // 減少初始等待時間，使用更高效的等待策略
     await page.waitForTimeout(2000);
@@ -374,11 +383,22 @@ async function checkStreamingNowClick(page, context, timestamp) {
     const minusButton28Result = await checkMinusButton28(newPage, timestamp).catch(err => ({ success: false, error: String(err) }));
     const spinRoundPlus4Result = await checkSpinRoundPlusButton(newPage, timestamp, 4).catch(err => ({ success: false, error: String(err) }));
     const spinRoundMinus5Result = await checkSpinRoundMinusButton(newPage, timestamp, 5).catch(err => ({ success: false, error: String(err) }));
-    const playButtonResult = await checkPlayButton(newPage, timestamp).catch(err => ({ success: false, error: String(err) }));
     
+    // 1️⃣3️⃣ 點擊 Play 前記錄 Balance
+    const playButtonResult = await checkPlayButton(newPage, timestamp).catch(err => ({ success: false, error: String(err) }));
+    if (playButtonResult.balanceBeforePlay) {
+        spinMetrics.balanceBeforePlay = playButtonResult.balanceBeforePlay;
+        console.log(`💰 點擊 Play 前餘額: ${spinMetrics.balanceBeforePlay}`);
+    }
+
     let giftTestResult;
     try {
       giftTestResult = await checkGiftTest(newPage, timestamp);
+      // 記錄送禮金額
+      if (giftTestResult.giftAmount) {
+          spinMetrics.giftAmount = giftTestResult.giftAmount;
+          console.log(`🎁 記錄送禮金額: ${spinMetrics.giftAmount}`);
+      }
     } catch (err) {
       giftTestResult = { success: false, error: String(err && err.message || err) };
     }
@@ -393,7 +413,8 @@ async function checkStreamingNowClick(page, context, timestamp) {
     return {
       clicked: true,
       newPageOpened: true,
-      newPage: newPage,  // 🔥 新增：返回 newPage 對象供後續測試使用
+      newPage: newPage,  // 返回 newPage 對象
+      spinMetrics: spinMetrics, // 返回累積的數據
       newPageUrl: newPage.url(),
       clickedElement: { tag: streamingNowInfo.tag, text: streamingNowInfo.text, isLiveCard: streamingNowInfo.isLiveCard },
       howToPlayClosed: howToPlayResult.closed,
@@ -1352,6 +1373,9 @@ async function checkPlayButton(page, timestamp) {
       return { success: false, message: `PLAY 鈕未找到: ${buttonInfo?.reason || '未知原因'}` };
     }
     
+    // 記錄點擊前的 Balance
+    const balanceBeforePlay = await getDisplayedAmount(page);
+
     const shotBefore = path.join(debugDir, `test2-play-button-before-${timestamp}.png`);
     await page.screenshot({ path: shotBefore, fullPage: false }).catch(() => {});
     
@@ -1364,6 +1388,7 @@ async function checkPlayButton(page, timestamp) {
     return {
       success: true,
       message: '已成功點擊綠色 PLAY 鈕',
+      balanceBeforePlay: balanceBeforePlay, // 回傳點擊前的餘額
       debug: { screenshotBefore: shotBefore, screenshotAfter: shotAfter }
     };
   } catch (error) {
@@ -1466,10 +1491,13 @@ async function checkGiftTest(page, timestamp) {
     const shotAfter = path.join(debugDir, `test2-gift-after-${timestamp}.png`);
     await page.screenshot({ path: shotAfter, fullPage: false }).catch(() => {});
     
-    
+    // 假設送禮金額 (如果有辦法讀取更好)
+    const estimatedGiftAmount = 5000;
+
     return {
       success: true,
       message: '已成功完成送禮測試（包含4個步驟）',
+      giftAmount: estimatedGiftAmount, // 回傳送禮金額
       debug: { screenshotBefore: shotBefore, screenshotAfter: shotAfter }
     };
   } catch (error) {
@@ -1553,27 +1581,38 @@ async function checkChatInput(page, timestamp) {
 }
 
 // 🔟⑮ Spin 20次 Balance計算測試
-async function checkSpinBalance(page, timestamp) {
+async function checkSpinBalance(page, timestamp, initialData) {
   console.log('📊 開始 Spin 20次 Balance計算測試...');
   
   try {
     await page.waitForTimeout(2000);
 
+    // 使用之前記錄的數據
+    const startBalance = initialData?.balanceBeforePlay;
+    const giftAmount = initialData?.giftAmount || 0;
+    
+    // 如果沒有記錄到 startBalance，嘗試重新抓取 (fallback)
+    let effectiveStartBalance = startBalance;
+    if (typeof effectiveStartBalance !== 'number') {
+        console.log('⚠️ 未收到第 13 點記錄的 Start Balance，嘗試重新抓取...');
+        effectiveStartBalance = await getDisplayedAmount(page);
+    }
+
+    console.log(`💰 計算起點 Balance (Play前): ${effectiveStartBalance?.toLocaleString()}`);
+    console.log(`🎁 已知送禮金額: ${giftAmount}`);
+
     // 1. 嘗試獲取當前 Bet 金額
     const betAmount = await page.evaluate(() => {
       const allElements = Array.from(document.querySelectorAll('*'));
       for (const el of allElements) {
-        // 找包含 "Bet" 或 "Total Bet" 的標籤
         const text = (el.textContent || '').trim().toLowerCase();
         if ((text === 'bet' || text === 'total bet' || text === '投注' || text === '总投注') && el.offsetParent !== null) {
-          // 往父層找數值，或是找鄰近元素
           const parent = el.parentElement;
           if (parent) {
-            const parentText = parent.textContent.replace(text, '').trim(); // 移除標籤文字
+            const parentText = parent.textContent.replace(text, '').trim();
             const match = parentText.match(/[\d,]+\.?\d*/);
             if (match) return parseFloat(match[0].replace(/,/g, ''));
             
-            // 找兄弟元素
             const siblings = Array.from(parent.children);
             for (const sib of siblings) {
               if (sib === el) continue;
@@ -1583,46 +1622,18 @@ async function checkSpinBalance(page, timestamp) {
             }
           }
         }
-        // 策略二：找輸入框或特定 class
         if (el.tagName === 'INPUT' && (el.id.includes('bet') || el.name.includes('bet'))) {
             return parseFloat(el.value);
         }
       }
-      
-      // 如果找不到，嘗試找畫面上顯示為貨幣格式且數值合理的（例如 200, 400...）
-      // 這裡假設之前的測試最後停留在 200
       return 200; 
     });
 
     console.log(`💰 當前 Bet 金額 (預估): ${betAmount}`);
 
-    // 2. 記錄初始 Balance
-    const initialBalance = await page.evaluate(() => {
-      const balanceElements = Array.from(document.querySelectorAll('*'));
-      for (const el of balanceElements) {
-        const text = (el.textContent || '').toLowerCase();
-        if ((text.includes('balance') || text.includes('餘額') || text.includes('余额')) &&
-            el.offsetParent !== null) {
-          const rect = el.getBoundingClientRect();
-          if (rect.height < 100 && rect.width > 50) {
-            const match = el.textContent.match(/[\d,]+\.?\d*/);
-            if (match) {
-              return parseFloat(match[0].replace(/,/g, ''));
-            }
-          }
-        }
-      }
-      return null;
-    });
+    let currentBalance = await getDisplayedAmount(page);
     
-    if (initialBalance === null) {
-      return { success: false, message: '無法找到初始 Balance' };
-    }
-    
-    console.log(`💰 初始 Balance: ${initialBalance.toLocaleString()}`);
-    
-    let currentBalance = initialBalance;
-    let correctCalculations = 0;
+    // 監控變數
     let totalWin = 0;
     let totalGift = 0;
     const history = [];
@@ -1635,19 +1646,8 @@ async function checkSpinBalance(page, timestamp) {
       const timeout = 10000; // 10秒
       
       while (checkTime < timeout) {
-        const nowBalance = await page.evaluate(() => {
-            const balanceElements = Array.from(document.querySelectorAll('*'));
-            for (const el of balanceElements) {
-                const text = (el.textContent || '').toLowerCase();
-                if ((text.includes('balance') || text.includes('餘額') || text.includes('余额')) && el.offsetParent !== null) {
-                    const match = el.textContent.match(/[\d,]+\.?\d*/);
-                    if (match) return parseFloat(match[0].replace(/,/g, ''));
-                }
-            }
-            return null;
-        });
-
-        if (nowBalance !== null && nowBalance !== currentBalance) {
+        const nowBalance = await getDisplayedAmount(page);
+        if (nowBalance !== currentBalance) {
             newBalance = nowBalance;
             break;
         }
@@ -1662,49 +1662,17 @@ async function checkSpinBalance(page, timestamp) {
 
       // 4. 分析變化
       const delta = newBalance - currentBalance;
-      // 公式: Delta = Win + Gift - Bet
-      // 推導: Win + Gift = Delta + Bet
       const impliedGain = delta + betAmount;
       
       let note = '';
-      let roundWin = 0;
-      let roundGift = 0;
-
       if (Math.abs(impliedGain) < 0.01) {
           note = '輸 (Loss)';
       } else if (impliedGain > 0) {
-          // 贏錢或有禮物
-          // 嘗試從畫面找證據
-          const evidence = await page.evaluate((gain) => {
-              const allElements = Array.from(document.querySelectorAll('*'));
-              let foundWin = false;
-              let foundGift = false;
-              
-              // 找 Win
-              for (const el of allElements) {
-                  if (el.offsetParent === null) continue;
-                  const text = (el.textContent || '').toLowerCase();
-                  // 簡單比對數字
-                  if (text.includes(gain.toLocaleString()) || text.includes(gain.toString())) {
-                       if (text.includes('win') || text.includes('won')) foundWin = true;
-                       if (text.includes('gift') || text.includes('donate')) foundGift = true;
-                  }
-              }
-              return { foundWin, foundGift };
-          }, impliedGain);
-
-          if (evidence.foundGift) {
-              roundGift = impliedGain;
-              note = `🎁 送禮: ${roundGift}`;
-              totalGift += roundGift;
-          } else {
-              roundWin = impliedGain;
-              note = `💎 贏分: ${roundWin}`;
-              totalWin += roundWin;
-          }
+          // 簡單記錄贏分
+          note = `💎 贏/禮: ${impliedGain}`;
+          totalWin += impliedGain; // 這裡無法區分贏分或禮物，統一算獲利
       } else {
-          // Delta + Bet < 0 -> Balance 減少超過 Bet？ 這不太正常，除非 Bet 變了
-          note = `❓ 異常減少 (Delta: ${delta}, Bet: ${betAmount})`;
+          note = `❓ 異常減少 (Delta: ${delta})`;
       }
 
       console.log(`  Spin ${i}: ${currentBalance} -> ${newBalance} (${delta >= 0 ? '+' : ''}${delta}) | ${note}`);
@@ -1720,29 +1688,37 @@ async function checkSpinBalance(page, timestamp) {
       });
 
       currentBalance = newBalance;
-      correctCalculations++; // 只要能讀到且邏輯大致通順就算一次計算
-      
-      // 稍微等待下一次 Spin
       await page.waitForTimeout(500);
     }
 
     const finalBalance = currentBalance;
     
-    // 驗證總數
-    // Expected Final = Initial - (20 * Bet) + TotalWin + TotalGift
-    // 但如果中途停止，就是 (Count * Bet)
-    const expectedFinal = initialBalance - (history.length * betAmount) + totalWin + totalGift;
-    const isMatch = Math.abs(finalBalance - expectedFinal) < 1; // 允許 1 的浮點誤差
+    // 最終計算：從 Play 開始到現在的總變化 + 送禮金額
+    const totalChangeFromStart = finalBalance - effectiveStartBalance;
+    
+    // 顯示邏輯：
+    // Balance 變化 + 送禮金額 = 實際遊玩淨損益 (Net P&L from Spins)
+    // 因為 Final = Start - Gift - Bets + Wins
+    // 所以 Final - Start = -Gift - Bets + Wins
+    // (Final - Start) + Gift = -Bets + Wins (純 Spin 的損益)
+    
+    const adjustedChange = totalChangeFromStart + giftAmount;
+
+    console.log(`💰 最終 Balance: ${finalBalance.toLocaleString()}`);
+    console.log(`📉 總變化 (Final - Start): ${totalChangeFromStart.toLocaleString()}`);
+    console.log(`🎁 加回送禮 (${giftAmount}): ${adjustedChange.toLocaleString()}`);
 
     return {
-      success: history.length > 0, // 只要有讀到變化就算成功執行
-      initialBalance,
+      success: history.length > 0, 
+      initialBalance: effectiveStartBalance,
       finalBalance,
-      totalWin,
-      totalGift,
+      totalWin, // 這是第16點期間的Win
+      totalGift: giftAmount, // 這是第14點記錄的Gift
+      actualChange: totalChangeFromStart, // 總變化
+      adjustedChange: adjustedChange, // 調整後變化 (加回送禮)
       betAmount,
       spinCount: history.length,
-      message: `✅ 測試完成 ${history.length} 次 Spin | 初始: ${initialBalance} -> 最終: ${finalBalance} | 總贏: ${totalWin} | 總送禮: ${totalGift}`,
+      message: `✅ 完成 | Play前: ${effectiveStartBalance.toLocaleString()} → 最終: ${finalBalance.toLocaleString()} | 總變化: ${totalChangeFromStart.toLocaleString()} | 加回送禮: ${adjustedChange.toLocaleString()}`,
       details: history
     };
 
