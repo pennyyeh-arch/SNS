@@ -1693,20 +1693,19 @@ async function checkSpinBalance(page, timestamp, initialData) {
 
     const finalBalance = currentBalance;
     
-    // 最終計算：從 Play 開始到現在的總變化 + 送禮金額
+    // 最終計算：從 Play 開始到現在的總變化
     const totalChangeFromStart = finalBalance - effectiveStartBalance;
     
     // 顯示邏輯：
-    // Balance 變化 + 送禮金額 = 實際遊玩淨損益 (Net P&L from Spins)
-    // 因為 Final = Start - Gift - Bets + Wins
-    // 所以 Final - Start = -Gift - Bets + Wins
-    // (Final - Start) + Gift = -Bets + Wins (純 Spin 的損益)
+    // 使用者指示：「送禮金額要扣除不是加回」
+    // 如果總變化是 -500 (輸了500)，送禮是 1000
+    // 調整後變化 = -500 - 1000 = -1500
     
-    const adjustedChange = totalChangeFromStart + giftAmount;
+    const adjustedChange = totalChangeFromStart - giftAmount;
 
     console.log(`💰 最終 Balance: ${finalBalance.toLocaleString()}`);
     console.log(`📉 總變化 (Final - Start): ${totalChangeFromStart.toLocaleString()}`);
-    console.log(`🎁 加回送禮 (${giftAmount}): ${adjustedChange.toLocaleString()}`);
+    console.log(`🎁 扣除送禮 (${giftAmount}): ${adjustedChange.toLocaleString()}`);
 
     return {
       success: history.length > 0, 
@@ -1715,10 +1714,10 @@ async function checkSpinBalance(page, timestamp, initialData) {
       totalWin, // 這是第16點期間的Win
       totalGift: giftAmount, // 這是第14點記錄的Gift
       actualChange: totalChangeFromStart, // 總變化
-      adjustedChange: adjustedChange, // 調整後變化 (加回送禮)
+      adjustedChange: adjustedChange, // 調整後變化 (扣除送禮)
       betAmount,
       spinCount: history.length,
-      message: `✅ 完成 | Play前: ${effectiveStartBalance.toLocaleString()} → 最終: ${finalBalance.toLocaleString()} | 總變化: ${totalChangeFromStart.toLocaleString()} | 加回送禮: ${adjustedChange.toLocaleString()}`,
+      message: `✅ 完成 | Play前: ${effectiveStartBalance.toLocaleString()} → 最終: ${finalBalance.toLocaleString()} | 總變化: ${totalChangeFromStart.toLocaleString()} | 扣除送禮: ${adjustedChange.toLocaleString()}`,
       details: history
     };
 
