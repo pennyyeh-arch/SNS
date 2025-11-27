@@ -774,7 +774,7 @@ async function checkMaxButton(page, timestamp, expectedAmount, testLabel) {
     await page.waitForTimeout(100);
     await page.mouse.click(maxButtonInfo.x, maxButtonInfo.y);
     await page.waitForTimeout(1500);
-    const amountAfter = await getDisplayedAmount(page);
+    const amountAfter = await getDisplayedAmount(page, amountBefore);
     
     const shot = path.join(debugDir, `test2-max-${testLabel}-${timestamp}.png`);
     await page.screenshot({ path: shot, fullPage: false }).catch(() => {});
@@ -832,7 +832,7 @@ async function checkMinButton(page, timestamp, expectedAmount) {
     const amountBefore = await getDisplayedAmount(page);
     await page.mouse.click(minButtonInfo.x, minButtonInfo.y);
     await page.waitForTimeout(800);
-    const amountAfter = await getDisplayedAmount(page);
+    const amountAfter = await getDisplayedAmount(page, amountBefore);
     
     const shot = path.join(debugDir, `test2-min-${timestamp}.png`);
     await page.screenshot({ path: shot, fullPage: false }).catch(() => {});
@@ -886,12 +886,12 @@ async function checkPlusButton28(page, timestamp) {
       await page.mouse.click(plusButtonInfo.x, plusButtonInfo.y);
       await page.waitForTimeout(150);
       
-      const currentAmount = await getDisplayedAmount(page);
+      const currentAmount = await getDisplayedAmount(page, previousAmount);
       if (currentAmount > previousAmount) increasingCount++;
       previousAmount = currentAmount;
     }
     
-    const amountAfter = await getDisplayedAmount(page);
+    const amountAfter = await getDisplayedAmount(page, previousAmount);
     
     const shot = path.join(debugDir, `test2-plus-28-${timestamp}.png`);
     await page.screenshot({ path: shot, fullPage: false }).catch(() => {});
@@ -947,12 +947,12 @@ async function checkMinusButton28(page, timestamp) {
       await page.mouse.click(minusButtonInfo.x, minusButtonInfo.y);
       await page.waitForTimeout(150);
       
-      const currentAmount = await getDisplayedAmount(page);
+      const currentAmount = await getDisplayedAmount(page, previousAmount);
       if (currentAmount < previousAmount) decreasingCount++;
       previousAmount = currentAmount;
     }
     
-    const amountAfter = await getDisplayedAmount(page);
+    const amountAfter = await getDisplayedAmount(page, previousAmount);
     
     const shot = path.join(debugDir, `test2-minus-28-${timestamp}.png`);
     await page.screenshot({ path: shot, fullPage: false }).catch(() => {});
@@ -1103,9 +1103,10 @@ async function findBetButton(page, buttonType) {
   }, buttonType);
 }
 
-async function getDisplayedAmount(page) {
-  return await page.evaluate(() => {
+async function getDisplayedAmount(page, expectedValue = null) {
+  return await page.evaluate((expected) => {
     const allElements = Array.from(document.querySelectorAll('*'));
+    const candidates = [];
     
     for (const el of allElements) {
       const text = (el.textContent || '').trim();
@@ -1114,21 +1115,35 @@ async function getDisplayedAmount(page) {
       const match = cleanText.match(/^(\d[\d,]*\.?\d*)$/);
       if (match) {
         const numberValue = parseFloat(match[1].replace(/,/g, ''));
-        if (numberValue >= 0 && numberValue <= 10000000) {
+        if (numberValue >= 0 && numberValue <= 1000000000) { // 放寬上限以防萬一
           const rect = el.getBoundingClientRect();
           if (rect.width > 30 && rect.height > 10 && el.offsetParent !== null) {
             const styles = window.getComputedStyle(el);
             const fontSize = parseFloat(styles.fontSize);
             if (fontSize >= 14) {
-              return numberValue;
+              candidates.push(numberValue);
             }
           }
         }
       }
     }
     
-    return 0;
-  });
+    if (candidates.length === 0) return 0;
+    
+    // 如果有預期值，返回最接近的
+    if (expected !== null && expected !== undefined) {
+        // 過濾掉差異過大的（例如差異超過 50% 且數值很小），除非找不到更接近的
+        // 但簡單點，直接找差值最小的
+        candidates.sort((a, b) => Math.abs(a - expected) - Math.abs(b - expected));
+        return candidates[0];
+    }
+    
+    // 如果沒有預期值，原本邏輯是返回第一個。但現在我們收集了所有。
+    // 為了保持相容性，我們嘗試找「看起來像餘額」的（通常比較大，但不是 Jackpot 那麼大）
+    // 這裡簡單返回第一個找到的，或者最大的？
+    // 為了保險，如果有傳 expected 最好。沒傳的話，可能是在初始化，找第一個
+    return candidates[0];
+  }, expectedValue);
 }
 
 async function getSpinRoundValue(page) {
@@ -1631,7 +1646,7 @@ async function checkSpinBalance(page, timestamp, initialData) {
 
     console.log(`💰 當前 Bet 金額 (預估): ${betAmount}`);
 
-    let currentBalance = await getDisplayedAmount(page);
+    let currentBalance = await getDisplayedAmount(page, effectiveStartBalance);
     
     // 監控變數
     let totalWin = 0;
@@ -1646,8 +1661,12 @@ async function checkSpinBalance(page, timestamp, initialData) {
       const timeout = 10000; // 10秒
       
       while (checkTime < timeout) {
-        const nowBalance = await getDisplayedAmount(page);
-        if (nowBalance !== currentBalance) {
+        const nowBalance = await getDisplayedAmount(page, currentBalance);
+        
+        // 額外過濾：如果數值差異過大且不合理（例如變為小數點極小值），忽略
+        if (currentBalance > 1000 && nowBalance < currentBalance * 0.1 && nowBalance < 10) {
+             // 忽略異常值
+        } else if (nowBalance !== currentBalance) {
             newBalance = nowBalance;
             break;
         }
