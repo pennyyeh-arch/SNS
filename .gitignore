@@ -1,0 +1,39 @@
+# Dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+.cursor/
+
+# Test Artifacts / Debug
+debug/
+test-results/
+playwright-report/
+*.png
+*.jpg
+*.jpeg
+
+# Temporary / Utility Scripts (Agent generated)
+# 若您之後需要這些腳本作為參考，可以註解掉下面這幾行
+git_*.js
+sync_git*.js
+fix_*.js
+improve_*.js
+debug_*.js
+*_fix.js
+cleanup_*.js
+add_href_click.js
+remove_old_code.js
+update_logs.js
+*.bat
+*.txt
+
