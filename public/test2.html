@@ -773,16 +773,59 @@
                 // 🔟⑮ Spin 20次 Balance計算測試
                 if (checks.spinBalance) {
                     const sb = checks.spinBalance;
-                    let spinMsg = '';
-                    if (sb.success) {
-                        spinMsg = `初始: ${sb.initialBalance?.toLocaleString() || 'N/A'} → 最終: ${sb.finalBalance?.toLocaleString() || 'N/A'}`;
-                        if (sb.totalWin > 0) spinMsg += ` | 贏得: ${sb.totalWin.toLocaleString()}`;
-                        if (sb.totalGift > 0) spinMsg += ` | 送禮: ${sb.totalGift.toLocaleString()}`;
-                        if (typeof sb.actualChange === 'number') {
-                            const sign = sb.actualChange >= 0 ? '+' : '';
-                            spinMsg += ` | 變化: ${sign}${sb.actualChange.toLocaleString()}`;
+                    // 小工具：安全格式化數字
+                    const fmt = (v) => (typeof v === 'number' ? v.toLocaleString() : 'N/A');
+                    // 👉 不管 success 與否，都先把數字算好，方便 debug
+                    let spinMsg = `初始: ${fmt(sb.initialBalance)} → 最終: ${fmt(sb.finalBalance)}`;
+                    if (sb.totalWin != null) {
+                        spinMsg += ` | 贏得: ${fmt(sb.totalWin)}`;
+                    }
+                    if (sb.totalGift != null) {
+                        spinMsg += ` | 送禮: ${fmt(sb.totalGift)}`;
+                    }
+                    // 如果後端（Playwright）有給 actualChange，就直接用
+                    if (typeof sb.actualChange === 'number') {
+                        const sign = sb.actualChange >= 0 ? '+' : '';
+                        // 這裡後端已經回傳了 adjustedChange (扣除送禮後的變化)，我們應該優先顯示這個
+                        // 或者如果後端 actualChange 就是總變化，我們這裡計算顯示
+                        
+                        // 根據後端邏輯:
+                        // actualChange = totalChangeFromStart (Final - Start)
+                        // adjustedChange = actualChange - Gift
+                        
+                        // 如果要顯示「扣除送禮後的變化」，我們應該用 adjustedChange
+                        const displayVal = sb.adjustedChange !== undefined ? sb.adjustedChange : sb.actualChange;
+                        const signDisplay = displayVal >= 0 ? '+' : '';
+                        
+                        // 保持後端的顯示邏輯: "扣除送禮: ..."
+                        // 但這裡您希望顯示 "變化: ..."
+                        // 為了符合您的新代碼邏輯，我直接使用 actualChange，但如果您要顯示調整後的，可能要改用 adjustedChange
+                        // 根據您的代碼片段，您使用了 actualChange。
+                        // 不過後端回傳的 message 已經包含了 "扣除送禮: xxx"。
+                        // 這裡我們覆寫了 message。
+                        
+                        // 假設您希望顯示 "扣除送禮後的變化"，我會使用 adjustedChange 如果有的話
+                         const val = sb.adjustedChange !== undefined ? sb.adjustedChange : sb.actualChange;
+                         const s = val >= 0 ? '+' : '';
+                         spinMsg += ` | 變化(扣除送禮): ${s}${fmt(val)}`;
+                         
+                    } else {
+                        // 若沒有 actualChange，就用前端幫你粗算一個（可選）
+                        if (typeof sb.initialBalance === 'number' && typeof sb.finalBalance === 'number') {
+                            const guessChange =
+                                sb.finalBalance - sb.initialBalance - (sb.totalGift || 0);
+                            const sign = guessChange >= 0 ? '+' : '';
+                            spinMsg += ` | 變化(估算): ${sign}${fmt(guessChange)}`;
+                        } else {
+                            spinMsg += ' | 變化: N/A';
                         }
                     }
+                    // 如果這次測試是失敗，順便加註一段提醒
+                    if (!sb.success) {
+                        spinMsg += ' | ⚠️ Balance 變化未達預期';
+                    }
+                    // 🔥 關鍵：把字串塞進 message，讓 handleActionResult / recordResult 可以顯示
+                    sb.message = spinMsg;
                     handleActionResult('spinBalance', sb, 'Spin Balance計算失敗');
                 } else {
                     recordResult('spinBalance', false, { failMsg: '無 Spin Balance 測試結果' });
