@@ -1,0 +1,625 @@
+[2025-11-24T02:50:45.748Z] 📝 日誌文件已創建: C:\Users\penny\OneDrive\Desktop\stream-lobby\logs\server-2025-11-24T02-50-45-746Z.log
+[2025-11-24T02:50:45.757Z] 
+🚀 檢查工具伺服器運行在 http://localhost:3000
+[2025-11-24T02:50:45.758Z] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2025-11-24T02:50:45.758Z] 📋 測試工具 1 (7項測試): http://localhost:3000/
+[2025-11-24T02:50:45.759Z] 🎮 測試工具 2 (10項測試): http://localhost:3000/test2.html
+[2025-11-24T02:50:45.760Z] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2025-11-24T02:50:45.761Z] 📝 所有日誌將保存到: C:\Users\penny\OneDrive\Desktop\stream-lobby\logs\server-2025-11-24T02-50-45-746Z.log
+
+[2025-11-24T02:51:17.360Z] Start navigation to http://lobby.sns.lab/?isAgentApi
+[2025-11-24T02:51:21.258Z] 找到 Stream n'Spin 彈窗，點擊 Confirm 按鈕: Confirm
+[2025-11-24T02:51:23.152Z] 已點擊 Confirm 按鈕，彈窗已關閉
+[2025-11-24T02:51:23.154Z] 1️⃣ Stream n'Spin 彈窗測試: {"found":true,"clicked":true,"buttonText":"Confirm","message":"找到 Stream n'Spin 彈窗並點擊 Confirm","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-before-2025-11-24T02-51-17-359Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-after-2025-11-24T02-51-17-359Z.png"}}
+[2025-11-24T02:51:31.197Z] 找到可點擊元素: 普通卡片 DIV "8 viewersgame01"
+[2025-11-24T02:51:31.199Z] 位置: (481, 260)
+[2025-11-24T02:51:31.570Z] 點擊元素...
+[2025-11-24T02:51:31.711Z] ✅ 新視窗已開啟！
+[2025-11-24T02:51:35.177Z] ✅ 新視窗 URL: http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&homeurl=&token=MTc1MDc1OTY3ODE2MzUxMDAxNg3AP2boBKX6jvIR4htDP2foBN09mzLV7kxGT5ir&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&mode=0&serverurl=http%3A%2F%2Fgs.sns.lab&t=123456&b=iqazwsxi&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&lang=en&lobby=http%3A%2F%2Flobby.sns.lab
+[2025-11-24T02:51:35.178Z] 4️⃣ 在新視窗中尋找 "Cara Bermain" 對話框...
+[2025-11-24T02:51:37.442Z] ❌ MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到
+[2025-11-24T02:51:37.443Z] 5️⃣ 在新視窗中檢測 gVersion...
+[2025-11-24T02:51:37.451Z] gVersion 檢測結果: {"found":true,"version":"v0.60-0558a69"}
+[2025-11-24T02:51:37.452Z] 7️⃣ 測試 MAX 按鈕（目標金額: 3,000,000）...
+[2025-11-24T02:51:38.492Z] ❌ MAX 按鈕未找到
+[2025-11-24T02:51:38.493Z] MAX 按鈕測試（3M）結果: {"success":false,"message":"MAX 按鈕未找到"}
+[2025-11-24T02:51:38.494Z] 8️⃣ 測試 MIN 按鈕（目標金額: 200）...
+[2025-11-24T02:51:39.507Z] ❌ MIN 按鈕未找到
+[2025-11-24T02:51:39.508Z] MIN 按鈕測試（200）結果: {"success":false,"message":"MIN 按鈕未找到"}
+[2025-11-24T02:51:39.510Z] 9️⃣ 測試 + 按鈕點擊 28 次...
+[2025-11-24T02:51:45.902Z] + 按鈕測試結果: {"success":false,"message":"金額沒有持續遞增，只有 20/28 次遞增","amountBefore":2000,"amountAfter":1000000,"clickCount":28,"increasingCount":20,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-plus-28-2025-11-24T02-51-17-359Z.png"}}
+[2025-11-24T02:51:45.903Z] 🔟 測試 - 按鈕點擊 28 次...
+[2025-11-24T02:51:51.488Z]   金額已達最小值 (200)，停止點擊
+[2025-11-24T02:51:51.616Z] - 按鈕測試結果: {"success":false,"message":"金額沒有持續遞減，只有 24/28 次遞減","amountBefore":1000000,"amountAfter":200,"clickCount":28,"decreasingCount":24,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-minus-28-2025-11-24T02-51-17-359Z.png"}}
+[2025-11-24T02:51:51.619Z] 1️⃣1️⃣ 測試 Spin Round + 按鈕點擊 4 次...
+[2025-11-24T02:51:52.206Z] ✅ 找到 Spin Round 初始值: 50
+[2025-11-24T02:51:55.906Z] Spin Round + 按鈕測試結果: {"success":true,"type":"spin-round-plus","timestamp":"2025-11-24T02-51-17-359Z","valueBefore":50,"valueAfter":1000,"values":[50,100,200,500,1000],"increasingCount":4,"expectedClicks":4,"message":"Spin Round 持續遞增（4/4 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-plus-2025-11-24T02-51-17-359Z.png"}}
+[2025-11-24T02:51:55.909Z] 1️⃣2️⃣ 測試 Spin Round - 按鈕點擊 5 次...
+[2025-11-24T02:51:56.481Z] ✅ 找到 Spin Round 初始值: 1000
+[2025-11-24T02:52:00.951Z] Spin Round - 按鈕測試結果: {"success":true,"type":"spin-round-minus","timestamp":"2025-11-24T02-51-17-359Z","valueBefore":1000,"valueAfter":20,"values":[1000,500,200,100,50,20],"decreasingCount":5,"expectedClicks":5,"message":"Spin Round 持續遞減（5/5 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-minus-2025-11-24T02-51-17-359Z.png"}}
+[2025-11-24T02:52:00.953Z] 1️⃣3️⃣ 測試點擊綠色 PLAY 鈕...
+[2025-11-24T02:52:01.970Z] ✅ 找到 PLAY 鈕，位置: (512, 684)
+[2025-11-24T02:52:03.341Z] ✅ 已點擊 PLAY 鈕
+[2025-11-24T02:52:03.343Z] PLAY 鈕測試結果: {"success":true,"message":"已成功點擊綠色 PLAY 鈕","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-before-2025-11-24T02-51-17-359Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-after-2025-11-24T02-51-17-359Z.png"}}
+[2025-11-24T02:52:03.345Z] 1️⃣4️⃣ 測試送禮功能...
+[2025-11-24T02:52:04.368Z] ✅ 找到送禮按鈕，位置: (1326, 736)
+[2025-11-24T02:52:04.639Z] 🖱️  已點擊送禮按鈕，等待彈窗出現...
+[2025-11-24T02:52:06.662Z] ✅ 找到禮物選項，位置: (1195, 597)
+[2025-11-24T02:52:06.681Z] 🖱️  已點擊禮物選項，等待按鈕出現...
+[2025-11-24T02:52:08.689Z] ✅ 找到確認按鈕，位置: (1195, 626)
+[2025-11-24T02:52:08.707Z] 🖱️  已點擊確認按鈕，等待視窗出現...
+[2025-11-24T02:52:10.734Z] ✅ 找到關閉按鈕，位置: (1347, 448)
+[2025-11-24T02:52:10.788Z] 🖱️  已點擊關閉按鈕
+[2025-11-24T02:52:12.030Z] ✅ 送禮測試完成
+[2025-11-24T02:52:12.033Z] 送禮測試結果: {"success":true,"message":"已成功完成送禮測試（包含4個步驟）","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-before-2025-11-24T02-51-17-359Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-after-2025-11-24T02-51-17-359Z.png"}}
+[2025-11-24T02:52:12.035Z] 1️⃣5️⃣ 測試聊天視窗輸入...
+[2025-11-24T02:52:13.052Z] ✅ 找到聊天輸入欄位，位置: (1169, 736)
+[2025-11-24T02:52:13.368Z] 📝 已輸入文字: SNS-Test
+[2025-11-24T02:52:13.885Z] ✅ 找到 Send 按鈕，位置: (1315, 736)
+[2025-11-24T02:52:14.178Z] 🖱️  已點擊 Send 按鈕
+[2025-11-24T02:52:15.330Z] ✅ 聊天視窗輸入測試完成
+[2025-11-24T02:52:15.330Z] 聊天視窗輸入測試結果: {"success":true,"message":"已成功完成聊天視窗輸入測試（輸入文字並發送）","textEntered":"SNS-Test","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-before-2025-11-24T02-51-17-359Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-after-2025-11-24T02-51-17-359Z.png"}}
+[2025-11-24T02:52:15.331Z] ✅ 所有測試完成，停留在新視窗...
+[2025-11-24T02:52:15.331Z] 2️⃣-10️⃣ 測試結果: {"clicked":true,"newPageOpened":true,"newPageUrl":"http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&homeurl=&token=MTc1MDc1OTY3ODE2MzUxMDAxNg3AP2boBKX6jvIR4htDP2foBN09mzLV7kxGT5ir&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&mode=0&serverurl=http%3A%2F%2Fgs.sns.lab&t=123456&b=iqazwsxi&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&lang=en&lobby=http%3A%2F%2Flobby.sns.lab","clickedElement":{"tag":"DIV","text":"8 viewersgame01","isLiveCard":false},"howToPlayClosed":false,"howToPlayMessage":"MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到","gVersion":{"found":true,"version":"v0.60-0558a69"},"maxButton3M":{"success":false,"message":"MAX 按鈕未找到"},"minButton200":{"success":false,"message":"MIN 按鈕未找到"},"plusButton28":{"success":false,"message":"金額沒有持續遞增，只有 20/28 次遞增","amountBefore":2000,"amountAfter":1000000,"clickCount":28,"increasingCount":20,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-plus-28-2025-11-24T02-51-17-359Z.png"}},"minusButton28":{"success":false,"message":"金額沒有持續遞減，只有 24/28 次遞減","amountBefore":1000000,"amountAfter":200,"clickCount":28,"decreasingCount":24,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-minus-28-2025-11-24T02-51-17-359Z.png"}},"spinRoundPlus4":{"success":true,"type":"spin-round-plus","timestamp":"2025-11-24T02-51-17-359Z","valueBefore":50,"valueAfter":1000,"values":[50,100,200,500,1000],"increasingCount":4,"expectedClicks":4,"message":"Spin Round 持續遞增（4/4 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-plus-2025-11-24T02-51-17-359Z.png"}},"spinRoundMinus5":{"success":true,"type":"spin-round-minus","timestamp":"2025-11-24T02-51-17-359Z","valueBefore":1000,"valueAfter":20,"values":[1000,500,200,100,50,20],"decreasingCount":5,"expectedClicks":5,"message":"Spin Round 持續遞減（5/5 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-minus-2025-11-24T02-51-17-359Z.png"}},"playButton":{"success":true,"message":"已成功點擊綠色 PLAY 鈕","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-before-2025-11-24T02-51-17-359Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-after-2025-11-24T02-51-17-359Z.png"}},"giftTest":{"success":true,"message":"已成功完成送禮測試（包含4個步驟）","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-before-2025-11-24T02-51-17-359Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-after-2025-11-24T02-51-17-359Z.png"}},"chatInput":{"success":true,"message":"已成功完成聊天視窗輸入測試（輸入文字並發送）","textEntered":"SNS-Test","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-before-2025-11-24T02-51-17-359Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-after-2025-11-24T02-51-17-359Z.png"}},"message":"✅ 全部測試完成！點擊卡片 -> 開啟新視窗 -> 點擊 MULAI BERMAIN -> gVersion: v0.60-0558a69","debug":{"screenshotBeforeClick":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-before-click-2025-11-24T02-51-17-359Z.png","screenshotNewPage":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-new-page-2025-11-24T02-51-17-359Z.png","screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-how-to-play-before-2025-11-24T02-51-17-359Z.png"}}
+[2025-11-24T02:52:15.332Z] ⚠️  測試未完全成功，瀏覽器保持開啟 60 秒以供檢查...
+[2025-11-24T02:52:15.333Z]    1️⃣ Stream n'Spin 彈窗: ✅
+[2025-11-24T02:52:15.333Z]    2️⃣ 點擊 LIVE 卡片: ✅
+[2025-11-24T02:52:15.333Z]    3️⃣ 新視窗開啟: ✅
+[2025-11-24T02:52:15.334Z]    4️⃣ Cara Bermain 關閉: ❌
+[2025-11-24T02:52:15.336Z]    5️⃣ gVersion 檢測: ✅
+[2025-11-24T02:52:15.336Z]    7️⃣ MAX 按鈕（3M）: ❌
+[2025-11-24T02:52:15.337Z]    8️⃣ MIN 按鈕（200）: ❌
+[2025-11-24T02:52:15.338Z]    9️⃣ + 按鈕 28 次: ❌
+[2025-11-24T02:52:15.342Z]    🔟 - 按鈕 28 次: ❌
+[2025-11-24T02:52:15.344Z]    1️⃣1️⃣ Spin Round + 按鈕 4 次: ✅
+[2025-11-24T02:52:15.345Z]    1️⃣2️⃣ Spin Round - 按鈕 5 次: ✅
+[2025-11-24T02:52:15.345Z]    1️⃣3️⃣ 點擊綠色 PLAY 鈕: ✅
+[2025-11-24T02:52:15.346Z]    1️⃣4️⃣ 送禮測試: ✅
+[2025-11-24T02:52:15.347Z]    1️⃣5️⃣ 聊天視窗輸入: ✅
+[2025-11-24T02:52:15.348Z] ⏱️  60秒後自動關閉，或請手動關閉瀏覽器...
+[2025-11-24T02:52:24.249Z] Browser closed after 60 seconds
+[2025-11-24T02:52:56.428Z] Start navigation to http://lobby.sns.lab/?isAgentApi
+[2025-11-24T02:53:05.713Z] Stream n'Spin 彈窗未出現，繼續下一步測試
+[2025-11-24T02:53:05.715Z] 1️⃣ Stream n'Spin 彈窗測試: {"found":false,"clicked":false,"message":"Stream n'Spin 彈窗未出現","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-before-2025-11-24T02-52-56-428Z.png"}}
+[2025-11-24T02:53:13.758Z] 找到可點擊元素: 普通卡片 DIV "9 viewersgame01"
+[2025-11-24T02:53:13.760Z] 位置: (481, 260)
+[2025-11-24T02:53:14.094Z] 點擊元素...
+[2025-11-24T02:53:14.210Z] ✅ 新視窗已開啟！
+[2025-11-24T02:53:17.425Z] ✅ 新視窗 URL: http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&homeurl=&token=MTc1MDczMDc3ODQwMjMyMTY2NAqX7ajtCIR1agpzIOX7gmvFOU3dmsBLU09jsyHR&lang=en&mode=0&serverurl=http%3A%2F%2Fgs.sns.lab&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&t=123456&b=iqazwsxi&lobby=http%3A%2F%2Flobby.sns.lab
+[2025-11-24T02:53:17.428Z] 4️⃣ 在新視窗中尋找 "Cara Bermain" 對話框...
+[2025-11-24T02:53:19.632Z] ❌ MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到
+[2025-11-24T02:53:19.633Z] 5️⃣ 在新視窗中檢測 gVersion...
+[2025-11-24T02:53:19.644Z] gVersion 檢測結果: {"found":true,"version":"v0.60-0558a69"}
+[2025-11-24T02:53:19.646Z] 7️⃣ 測試 MAX 按鈕（目標金額: 3,000,000）...
+[2025-11-24T02:53:20.665Z] ❌ MAX 按鈕未找到
+[2025-11-24T02:53:20.666Z] MAX 按鈕測試（3M）結果: {"success":false,"message":"MAX 按鈕未找到"}
+[2025-11-24T02:53:20.666Z] 8️⃣ 測試 MIN 按鈕（目標金額: 200）...
+[2025-11-24T02:53:21.683Z] ❌ MIN 按鈕未找到
+[2025-11-24T02:53:21.684Z] MIN 按鈕測試（200）結果: {"success":false,"message":"MIN 按鈕未找到"}
+[2025-11-24T02:53:21.684Z] 9️⃣ 測試 + 按鈕點擊 28 次...
+[2025-11-24T02:53:22.700Z] ❌ + 按鈕未找到
+[2025-11-24T02:53:22.701Z] + 按鈕測試結果: {"success":false,"message":"+ 按鈕未找到"}
+[2025-11-24T02:53:22.701Z] 🔟 測試 - 按鈕點擊 28 次...
+[2025-11-24T02:53:23.717Z] ❌ - 按鈕未找到
+[2025-11-24T02:53:23.718Z] - 按鈕測試結果: {"success":false,"message":"- 按鈕未找到"}
+[2025-11-24T02:53:23.718Z] 1️⃣1️⃣ 測試 Spin Round + 按鈕點擊 4 次...
+[2025-11-24T02:53:28.589Z] ✅ 找到 Spin Round 初始值: 50
+[2025-11-24T02:53:53.394Z] Spin Round + 按鈕測試結果: {"success":true,"type":"spin-round-plus","timestamp":"2025-11-24T02-52-56-428Z","valueBefore":50,"valueAfter":1000,"values":[50,100,200,500,1000],"increasingCount":4,"expectedClicks":4,"message":"Spin Round 持續遞增（4/4 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-plus-2025-11-24T02-52-56-428Z.png"}}
+[2025-11-24T02:53:53.395Z] 1️⃣2️⃣ 測試 Spin Round - 按鈕點擊 5 次...
+[2025-11-24T02:53:53.941Z] ✅ 找到 Spin Round 初始值: 1000
+[2025-11-24T02:53:54.291Z] Spin Round - 按鈕測試結果: {"success":false,"timestamp":"2025-11-24T02-52-56-428Z","error":"Error: page.evaluate: Target page, context or browser has been closed"}
+[2025-11-24T02:53:54.294Z] 1️⃣3️⃣ 測試點擊綠色 PLAY 鈕...
+[2025-11-24T02:53:54.299Z] ❌ PLAY 鈕測試錯誤: page.waitForTimeout: Target page, context or browser has been closed
+[2025-11-24T02:53:54.300Z] PLAY 鈕測試結果: {"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"PLAY 鈕測試失敗: page.waitForTimeout: Target page, context or browser has been closed"}
+[2025-11-24T02:53:54.302Z] 1️⃣4️⃣ 測試送禮功能...
+[2025-11-24T02:53:54.305Z] ❌ 送禮測試錯誤: page.waitForTimeout: Target page, context or browser has been closed
+[2025-11-24T02:53:54.306Z] 送禮測試結果: {"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"送禮測試失敗: page.waitForTimeout: Target page, context or browser has been closed"}
+[2025-11-24T02:53:54.310Z] 1️⃣5️⃣ 測試聊天視窗輸入...
+[2025-11-24T02:53:54.314Z] ❌ 聊天視窗輸入測試錯誤: page.waitForTimeout: Target page, context or browser has been closed
+[2025-11-24T02:53:54.315Z] 聊天視窗輸入測試結果: {"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"聊天視窗輸入測試失敗: page.waitForTimeout: Target page, context or browser has been closed"}
+[2025-11-24T02:53:54.315Z] ✅ 所有測試完成，停留在新視窗...
+[2025-11-24T02:53:54.319Z] 2️⃣-10️⃣ 測試結果: {"clicked":true,"newPageOpened":true,"newPageUrl":"http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&homeurl=&token=MTc1MDczMDc3ODQwMjMyMTY2NAqX7ajtCIR1agpzIOX7gmvFOU3dmsBLU09jsyHR&lang=en&mode=0&serverurl=http%3A%2F%2Fgs.sns.lab&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&t=123456&b=iqazwsxi&lobby=http%3A%2F%2Flobby.sns.lab","clickedElement":{"tag":"DIV","text":"9 viewersgame01","isLiveCard":false},"howToPlayClosed":false,"howToPlayMessage":"MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到","gVersion":{"found":true,"version":"v0.60-0558a69"},"maxButton3M":{"success":false,"message":"MAX 按鈕未找到"},"minButton200":{"success":false,"message":"MIN 按鈕未找到"},"plusButton28":{"success":false,"message":"+ 按鈕未找到"},"minusButton28":{"success":false,"message":"- 按鈕未找到"},"spinRoundPlus4":{"success":true,"type":"spin-round-plus","timestamp":"2025-11-24T02-52-56-428Z","valueBefore":50,"valueAfter":1000,"values":[50,100,200,500,1000],"increasingCount":4,"expectedClicks":4,"message":"Spin Round 持續遞增（4/4 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-plus-2025-11-24T02-52-56-428Z.png"}},"spinRoundMinus5":{"success":false,"timestamp":"2025-11-24T02-52-56-428Z","error":"Error: page.evaluate: Target page, context or browser has been closed"},"playButton":{"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"PLAY 鈕測試失敗: page.waitForTimeout: Target page, context or browser has been closed"},"giftTest":{"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"送禮測試失敗: page.waitForTimeout: Target page, context or browser has been closed"},"chatInput":{"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"聊天視窗輸入測試失敗: page.waitForTimeout: Target page, context or browser has been closed"},"message":"✅ 全部測試完成！點擊卡片 -> 開啟新視窗 -> 點擊 MULAI BERMAIN -> gVersion: v0.60-0558a69","debug":{"screenshotBeforeClick":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-before-click-2025-11-24T02-52-56-428Z.png","screenshotNewPage":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-new-page-2025-11-24T02-52-56-428Z.png","screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-how-to-play-before-2025-11-24T02-52-56-428Z.png"}}
+[2025-11-24T02:53:54.321Z] ⚠️  測試未完全成功，瀏覽器保持開啟 60 秒以供檢查...
+[2025-11-24T02:53:54.322Z]    1️⃣ Stream n'Spin 彈窗: ❌
+[2025-11-24T02:53:54.324Z]    2️⃣ 點擊 LIVE 卡片: ✅
+[2025-11-24T02:53:54.327Z]    3️⃣ 新視窗開啟: ✅
+[2025-11-24T02:53:54.329Z]    4️⃣ Cara Bermain 關閉: ❌
+[2025-11-24T02:53:54.329Z]    5️⃣ gVersion 檢測: ✅
+[2025-11-24T02:53:54.330Z]    7️⃣ MAX 按鈕（3M）: ❌
+[2025-11-24T02:53:54.331Z]    8️⃣ MIN 按鈕（200）: ❌
+[2025-11-24T02:53:54.335Z]    9️⃣ + 按鈕 28 次: ❌
+[2025-11-24T02:53:54.338Z]    🔟 - 按鈕 28 次: ❌
+[2025-11-24T02:53:54.339Z]    1️⃣1️⃣ Spin Round + 按鈕 4 次: ✅
+[2025-11-24T02:53:54.341Z]    1️⃣2️⃣ Spin Round - 按鈕 5 次: ❌
+[2025-11-24T02:53:54.343Z]    1️⃣3️⃣ 點擊綠色 PLAY 鈕: ❌
+[2025-11-24T02:53:54.344Z]    1️⃣4️⃣ 送禮測試: ❌
+[2025-11-24T02:53:54.347Z]    1️⃣5️⃣ 聊天視窗輸入: ❌
+[2025-11-24T02:53:54.348Z] ⏱️  60秒後自動關閉，或請手動關閉瀏覽器...
+[2025-11-24T02:53:54.988Z] Browser closed after 60 seconds
+[2025-11-24T02:56:22.184Z] Start navigation to http://lobby.sns.lab/?isAgentApi
+[2025-11-24T02:56:26.422Z] Stream n'Spin 彈窗未出現，繼續下一步測試
+[2025-11-24T02:56:26.423Z] 1️⃣ Stream n'Spin 彈窗測試: {"found":false,"clicked":false,"message":"Stream n'Spin 彈窗未出現","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-before-2025-11-24T02-56-22-184Z.png"}}
+[2025-11-24T02:56:34.463Z] 找到可點擊元素: 普通卡片 DIV "20 viewersgame01"
+[2025-11-24T02:56:34.463Z] 位置: (481, 260)
+[2025-11-24T02:56:34.817Z] 點擊元素...
+[2025-11-24T02:56:34.937Z] ✅ 新視窗已開啟！
+[2025-11-24T02:56:38.143Z] ✅ 新視窗 URL: http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&homeurl=&token=MTc1MTUyNjk4MzczNDYyNjA0OAynwJS5U3cisBKU09fouEKT39ioxDNT2bhrxGMV&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&lang=en&mode=0&b=iqazwsxi&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&serverurl=http%3A%2F%2Fgs.sns.lab&t=123456&lobby=http%3A%2F%2Flobby.sns.lab
+[2025-11-24T02:56:38.145Z] 4️⃣ 在新視窗中尋找 "Cara Bermain" 對話框...
+[2025-11-24T02:56:40.420Z] ❌ MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到
+[2025-11-24T02:56:40.422Z] 5️⃣ 在新視窗中檢測 gVersion...
+[2025-11-24T02:56:40.434Z] gVersion 檢測結果: {"found":true,"version":"v0.60-0558a69"}
+[2025-11-24T02:56:40.435Z] 7️⃣ 測試 MAX 按鈕（目標金額: 3,000,000）...
+[2025-11-24T02:56:42.229Z] ✅ 使用指定選擇器找到 MAX 按鈕
+[2025-11-24T02:56:45.049Z] MAX 按鈕測試（3M）結果: {"success":false,"message":"金額不符預期，預期: 3,000,000, 實際: 2,000","amountBefore":2000,"amountAfter":2000,"expectedAmount":3000000,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-max-3M-2025-11-24T02-56-22-184Z.png"}}
+[2025-11-24T02:56:45.050Z] 8️⃣ 測試 MIN 按鈕（目標金額: 200）...
+[2025-11-24T02:56:47.025Z] ✅ MIN 按鈕測試成功
+[2025-11-24T02:56:47.028Z] MIN 按鈕測試（200）結果: {"success":true,"message":"金額正確變成 200","amountBefore":2000,"amountAfter":200,"expectedAmount":200,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-min-2025-11-24T02-56-22-184Z.png"}}
+[2025-11-24T02:56:47.029Z] 9️⃣ 測試 + 按鈕點擊 28 次...
+[2025-11-24T02:56:53.522Z] ✅ + 按鈕測試成功
+[2025-11-24T02:56:53.524Z] + 按鈕測試結果: {"success":true,"message":"金額持續遞增（28/28 次）","amountBefore":200,"amountAfter":3000000,"clickCount":28,"increasingCount":28,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-plus-28-2025-11-24T02-56-22-184Z.png"}}
+[2025-11-24T02:56:53.525Z] 🔟 測試 - 按鈕點擊 28 次...
+[2025-11-24T02:56:59.879Z] ✅ - 按鈕測試成功
+[2025-11-24T02:56:59.880Z] - 按鈕測試結果: {"success":true,"message":"金額持續遞減（28/28 次）","amountBefore":3000000,"amountAfter":200,"clickCount":28,"decreasingCount":28,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-minus-28-2025-11-24T02-56-22-184Z.png"}}
+[2025-11-24T02:56:59.880Z] 1️⃣1️⃣ 測試 Spin Round + 按鈕點擊 4 次...
+[2025-11-24T02:57:00.415Z] ✅ 找到 Spin Round 初始值: 50
+[2025-11-24T02:57:04.035Z] Spin Round + 按鈕測試結果: {"success":true,"type":"spin-round-plus","timestamp":"2025-11-24T02-56-22-184Z","valueBefore":50,"valueAfter":1000,"values":[50,100,200,500,1000],"increasingCount":4,"expectedClicks":4,"message":"Spin Round 持續遞增（4/4 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-plus-2025-11-24T02-56-22-184Z.png"}}
+[2025-11-24T02:57:04.037Z] 1️⃣2️⃣ 測試 Spin Round - 按鈕點擊 5 次...
+[2025-11-24T02:57:04.569Z] ✅ 找到 Spin Round 初始值: 1000
+[2025-11-24T02:57:08.876Z] Spin Round - 按鈕測試結果: {"success":true,"type":"spin-round-minus","timestamp":"2025-11-24T02-56-22-184Z","valueBefore":1000,"valueAfter":20,"values":[1000,500,200,100,50,20],"decreasingCount":5,"expectedClicks":5,"message":"Spin Round 持續遞減（5/5 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-minus-2025-11-24T02-56-22-184Z.png"}}
+[2025-11-24T02:57:08.876Z] 1️⃣3️⃣ 測試點擊綠色 PLAY 鈕...
+[2025-11-24T02:57:09.893Z] ✅ 找到 PLAY 鈕，位置: (512, 684)
+[2025-11-24T02:57:11.208Z] ✅ 已點擊 PLAY 鈕
+[2025-11-24T02:57:11.208Z] PLAY 鈕測試結果: {"success":true,"message":"已成功點擊綠色 PLAY 鈕","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-before-2025-11-24T02-56-22-184Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-after-2025-11-24T02-56-22-184Z.png"}}
+[2025-11-24T02:57:11.209Z] 1️⃣4️⃣ 測試送禮功能...
+[2025-11-24T02:57:12.215Z] ✅ 找到送禮按鈕，位置: (1326, 736)
+[2025-11-24T02:57:12.486Z] 🖱️  已點擊送禮按鈕，等待彈窗出現...
+[2025-11-24T02:57:14.502Z] ✅ 找到禮物選項，位置: (1195, 597)
+[2025-11-24T02:57:14.520Z] 🖱️  已點擊禮物選項，等待按鈕出現...
+[2025-11-24T02:57:16.545Z] ✅ 找到確認按鈕，位置: (1195, 626)
+[2025-11-24T02:57:16.575Z] 🖱️  已點擊確認按鈕，等待視窗出現...
+[2025-11-24T02:57:18.588Z] ✅ 找到關閉按鈕，位置: (1347, 448)
+[2025-11-24T02:57:18.616Z] 🖱️  已點擊關閉按鈕
+[2025-11-24T02:57:19.898Z] ✅ 送禮測試完成
+[2025-11-24T02:57:19.901Z] 送禮測試結果: {"success":true,"message":"已成功完成送禮測試（包含4個步驟）","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-before-2025-11-24T02-56-22-184Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-after-2025-11-24T02-56-22-184Z.png"}}
+[2025-11-24T02:57:19.902Z] 1️⃣5️⃣ 測試聊天視窗輸入...
+[2025-11-24T02:57:20.920Z] ✅ 找到聊天輸入欄位，位置: (1169, 736)
+[2025-11-24T02:57:21.263Z] 📝 已輸入文字: SNS-Test
+[2025-11-24T02:57:21.788Z] ✅ 找到 Send 按鈕，位置: (1315, 736)
+[2025-11-24T02:57:21.887Z] 🖱️  已點擊 Send 按鈕
+[2025-11-24T02:57:23.106Z] ✅ 聊天視窗輸入測試完成
+[2025-11-24T02:57:23.107Z] 聊天視窗輸入測試結果: {"success":true,"message":"已成功完成聊天視窗輸入測試（輸入文字並發送）","textEntered":"SNS-Test","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-before-2025-11-24T02-56-22-184Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-after-2025-11-24T02-56-22-184Z.png"}}
+[2025-11-24T02:57:23.108Z] ✅ 所有測試完成，停留在新視窗...
+[2025-11-24T02:57:23.110Z] 2️⃣-10️⃣ 測試結果: {"clicked":true,"newPageOpened":true,"newPageUrl":"http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&homeurl=&token=MTc1MTUyNjk4MzczNDYyNjA0OAynwJS5U3cisBKU09fouEKT39ioxDNT2bhrxGMV&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&lang=en&mode=0&b=iqazwsxi&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&serverurl=http%3A%2F%2Fgs.sns.lab&t=123456&lobby=http%3A%2F%2Flobby.sns.lab","clickedElement":{"tag":"DIV","text":"20 viewersgame01","isLiveCard":false},"howToPlayClosed":false,"howToPlayMessage":"MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到","gVersion":{"found":true,"version":"v0.60-0558a69"},"maxButton3M":{"success":false,"message":"金額不符預期，預期: 3,000,000, 實際: 2,000","amountBefore":2000,"amountAfter":2000,"expectedAmount":3000000,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-max-3M-2025-11-24T02-56-22-184Z.png"}},"minButton200":{"success":true,"message":"金額正確變成 200","amountBefore":2000,"amountAfter":200,"expectedAmount":200,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-min-2025-11-24T02-56-22-184Z.png"}},"plusButton28":{"success":true,"message":"金額持續遞增（28/28 次）","amountBefore":200,"amountAfter":3000000,"clickCount":28,"increasingCount":28,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-plus-28-2025-11-24T02-56-22-184Z.png"}},"minusButton28":{"success":true,"message":"金額持續遞減（28/28 次）","amountBefore":3000000,"amountAfter":200,"clickCount":28,"decreasingCount":28,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-minus-28-2025-11-24T02-56-22-184Z.png"}},"spinRoundPlus4":{"success":true,"type":"spin-round-plus","timestamp":"2025-11-24T02-56-22-184Z","valueBefore":50,"valueAfter":1000,"values":[50,100,200,500,1000],"increasingCount":4,"expectedClicks":4,"message":"Spin Round 持續遞增（4/4 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-plus-2025-11-24T02-56-22-184Z.png"}},"spinRoundMinus5":{"success":true,"type":"spin-round-minus","timestamp":"2025-11-24T02-56-22-184Z","valueBefore":1000,"valueAfter":20,"values":[1000,500,200,100,50,20],"decreasingCount":5,"expectedClicks":5,"message":"Spin Round 持續遞減（5/5 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-minus-2025-11-24T02-56-22-184Z.png"}},"playButton":{"success":true,"message":"已成功點擊綠色 PLAY 鈕","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-before-2025-11-24T02-56-22-184Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-after-2025-11-24T02-56-22-184Z.png"}},"giftTest":{"success":true,"message":"已成功完成送禮測試（包含4個步驟）","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-before-2025-11-24T02-56-22-184Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-after-2025-11-24T02-56-22-184Z.png"}},"chatInput":{"success":true,"message":"已成功完成聊天視窗輸入測試（輸入文字並發送）","textEntered":"SNS-Test","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-before-2025-11-24T02-56-22-184Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-after-2025-11-24T02-56-22-184Z.png"}},"message":"✅ 全部測試完成！點擊卡片 -> 開啟新視窗 -> 點擊 MULAI BERMAIN -> gVersion: v0.60-0558a69","debug":{"screenshotBeforeClick":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-before-click-2025-11-24T02-56-22-184Z.png","screenshotNewPage":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-new-page-2025-11-24T02-56-22-184Z.png","screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-how-to-play-before-2025-11-24T02-56-22-184Z.png"}}
+[2025-11-24T02:57:23.111Z] ⚠️  測試未完全成功，瀏覽器保持開啟 60 秒以供檢查...
+[2025-11-24T02:57:23.112Z]    1️⃣ Stream n'Spin 彈窗: ❌
+[2025-11-24T02:57:23.112Z]    2️⃣ 點擊 LIVE 卡片: ✅
+[2025-11-24T02:57:23.114Z]    3️⃣ 新視窗開啟: ✅
+[2025-11-24T02:57:23.115Z]    4️⃣ Cara Bermain 關閉: ❌
+[2025-11-24T02:57:23.118Z]    5️⃣ gVersion 檢測: ✅
+[2025-11-24T02:57:23.118Z]    7️⃣ MAX 按鈕（3M）: ❌
+[2025-11-24T02:57:23.119Z]    8️⃣ MIN 按鈕（200）: ✅
+[2025-11-24T02:57:23.120Z]    9️⃣ + 按鈕 28 次: ✅
+[2025-11-24T02:57:23.123Z]    🔟 - 按鈕 28 次: ✅
+[2025-11-24T02:57:23.125Z]    1️⃣1️⃣ Spin Round + 按鈕 4 次: ✅
+[2025-11-24T02:57:23.129Z]    1️⃣2️⃣ Spin Round - 按鈕 5 次: ✅
+[2025-11-24T02:57:23.132Z]    1️⃣3️⃣ 點擊綠色 PLAY 鈕: ✅
+[2025-11-24T02:57:23.133Z]    1️⃣4️⃣ 送禮測試: ✅
+[2025-11-24T02:57:23.134Z]    1️⃣5️⃣ 聊天視窗輸入: ✅
+[2025-11-24T02:57:23.135Z] ⏱️  60秒後自動關閉，或請手動關閉瀏覽器...
+[2025-11-24T02:57:27.815Z] Browser closed after 60 seconds
+[2025-11-24T03:01:20.818Z] Start navigation to http://lobby.sns.lab/?isAgentApi
+[2025-11-24T03:01:28.661Z] 找到 Stream n'Spin 彈窗，點擊 Confirm 按鈕: Confirm
+[2025-11-24T03:01:30.683Z] 已點擊 Confirm 按鈕，彈窗已關閉
+[2025-11-24T03:01:30.687Z] 1️⃣ Stream n'Spin 彈窗測試: {"found":true,"clicked":true,"buttonText":"Confirm","message":"找到 Stream n'Spin 彈窗並點擊 Confirm","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-before-2025-11-24T03-01-20-818Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-after-2025-11-24T03-01-20-818Z.png"}}
+[2025-11-24T03:01:38.723Z] 找到可點擊元素: 普通卡片 DIV "9 viewersgame01"
+[2025-11-24T03:01:38.725Z] 位置: (481, 260)
+[2025-11-24T03:01:39.078Z] 點擊元素...
+[2025-11-24T03:01:39.173Z] ✅ 新視窗已開啟！
+[2025-11-24T03:01:42.300Z] ✅ 新視窗 URL: http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&homeurl=&lang=en&mode=0&token=MTc1MDgyMjI4MDUzMzA3NDY4OAmNnDPZR39jsBHR09fvBO1dqDP2frER3gtFS5hu&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&serverurl=http%3A%2F%2Fgs.sns.lab&t=123456&b=iqazwsxi&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&lobby=http%3A%2F%2Flobby.sns.lab
+[2025-11-24T03:01:42.301Z] 4️⃣ 在新視窗中尋找 "Cara Bermain" 對話框...
+[2025-11-24T03:01:44.508Z] ❌ MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到
+[2025-11-24T03:01:44.508Z] 5️⃣ 在新視窗中檢測 gVersion...
+[2025-11-24T03:01:44.511Z] gVersion 檢測結果: {"found":true,"version":"v0.60-0558a69"}
+[2025-11-24T03:01:44.511Z] 7️⃣ 測試 MAX 按鈕（目標金額: 3,000,000）...
+[2025-11-24T03:01:45.540Z] ❌ MAX 按鈕未找到
+[2025-11-24T03:01:45.542Z] MAX 按鈕測試（3M）結果: {"success":false,"message":"MAX 按鈕未找到"}
+[2025-11-24T03:01:45.543Z] 8️⃣ 測試 MIN 按鈕（目標金額: 200）...
+[2025-11-24T03:01:46.564Z] ❌ MIN 按鈕未找到
+[2025-11-24T03:01:46.565Z] MIN 按鈕測試（200）結果: {"success":false,"message":"MIN 按鈕未找到"}
+[2025-11-24T03:01:46.566Z] 9️⃣ 測試 + 按鈕點擊 28 次...
+[2025-11-24T03:01:47.580Z] ❌ + 按鈕未找到
+[2025-11-24T03:01:47.581Z] + 按鈕測試結果: {"success":false,"message":"+ 按鈕未找到"}
+[2025-11-24T03:01:47.581Z] 🔟 測試 - 按鈕點擊 28 次...
+[2025-11-24T03:01:48.602Z] ❌ - 按鈕未找到
+[2025-11-24T03:01:48.603Z] - 按鈕測試結果: {"success":false,"message":"- 按鈕未找到"}
+[2025-11-24T03:01:48.604Z] 1️⃣1️⃣ 測試 Spin Round + 按鈕點擊 4 次...
+[2025-11-24T03:01:54.130Z] ❌ Spin Round 初始值未找到: CONTROLS_PANEL 未找到
+[2025-11-24T03:01:54.134Z] Spin Round + 按鈕測試結果: {"success":false,"step":"locate-initial","timestamp":"2025-11-24T03-01-20-818Z","error":"CONTROLS_PANEL 未找到"}
+[2025-11-24T03:01:54.136Z] 1️⃣2️⃣ 測試 Spin Round - 按鈕點擊 5 次...
+[2025-11-24T03:01:55.727Z] ✅ 找到 Spin Round 初始值: 50
+[2025-11-24T03:02:25.801Z] Spin Round - 按鈕測試結果: {"success":false,"timestamp":"2025-11-24T03-01-20-818Z","error":"TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('#CONTROLS_PANEL > div._controlBar_1qzyb_139.hstack > div._wrapper_1qt5t_234 > div > button:nth-child(1) > svg')\n    - locator resolved to <svg width=\"1em\" height=\"1em\" stroke-width=\"0\" fill=\"currentColor\" stroke=\"currentColor\" viewBox=\"0 0 448 512\" xmlns=\"http://www.w3.org/2000/svg\">…</svg>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div role=\"dialog\" tabindex=\"-1\" aria-modal=\"true\" class=\"fade modal show\">…</div> intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div class=\"modal-body\">…</div> from <div role=\"dialog\" tabindex=\"-1\" aria-modal=\"true\" class=\"fade modal show\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    53 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <div class=\"modal-body\">…</div> from <div role=\"dialog\" tabindex=\"-1\" aria-modal=\"true\" class=\"fade modal show\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"}
+[2025-11-24T03:02:25.809Z] 1️⃣3️⃣ 測試點擊綠色 PLAY 鈕...
+[2025-11-24T03:02:26.871Z] ✅ 找到 PLAY 鈕，位置: (512, 684)
+[2025-11-24T03:02:28.689Z] ✅ 已點擊 PLAY 鈕
+[2025-11-24T03:02:28.693Z] PLAY 鈕測試結果: {"success":true,"message":"已成功點擊綠色 PLAY 鈕","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-before-2025-11-24T03-01-20-818Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-after-2025-11-24T03-01-20-818Z.png"}}
+[2025-11-24T03:02:28.695Z] 1️⃣4️⃣ 測試送禮功能...
+[2025-11-24T03:02:29.727Z] ✅ 找到送禮按鈕，位置: (1326, 736)
+[2025-11-24T03:02:30.034Z] 🖱️  已點擊送禮按鈕，等待彈窗出現...
+[2025-11-24T03:02:32.056Z] ✅ 找到禮物選項，位置: (1195, 597)
+[2025-11-24T03:02:32.074Z] 🖱️  已點擊禮物選項，等待按鈕出現...
+[2025-11-24T03:02:34.085Z] ✅ 找到確認按鈕，位置: (1195, 626)
+[2025-11-24T03:02:34.117Z] 🖱️  已點擊確認按鈕，等待視窗出現...
+[2025-11-24T03:02:36.232Z] ❌ 送禮測試錯誤: page.evaluate: Target page, context or browser has been closed
+[2025-11-24T03:02:36.234Z] 送禮測試結果: {"success":false,"error":"page.evaluate: Target page, context or browser has been closed","message":"送禮測試失敗: page.evaluate: Target page, context or browser has been closed"}
+[2025-11-24T03:02:36.236Z] 1️⃣5️⃣ 測試聊天視窗輸入...
+[2025-11-24T03:02:36.240Z] ❌ 聊天視窗輸入測試錯誤: page.waitForTimeout: Target page, context or browser has been closed
+[2025-11-24T03:02:36.242Z] 聊天視窗輸入測試結果: {"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"聊天視窗輸入測試失敗: page.waitForTimeout: Target page, context or browser has been closed"}
+[2025-11-24T03:02:36.248Z] ✅ 所有測試完成，停留在新視窗...
+[2025-11-24T03:02:36.252Z] 2️⃣-10️⃣ 測試結果: {"clicked":true,"newPageOpened":true,"newPageUrl":"http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&homeurl=&lang=en&mode=0&token=MTc1MDgyMjI4MDUzMzA3NDY4OAmNnDPZR39jsBHR09fvBO1dqDP2frER3gtFS5hu&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&serverurl=http%3A%2F%2Fgs.sns.lab&t=123456&b=iqazwsxi&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&lobby=http%3A%2F%2Flobby.sns.lab","clickedElement":{"tag":"DIV","text":"9 viewersgame01","isLiveCard":false},"howToPlayClosed":false,"howToPlayMessage":"MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到","gVersion":{"found":true,"version":"v0.60-0558a69"},"maxButton3M":{"success":false,"message":"MAX 按鈕未找到"},"minButton200":{"success":false,"message":"MIN 按鈕未找到"},"plusButton28":{"success":false,"message":"+ 按鈕未找到"},"minusButton28":{"success":false,"message":"- 按鈕未找到"},"spinRoundPlus4":{"success":false,"step":"locate-initial","timestamp":"2025-11-24T03-01-20-818Z","error":"CONTROLS_PANEL 未找到"},"spinRoundMinus5":{"success":false,"timestamp":"2025-11-24T03-01-20-818Z","error":"TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('#CONTROLS_PANEL > div._controlBar_1qzyb_139.hstack > div._wrapper_1qt5t_234 > div > button:nth-child(1) > svg')\n    - locator resolved to <svg width=\"1em\" height=\"1em\" stroke-width=\"0\" fill=\"currentColor\" stroke=\"currentColor\" viewBox=\"0 0 448 512\" xmlns=\"http://www.w3.org/2000/svg\">…</svg>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div role=\"dialog\" tabindex=\"-1\" aria-modal=\"true\" class=\"fade modal show\">…</div> intercepts pointer events\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is visible, enabled and stable\n      - scrolling into view if needed\n      - done scrolling\n      - <div class=\"modal-body\">…</div> from <div role=\"dialog\" tabindex=\"-1\" aria-modal=\"true\" class=\"fade modal show\">…</div> subtree intercepts pointer events\n    - retrying click action\n      - waiting 100ms\n    53 × waiting for element to be visible, enabled and stable\n       - element is visible, enabled and stable\n       - scrolling into view if needed\n       - done scrolling\n       - <div class=\"modal-body\">…</div> from <div role=\"dialog\" tabindex=\"-1\" aria-modal=\"true\" class=\"fade modal show\">…</div> subtree intercepts pointer events\n     - retrying click action\n       - waiting 500ms\n"},"playButton":{"success":true,"message":"已成功點擊綠色 PLAY 鈕","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-before-2025-11-24T03-01-20-818Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-after-2025-11-24T03-01-20-818Z.png"}},"giftTest":{"success":false,"error":"page.evaluate: Target page, context or browser has been closed","message":"送禮測試失敗: page.evaluate: Target page, context or browser has been closed"},"chatInput":{"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"聊天視窗輸入測試失敗: page.waitForTimeout: Target page, context or browser has been closed"},"message":"✅ 全部測試完成！點擊卡片 -> 開啟新視窗 -> 點擊 MULAI BERMAIN -> gVersion: v0.60-0558a69","debug":{"screenshotBeforeClick":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-before-click-2025-11-24T03-01-20-818Z.png","screenshotNewPage":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-new-page-2025-11-24T03-01-20-818Z.png","screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-how-to-play-before-2025-11-24T03-01-20-818Z.png"}}
+[2025-11-24T03:02:36.253Z] ⚠️  測試未完全成功，瀏覽器保持開啟 60 秒以供檢查...
+[2025-11-24T03:02:36.257Z]    1️⃣ Stream n'Spin 彈窗: ✅
+[2025-11-24T03:02:36.263Z]    2️⃣ 點擊 LIVE 卡片: ✅
+[2025-11-24T03:02:36.269Z]    3️⃣ 新視窗開啟: ✅
+[2025-11-24T03:02:36.270Z]    4️⃣ Cara Bermain 關閉: ❌
+[2025-11-24T03:02:36.276Z]    5️⃣ gVersion 檢測: ✅
+[2025-11-24T03:02:36.278Z]    7️⃣ MAX 按鈕（3M）: ❌
+[2025-11-24T03:02:36.285Z]    8️⃣ MIN 按鈕（200）: ❌
+[2025-11-24T03:02:36.286Z]    9️⃣ + 按鈕 28 次: ❌
+[2025-11-24T03:02:36.302Z]    🔟 - 按鈕 28 次: ❌
+[2025-11-24T03:02:36.307Z]    1️⃣1️⃣ Spin Round + 按鈕 4 次: ❌
+[2025-11-24T03:02:36.310Z]    1️⃣2️⃣ Spin Round - 按鈕 5 次: ❌
+[2025-11-24T03:02:36.330Z]    1️⃣3️⃣ 點擊綠色 PLAY 鈕: ✅
+[2025-11-24T03:02:36.333Z]    1️⃣4️⃣ 送禮測試: ❌
+[2025-11-24T03:02:36.336Z]    1️⃣5️⃣ 聊天視窗輸入: ❌
+[2025-11-24T03:02:36.341Z] ⏱️  60秒後自動關閉，或請手動關閉瀏覽器...
+[2025-11-24T03:02:44.305Z] Browser closed after 60 seconds
+[2025-11-24T03:07:09.801Z] Start navigation to http://lobby.sns.lab/?isAgentApi
+[2025-11-24T03:07:17.472Z] 找到 Stream n'Spin 彈窗，點擊 Confirm 按鈕: Confirm
+[2025-11-24T03:07:19.516Z] 已點擊 Confirm 按鈕，彈窗已關閉
+[2025-11-24T03:07:19.517Z] 1️⃣ Stream n'Spin 彈窗測試: {"found":true,"clicked":true,"buttonText":"Confirm","message":"找到 Stream n'Spin 彈窗並點擊 Confirm","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-before-2025-11-24T03-07-09-801Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-after-2025-11-24T03-07-09-801Z.png"}}
+[2025-11-24T03:07:27.557Z] 找到可點擊元素: 普通卡片 DIV "1 viewersgame01"
+[2025-11-24T03:07:27.558Z] 位置: (481, 260)
+[2025-11-24T03:07:27.960Z] 點擊元素...
+[2025-11-24T03:07:28.131Z] ✅ 新視窗已開啟！
+[2025-11-24T03:07:31.427Z] ✅ 新視窗 URL: http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&mode=0&serverurl=http%3A%2F%2Fgs.sns.lab&t=123456&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&homeurl=&token=MTc1MDg0MzYyOTc0MTc3MDc1MgInX7HU7jtCLV7hqzMV8huHT3fqDWcvM5lyHQ0c&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&lang=en&b=iqazwsxi&lobby=http%3A%2F%2Flobby.sns.lab
+[2025-11-24T03:07:31.428Z] 4️⃣ 在新視窗中尋找 "Cara Bermain" 對話框...
+[2025-11-24T03:07:33.727Z] ❌ MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到
+[2025-11-24T03:07:33.730Z] 5️⃣ 在新視窗中檢測 gVersion...
+[2025-11-24T03:07:33.735Z] gVersion 檢測結果: {"found":true,"version":"v0.60-0558a69"}
+[2025-11-24T03:07:33.737Z] 7️⃣ 測試 MAX 按鈕（目標金額: 3,000,000）...
+[2025-11-24T03:07:35.869Z] ✅ 使用指定選擇器找到 MAX 按鈕
+[2025-11-24T03:07:39.145Z] MAX 按鈕測試（3M）結果: {"success":false,"message":"金額不符預期，預期: 3,000,000, 實際: 2,000","amountBefore":2000,"amountAfter":2000,"expectedAmount":3000000,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-max-3M-2025-11-24T03-07-09-801Z.png"}}
+[2025-11-24T03:07:39.147Z] 8️⃣ 測試 MIN 按鈕（目標金額: 200）...
+[2025-11-24T03:07:41.355Z] ✅ MIN 按鈕測試成功
+[2025-11-24T03:07:41.356Z] MIN 按鈕測試（200）結果: {"success":true,"message":"金額正確變成 200","amountBefore":2000,"amountAfter":200,"expectedAmount":200,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-min-2025-11-24T03-07-09-801Z.png"}}
+[2025-11-24T03:07:41.357Z] 9️⃣ 測試 + 按鈕點擊 28 次...
+[2025-11-24T03:07:48.762Z] ✅ + 按鈕測試成功
+[2025-11-24T03:07:48.766Z] + 按鈕測試結果: {"success":true,"message":"金額持續遞增（28/28 次）","amountBefore":200,"amountAfter":3000000,"clickCount":28,"increasingCount":28,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-plus-28-2025-11-24T03-07-09-801Z.png"}}
+[2025-11-24T03:07:48.769Z] 🔟 測試 - 按鈕點擊 28 次...
+[2025-11-24T03:07:55.616Z] ✅ - 按鈕測試成功
+[2025-11-24T03:07:55.618Z] - 按鈕測試結果: {"success":true,"message":"金額持續遞減（28/28 次）","amountBefore":3000000,"amountAfter":200,"clickCount":28,"decreasingCount":28,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-minus-28-2025-11-24T03-07-09-801Z.png"}}
+[2025-11-24T03:07:55.620Z] 1️⃣1️⃣ 測試 Spin Round + 按鈕點擊 4 次...
+[2025-11-24T03:07:56.161Z] ✅ 找到 Spin Round 初始值: 50
+[2025-11-24T03:08:00.215Z] Spin Round + 按鈕測試結果: {"success":true,"type":"spin-round-plus","timestamp":"2025-11-24T03-07-09-801Z","valueBefore":50,"valueAfter":1000,"values":[50,100,200,500,1000],"increasingCount":4,"expectedClicks":4,"message":"Spin Round 持續遞增（4/4 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-plus-2025-11-24T03-07-09-801Z.png"}}
+[2025-11-24T03:08:00.217Z] 1️⃣2️⃣ 測試 Spin Round - 按鈕點擊 5 次...
+[2025-11-24T03:08:00.793Z] ✅ 找到 Spin Round 初始值: 1000
+[2025-11-24T03:08:05.894Z] Spin Round - 按鈕測試結果: {"success":true,"type":"spin-round-minus","timestamp":"2025-11-24T03-07-09-801Z","valueBefore":1000,"valueAfter":20,"values":[1000,500,200,100,50,20],"decreasingCount":5,"expectedClicks":5,"message":"Spin Round 持續遞減（5/5 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-minus-2025-11-24T03-07-09-801Z.png"}}
+[2025-11-24T03:08:05.896Z] 1️⃣3️⃣ 測試點擊綠色 PLAY 鈕...
+[2025-11-24T03:08:06.915Z] ✅ 找到 PLAY 鈕，位置: (512, 684)
+[2025-11-24T03:08:08.437Z] ✅ 已點擊 PLAY 鈕
+[2025-11-24T03:08:08.442Z] PLAY 鈕測試結果: {"success":true,"message":"已成功點擊綠色 PLAY 鈕","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-before-2025-11-24T03-07-09-801Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-after-2025-11-24T03-07-09-801Z.png"}}
+[2025-11-24T03:08:08.443Z] 1️⃣4️⃣ 測試送禮功能...
+[2025-11-24T03:08:09.469Z] ✅ 找到送禮按鈕，位置: (1326, 736)
+[2025-11-24T03:08:09.951Z] 🖱️  已點擊送禮按鈕，等待彈窗出現...
+[2025-11-24T03:08:11.963Z] ✅ 找到禮物選項，位置: (1195, 597)
+[2025-11-24T03:08:11.978Z] 🖱️  已點擊禮物選項，等待按鈕出現...
+[2025-11-24T03:08:13.997Z] ✅ 找到確認按鈕，位置: (1195, 626)
+[2025-11-24T03:08:14.022Z] 🖱️  已點擊確認按鈕，等待視窗出現...
+[2025-11-24T03:08:16.039Z] ✅ 找到關閉按鈕，位置: (1347, 448)
+[2025-11-24T03:08:16.073Z] 🖱️  已點擊關閉按鈕
+[2025-11-24T03:08:17.660Z] ✅ 送禮測試完成
+[2025-11-24T03:08:17.663Z] 送禮測試結果: {"success":true,"message":"已成功完成送禮測試（包含4個步驟）","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-before-2025-11-24T03-07-09-801Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-after-2025-11-24T03-07-09-801Z.png"}}
+[2025-11-24T03:08:17.664Z] 1️⃣5️⃣ 測試聊天視窗輸入...
+[2025-11-24T03:08:18.691Z] ✅ 找到聊天輸入欄位，位置: (1169, 736)
+[2025-11-24T03:08:19.443Z] 📝 已輸入文字: SNS-Test
+[2025-11-24T03:08:19.998Z] ✅ 找到 Send 按鈕，位置: (1315, 736)
+[2025-11-24T03:08:20.079Z] 🖱️  已點擊 Send 按鈕
+[2025-11-24T03:08:21.413Z] ✅ 聊天視窗輸入測試完成
+[2025-11-24T03:08:21.415Z] 聊天視窗輸入測試結果: {"success":true,"message":"已成功完成聊天視窗輸入測試（輸入文字並發送）","textEntered":"SNS-Test","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-before-2025-11-24T03-07-09-801Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-after-2025-11-24T03-07-09-801Z.png"}}
+[2025-11-24T03:08:21.418Z] ✅ 所有測試完成，停留在新視窗...
+[2025-11-24T03:08:21.421Z] 2️⃣-10️⃣ 測試結果: {"clicked":true,"newPageOpened":true,"newPageUrl":"http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&mode=0&serverurl=http%3A%2F%2Fgs.sns.lab&t=123456&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&homeurl=&token=MTc1MDg0MzYyOTc0MTc3MDc1MgInX7HU7jtCLV7hqzMV8huHT3fqDWcvM5lyHQ0c&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&lang=en&b=iqazwsxi&lobby=http%3A%2F%2Flobby.sns.lab","clickedElement":{"tag":"DIV","text":"1 viewersgame01","isLiveCard":false},"howToPlayClosed":false,"howToPlayMessage":"MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到","gVersion":{"found":true,"version":"v0.60-0558a69"},"maxButton3M":{"success":false,"message":"金額不符預期，預期: 3,000,000, 實際: 2,000","amountBefore":2000,"amountAfter":2000,"expectedAmount":3000000,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-max-3M-2025-11-24T03-07-09-801Z.png"}},"minButton200":{"success":true,"message":"金額正確變成 200","amountBefore":2000,"amountAfter":200,"expectedAmount":200,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-min-2025-11-24T03-07-09-801Z.png"}},"plusButton28":{"success":true,"message":"金額持續遞增（28/28 次）","amountBefore":200,"amountAfter":3000000,"clickCount":28,"increasingCount":28,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-plus-28-2025-11-24T03-07-09-801Z.png"}},"minusButton28":{"success":true,"message":"金額持續遞減（28/28 次）","amountBefore":3000000,"amountAfter":200,"clickCount":28,"decreasingCount":28,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-minus-28-2025-11-24T03-07-09-801Z.png"}},"spinRoundPlus4":{"success":true,"type":"spin-round-plus","timestamp":"2025-11-24T03-07-09-801Z","valueBefore":50,"valueAfter":1000,"values":[50,100,200,500,1000],"increasingCount":4,"expectedClicks":4,"message":"Spin Round 持續遞增（4/4 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-plus-2025-11-24T03-07-09-801Z.png"}},"spinRoundMinus5":{"success":true,"type":"spin-round-minus","timestamp":"2025-11-24T03-07-09-801Z","valueBefore":1000,"valueAfter":20,"values":[1000,500,200,100,50,20],"decreasingCount":5,"expectedClicks":5,"message":"Spin Round 持續遞減（5/5 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-minus-2025-11-24T03-07-09-801Z.png"}},"playButton":{"success":true,"message":"已成功點擊綠色 PLAY 鈕","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-before-2025-11-24T03-07-09-801Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-after-2025-11-24T03-07-09-801Z.png"}},"giftTest":{"success":true,"message":"已成功完成送禮測試（包含4個步驟）","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-before-2025-11-24T03-07-09-801Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-after-2025-11-24T03-07-09-801Z.png"}},"chatInput":{"success":true,"message":"已成功完成聊天視窗輸入測試（輸入文字並發送）","textEntered":"SNS-Test","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-before-2025-11-24T03-07-09-801Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-after-2025-11-24T03-07-09-801Z.png"}},"message":"✅ 全部測試完成！點擊卡片 -> 開啟新視窗 -> 點擊 MULAI BERMAIN -> gVersion: v0.60-0558a69","debug":{"screenshotBeforeClick":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-before-click-2025-11-24T03-07-09-801Z.png","screenshotNewPage":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-new-page-2025-11-24T03-07-09-801Z.png","screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-how-to-play-before-2025-11-24T03-07-09-801Z.png"}}
+[2025-11-24T03:08:21.424Z] ⚠️  測試未完全成功，瀏覽器保持開啟 60 秒以供檢查...
+[2025-11-24T03:08:21.427Z]    1️⃣ Stream n'Spin 彈窗: ✅
+[2025-11-24T03:08:21.431Z]    2️⃣ 點擊 LIVE 卡片: ✅
+[2025-11-24T03:08:21.440Z]    3️⃣ 新視窗開啟: ✅
+[2025-11-24T03:08:21.443Z]    4️⃣ Cara Bermain 關閉: ❌
+[2025-11-24T03:08:21.446Z]    5️⃣ gVersion 檢測: ✅
+[2025-11-24T03:08:21.453Z]    7️⃣ MAX 按鈕（3M）: ❌
+[2025-11-24T03:08:21.463Z]    8️⃣ MIN 按鈕（200）: ✅
+[2025-11-24T03:08:21.472Z]    9️⃣ + 按鈕 28 次: ✅
+[2025-11-24T03:08:21.476Z]    🔟 - 按鈕 28 次: ✅
+[2025-11-24T03:08:21.493Z]    1️⃣1️⃣ Spin Round + 按鈕 4 次: ✅
+[2025-11-24T03:08:21.510Z]    1️⃣2️⃣ Spin Round - 按鈕 5 次: ✅
+[2025-11-24T03:08:21.524Z]    1️⃣3️⃣ 點擊綠色 PLAY 鈕: ✅
+[2025-11-24T03:08:21.541Z]    1️⃣4️⃣ 送禮測試: ✅
+[2025-11-24T03:08:21.546Z]    1️⃣5️⃣ 聊天視窗輸入: ✅
+[2025-11-24T03:08:21.555Z] ⏱️  60秒後自動關閉，或請手動關閉瀏覽器...
+[2025-11-24T03:08:53.211Z] Browser closed after 60 seconds
+[2025-11-24T03:18:21.441Z] Start navigation to http://lobby.sns.lab/?isAgentApi
+[2025-11-24T03:18:29.514Z] 找到 Stream n'Spin 彈窗，點擊 Confirm 按鈕: Confirm
+[2025-11-24T03:18:31.443Z] 已點擊 Confirm 按鈕，彈窗已關閉
+[2025-11-24T03:18:31.447Z] 1️⃣ Stream n'Spin 彈窗測試: {"found":true,"clicked":true,"buttonText":"Confirm","message":"找到 Stream n'Spin 彈窗並點擊 Confirm","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-before-2025-11-24T03-18-21-441Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-after-2025-11-24T03-18-21-441Z.png"}}
+[2025-11-24T03:18:39.484Z] 找到可點擊元素: 普通卡片 DIV "2 viewersgame01"
+[2025-11-24T03:18:39.486Z] 位置: (481, 260)
+[2025-11-24T03:18:39.870Z] 點擊元素...
+[2025-11-24T03:18:40.071Z] ✅ 新視窗已開啟！
+[2025-11-24T03:18:43.177Z] ✅ 新視窗 URL: http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&lang=en&serverurl=http%3A%2F%2Fgs.sns.lab&t=123456&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&homeurl=&token=MTc1MTM2MTMwMjE0OTk0ODE2MAaWz6dpFS5lxKXdpCP5huHX9mzP1erHT6jzLYbr&mode=0&b=iqazwsxi&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&lobby=http%3A%2F%2Flobby.sns.lab
+[2025-11-24T03:18:43.177Z] 4️⃣ 在新視窗中尋找 "Cara Bermain" 對話框...
+[2025-11-24T03:18:45.380Z] ❌ MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到
+[2025-11-24T03:18:45.382Z] 5️⃣ 在新視窗中檢測 gVersion...
+[2025-11-24T03:18:45.386Z] gVersion 檢測結果: {"found":true,"version":"v0.60-0558a69"}
+[2025-11-24T03:18:45.387Z] 7️⃣ 測試 MAX 按鈕（目標金額: 3,000,000）...
+[2025-11-24T03:18:46.405Z] ❌ MAX 按鈕未找到
+[2025-11-24T03:18:46.407Z] MAX 按鈕測試（3M）結果: {"success":false,"message":"MAX 按鈕未找到"}
+[2025-11-24T03:18:46.408Z] 8️⃣ 測試 MIN 按鈕（目標金額: 200）...
+[2025-11-24T03:18:47.420Z] ❌ MIN 按鈕未找到
+[2025-11-24T03:18:47.422Z] MIN 按鈕測試（200）結果: {"success":false,"message":"MIN 按鈕未找到"}
+[2025-11-24T03:18:47.422Z] 9️⃣ 測試 + 按鈕點擊 28 次...
+[2025-11-24T03:18:48.450Z] ❌ + 按鈕未找到
+[2025-11-24T03:18:48.451Z] + 按鈕測試結果: {"success":false,"message":"+ 按鈕未找到"}
+[2025-11-24T03:18:48.452Z] 🔟 測試 - 按鈕點擊 28 次...
+[2025-11-24T03:18:49.469Z] ❌ - 按鈕未找到
+[2025-11-24T03:18:49.469Z] - 按鈕測試結果: {"success":false,"message":"- 按鈕未找到"}
+[2025-11-24T03:18:49.470Z] 1️⃣1️⃣ 測試 Spin Round + 按鈕點擊 4 次...
+[2025-11-24T03:18:51.766Z] ✅ 找到 Spin Round 初始值: 50
+[2025-11-24T03:19:23.154Z] Spin Round + 按鈕測試結果: {"success":true,"type":"spin-round-plus","timestamp":"2025-11-24T03-18-21-441Z","valueBefore":50,"valueAfter":1000,"values":[50,100,200,500,1000],"increasingCount":4,"expectedClicks":4,"message":"Spin Round 持續遞增（4/4 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-plus-2025-11-24T03-18-21-441Z.png"}}
+[2025-11-24T03:19:23.157Z] 1️⃣2️⃣ 測試 Spin Round - 按鈕點擊 5 次...
+[2025-11-24T03:19:23.703Z] ✅ 找到 Spin Round 初始值: 1000
+[2025-11-24T03:19:28.063Z] Spin Round - 按鈕測試結果: {"success":true,"type":"spin-round-minus","timestamp":"2025-11-24T03-18-21-441Z","valueBefore":1000,"valueAfter":20,"values":[1000,500,200,100,50,20],"decreasingCount":5,"expectedClicks":5,"message":"Spin Round 持續遞減（5/5 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-minus-2025-11-24T03-18-21-441Z.png"}}
+[2025-11-24T03:19:28.067Z] 1️⃣3️⃣ 測試點擊綠色 PLAY 鈕...
+[2025-11-24T03:19:29.079Z] ✅ 找到 PLAY 鈕，位置: (512, 684)
+[2025-11-24T03:19:29.400Z] ❌ PLAY 鈕測試錯誤: page.waitForTimeout: Target page, context or browser has been closed
+[2025-11-24T03:19:29.402Z] PLAY 鈕測試結果: {"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"PLAY 鈕測試失敗: page.waitForTimeout: Target page, context or browser has been closed"}
+[2025-11-24T03:19:29.404Z] 1️⃣4️⃣ 測試送禮功能...
+[2025-11-24T03:19:29.410Z] ❌ 送禮測試錯誤: page.waitForTimeout: Target page, context or browser has been closed
+[2025-11-24T03:19:29.416Z] 送禮測試結果: {"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"送禮測試失敗: page.waitForTimeout: Target page, context or browser has been closed"}
+[2025-11-24T03:19:29.417Z] 1️⃣5️⃣ 測試聊天視窗輸入...
+[2025-11-24T03:19:29.423Z] ❌ 聊天視窗輸入測試錯誤: page.waitForTimeout: Target page, context or browser has been closed
+[2025-11-24T03:19:29.425Z] 聊天視窗輸入測試結果: {"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"聊天視窗輸入測試失敗: page.waitForTimeout: Target page, context or browser has been closed"}
+[2025-11-24T03:19:29.428Z] ✅ 所有測試完成，停留在新視窗...
+[2025-11-24T03:19:29.429Z] 2️⃣-10️⃣ 測試結果: {"clicked":true,"newPageOpened":true,"newPageUrl":"http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&lang=en&serverurl=http%3A%2F%2Fgs.sns.lab&t=123456&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&homeurl=&token=MTc1MTM2MTMwMjE0OTk0ODE2MAaWz6dpFS5lxKXdpCP5huHX9mzP1erHT6jzLYbr&mode=0&b=iqazwsxi&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&lobby=http%3A%2F%2Flobby.sns.lab","clickedElement":{"tag":"DIV","text":"2 viewersgame01","isLiveCard":false},"howToPlayClosed":false,"howToPlayMessage":"MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到","gVersion":{"found":true,"version":"v0.60-0558a69"},"maxButton3M":{"success":false,"message":"MAX 按鈕未找到"},"minButton200":{"success":false,"message":"MIN 按鈕未找到"},"plusButton28":{"success":false,"message":"+ 按鈕未找到"},"minusButton28":{"success":false,"message":"- 按鈕未找到"},"spinRoundPlus4":{"success":true,"type":"spin-round-plus","timestamp":"2025-11-24T03-18-21-441Z","valueBefore":50,"valueAfter":1000,"values":[50,100,200,500,1000],"increasingCount":4,"expectedClicks":4,"message":"Spin Round 持續遞增（4/4 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-plus-2025-11-24T03-18-21-441Z.png"}},"spinRoundMinus5":{"success":true,"type":"spin-round-minus","timestamp":"2025-11-24T03-18-21-441Z","valueBefore":1000,"valueAfter":20,"values":[1000,500,200,100,50,20],"decreasingCount":5,"expectedClicks":5,"message":"Spin Round 持續遞減（5/5 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-minus-2025-11-24T03-18-21-441Z.png"}},"playButton":{"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"PLAY 鈕測試失敗: page.waitForTimeout: Target page, context or browser has been closed"},"giftTest":{"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"送禮測試失敗: page.waitForTimeout: Target page, context or browser has been closed"},"chatInput":{"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"聊天視窗輸入測試失敗: page.waitForTimeout: Target page, context or browser has been closed"},"message":"✅ 全部測試完成！點擊卡片 -> 開啟新視窗 -> 點擊 MULAI BERMAIN -> gVersion: v0.60-0558a69","debug":{"screenshotBeforeClick":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-before-click-2025-11-24T03-18-21-441Z.png","screenshotNewPage":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-new-page-2025-11-24T03-18-21-441Z.png","screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-how-to-play-before-2025-11-24T03-18-21-441Z.png"}}
+[2025-11-24T03:19:29.430Z] ⚠️  測試未完全成功，瀏覽器保持開啟 60 秒以供檢查...
+[2025-11-24T03:19:29.431Z]    1️⃣ Stream n'Spin 彈窗: ✅
+[2025-11-24T03:19:29.436Z]    2️⃣ 點擊 LIVE 卡片: ✅
+[2025-11-24T03:19:29.441Z]    3️⃣ 新視窗開啟: ✅
+[2025-11-24T03:19:29.442Z]    4️⃣ Cara Bermain 關閉: ❌
+[2025-11-24T03:19:29.446Z]    5️⃣ gVersion 檢測: ✅
+[2025-11-24T03:19:29.449Z]    7️⃣ MAX 按鈕（3M）: ❌
+[2025-11-24T03:19:29.452Z]    8️⃣ MIN 按鈕（200）: ❌
+[2025-11-24T03:19:29.454Z]    9️⃣ + 按鈕 28 次: ❌
+[2025-11-24T03:19:29.459Z]    🔟 - 按鈕 28 次: ❌
+[2025-11-24T03:19:29.460Z]    1️⃣1️⃣ Spin Round + 按鈕 4 次: ✅
+[2025-11-24T03:19:29.461Z]    1️⃣2️⃣ Spin Round - 按鈕 5 次: ✅
+[2025-11-24T03:19:29.468Z]    1️⃣3️⃣ 點擊綠色 PLAY 鈕: ❌
+[2025-11-24T03:19:29.470Z]    1️⃣4️⃣ 送禮測試: ❌
+[2025-11-24T03:19:29.471Z]    1️⃣5️⃣ 聊天視窗輸入: ❌
+[2025-11-24T03:19:29.474Z] ⏱️  60秒後自動關閉，或請手動關閉瀏覽器...
+[2025-11-24T03:19:30.419Z] Browser closed after 60 seconds
+[2025-11-24T03:24:56.714Z] Start navigation to http://lobby.sns.lab/?isAgentApi
+[2025-11-24T03:25:04.759Z] Stream n'Spin 彈窗未出現，繼續下一步測試
+[2025-11-24T03:25:04.761Z] 1️⃣ Stream n'Spin 彈窗測試: {"found":false,"clicked":false,"message":"Stream n'Spin 彈窗未出現","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-before-2025-11-24T03-24-56-713Z.png"}}
+[2025-11-24T03:25:12.792Z] 找到可點擊元素: 普通卡片 DIV "4 viewersgame01"
+[2025-11-24T03:25:12.796Z] 位置: (481, 260)
+[2025-11-24T03:25:13.196Z] 點擊元素...
+[2025-11-24T03:25:13.342Z] ✅ 新視窗已開啟！
+[2025-11-24T03:25:17.349Z] ✅ 新視窗 URL: http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&t=123456&b=iqazwsxi&homeurl=&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&lang=en&mode=0&serverurl=http%3A%2F%2Fgs.sns.lab&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&token=MTc1MDI0MzY5Njg5ODY4NjIwOAVO4FR4kxJWcpBO4htGW9lyO1dqGT6iyLYaqDQ2&lobby=http%3A%2F%2Flobby.sns.lab
+[2025-11-24T03:25:17.352Z] 4️⃣ 在新視窗中尋找 "Cara Bermain" 對話框...
+[2025-11-24T03:25:19.595Z] ❌ MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到
+[2025-11-24T03:25:19.597Z] 5️⃣ 在新視窗中檢測 gVersion...
+[2025-11-24T03:25:19.605Z] gVersion 檢測結果: {"found":true,"version":"v0.60-0558a69"}
+[2025-11-24T03:25:19.606Z] 7️⃣ 測試 MAX 按鈕（目標金額: 3,000,000）...
+[2025-11-24T03:25:20.629Z] ❌ MAX 按鈕未找到
+[2025-11-24T03:25:20.631Z] MAX 按鈕測試（3M）結果: {"success":false,"message":"MAX 按鈕未找到"}
+[2025-11-24T03:25:20.633Z] 8️⃣ 測試 MIN 按鈕（目標金額: 200）...
+[2025-11-24T03:25:23.852Z] MIN 按鈕測試（200）結果: {"success":false,"message":"金額不符預期，預期: 200, 實際: 2,000","amountBefore":2000,"amountAfter":2000,"expectedAmount":200,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-min-2025-11-24T03-24-56-713Z.png"}}
+[2025-11-24T03:25:23.853Z] 9️⃣ 測試 + 按鈕點擊 28 次...
+[2025-11-24T03:25:30.080Z]   金額已達最大值 (3,000,000)，停止點擊
+[2025-11-24T03:25:30.232Z] + 按鈕測試結果: {"success":false,"message":"金額沒有持續遞增，只有 24/28 次遞增","amountBefore":2000,"amountAfter":3000000,"clickCount":28,"increasingCount":24,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-plus-28-2025-11-24T03-24-56-713Z.png"}}
+[2025-11-24T03:25:30.235Z] 🔟 測試 - 按鈕點擊 28 次...
+[2025-11-24T03:25:36.712Z] ✅ - 按鈕測試成功
+[2025-11-24T03:25:36.714Z] - 按鈕測試結果: {"success":true,"message":"金額持續遞減（28/28 次）","amountBefore":3000000,"amountAfter":200,"clickCount":28,"decreasingCount":28,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-minus-28-2025-11-24T03-24-56-713Z.png"}}
+[2025-11-24T03:25:36.716Z] 1️⃣1️⃣ 測試 Spin Round + 按鈕點擊 4 次...
+[2025-11-24T03:25:37.257Z] ✅ 找到 Spin Round 初始值: 50
+[2025-11-24T03:25:41.130Z] Spin Round + 按鈕測試結果: {"success":true,"type":"spin-round-plus","timestamp":"2025-11-24T03-24-56-713Z","valueBefore":50,"valueAfter":1000,"values":[50,100,200,500,1000],"increasingCount":4,"expectedClicks":4,"message":"Spin Round 持續遞增（4/4 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-plus-2025-11-24T03-24-56-713Z.png"}}
+[2025-11-24T03:25:41.135Z] 1️⃣2️⃣ 測試 Spin Round - 按鈕點擊 5 次...
+[2025-11-24T03:25:41.681Z] ✅ 找到 Spin Round 初始值: 1000
+[2025-11-24T03:25:46.104Z] Spin Round - 按鈕測試結果: {"success":true,"type":"spin-round-minus","timestamp":"2025-11-24T03-24-56-713Z","valueBefore":1000,"valueAfter":20,"values":[1000,500,200,100,50,20],"decreasingCount":5,"expectedClicks":5,"message":"Spin Round 持續遞減（5/5 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-minus-2025-11-24T03-24-56-713Z.png"}}
+[2025-11-24T03:25:46.106Z] 1️⃣3️⃣ 測試點擊綠色 PLAY 鈕...
+[2025-11-24T03:25:47.133Z] ✅ 找到 PLAY 鈕，位置: (512, 684)
+[2025-11-24T03:25:48.664Z] ✅ 已點擊 PLAY 鈕
+[2025-11-24T03:25:48.667Z] PLAY 鈕測試結果: {"success":true,"message":"已成功點擊綠色 PLAY 鈕","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-before-2025-11-24T03-24-56-713Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-after-2025-11-24T03-24-56-713Z.png"}}
+[2025-11-24T03:25:48.668Z] 1️⃣4️⃣ 測試送禮功能...
+[2025-11-24T03:25:49.683Z] ✅ 找到送禮按鈕，位置: (1326, 736)
+[2025-11-24T03:25:49.884Z] 🖱️  已點擊送禮按鈕，等待彈窗出現...
+[2025-11-24T03:25:51.898Z] ✅ 找到禮物選項，位置: (1195, 597)
+[2025-11-24T03:25:51.904Z] 🖱️  已點擊禮物選項，等待按鈕出現...
+[2025-11-24T03:25:53.912Z] ✅ 找到確認按鈕，位置: (1195, 626)
+[2025-11-24T03:25:53.935Z] 🖱️  已點擊確認按鈕，等待視窗出現...
+[2025-11-24T03:25:55.964Z] ✅ 找到關閉按鈕，位置: (1347, 448)
+[2025-11-24T03:25:55.992Z] 🖱️  已點擊關閉按鈕
+[2025-11-24T03:25:57.358Z] ✅ 送禮測試完成
+[2025-11-24T03:25:57.361Z] 送禮測試結果: {"success":true,"message":"已成功完成送禮測試（包含4個步驟）","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-before-2025-11-24T03-24-56-713Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-after-2025-11-24T03-24-56-713Z.png"}}
+[2025-11-24T03:25:57.363Z] 1️⃣5️⃣ 測試聊天視窗輸入...
+[2025-11-24T03:25:58.379Z] ✅ 找到聊天輸入欄位，位置: (1169, 736)
+[2025-11-24T03:25:58.958Z] 📝 已輸入文字: SNS-Test
+[2025-11-24T03:25:59.479Z] ✅ 找到 Send 按鈕，位置: (1315, 736)
+[2025-11-24T03:25:59.520Z] 🖱️  已點擊 Send 按鈕
+[2025-11-24T03:26:00.798Z] ✅ 聊天視窗輸入測試完成
+[2025-11-24T03:26:00.801Z] 聊天視窗輸入測試結果: {"success":true,"message":"已成功完成聊天視窗輸入測試（輸入文字並發送）","textEntered":"SNS-Test","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-before-2025-11-24T03-24-56-713Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-after-2025-11-24T03-24-56-713Z.png"}}
+[2025-11-24T03:26:00.802Z] ✅ 所有測試完成，停留在新視窗...
+[2025-11-24T03:26:00.803Z] 2️⃣-10️⃣ 測試結果: {"clicked":true,"newPageOpened":true,"newPageUrl":"http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&t=123456&b=iqazwsxi&homeurl=&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&lang=en&mode=0&serverurl=http%3A%2F%2Fgs.sns.lab&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&token=MTc1MDI0MzY5Njg5ODY4NjIwOAVO4FR4kxJWcpBO4htGW9lyO1dqGT6iyLYaqDQ2&lobby=http%3A%2F%2Flobby.sns.lab","clickedElement":{"tag":"DIV","text":"4 viewersgame01","isLiveCard":false},"howToPlayClosed":false,"howToPlayMessage":"MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到","gVersion":{"found":true,"version":"v0.60-0558a69"},"maxButton3M":{"success":false,"message":"MAX 按鈕未找到"},"minButton200":{"success":false,"message":"金額不符預期，預期: 200, 實際: 2,000","amountBefore":2000,"amountAfter":2000,"expectedAmount":200,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-min-2025-11-24T03-24-56-713Z.png"}},"plusButton28":{"success":false,"message":"金額沒有持續遞增，只有 24/28 次遞增","amountBefore":2000,"amountAfter":3000000,"clickCount":28,"increasingCount":24,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-plus-28-2025-11-24T03-24-56-713Z.png"}},"minusButton28":{"success":true,"message":"金額持續遞減（28/28 次）","amountBefore":3000000,"amountAfter":200,"clickCount":28,"decreasingCount":28,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-minus-28-2025-11-24T03-24-56-713Z.png"}},"spinRoundPlus4":{"success":true,"type":"spin-round-plus","timestamp":"2025-11-24T03-24-56-713Z","valueBefore":50,"valueAfter":1000,"values":[50,100,200,500,1000],"increasingCount":4,"expectedClicks":4,"message":"Spin Round 持續遞增（4/4 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-plus-2025-11-24T03-24-56-713Z.png"}},"spinRoundMinus5":{"success":true,"type":"spin-round-minus","timestamp":"2025-11-24T03-24-56-713Z","valueBefore":1000,"valueAfter":20,"values":[1000,500,200,100,50,20],"decreasingCount":5,"expectedClicks":5,"message":"Spin Round 持續遞減（5/5 次）","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-spin-round-minus-2025-11-24T03-24-56-713Z.png"}},"playButton":{"success":true,"message":"已成功點擊綠色 PLAY 鈕","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-before-2025-11-24T03-24-56-713Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-after-2025-11-24T03-24-56-713Z.png"}},"giftTest":{"success":true,"message":"已成功完成送禮測試（包含4個步驟）","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-before-2025-11-24T03-24-56-713Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-after-2025-11-24T03-24-56-713Z.png"}},"chatInput":{"success":true,"message":"已成功完成聊天視窗輸入測試（輸入文字並發送）","textEntered":"SNS-Test","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-before-2025-11-24T03-24-56-713Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-after-2025-11-24T03-24-56-713Z.png"}},"message":"✅ 全部測試完成！點擊卡片 -> 開啟新視窗 -> 點擊 MULAI BERMAIN -> gVersion: v0.60-0558a69","debug":{"screenshotBeforeClick":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-before-click-2025-11-24T03-24-56-713Z.png","screenshotNewPage":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-new-page-2025-11-24T03-24-56-713Z.png","screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-how-to-play-before-2025-11-24T03-24-56-713Z.png"}}
+[2025-11-24T03:26:00.807Z] ⚠️  測試未完全成功，瀏覽器保持開啟 60 秒以供檢查...
+[2025-11-24T03:26:00.810Z]    1️⃣ Stream n'Spin 彈窗: ❌
+[2025-11-24T03:26:00.812Z]    2️⃣ 點擊 LIVE 卡片: ✅
+[2025-11-24T03:26:00.814Z]    3️⃣ 新視窗開啟: ✅
+[2025-11-24T03:26:00.816Z]    4️⃣ Cara Bermain 關閉: ❌
+[2025-11-24T03:26:00.816Z]    5️⃣ gVersion 檢測: ✅
+[2025-11-24T03:26:00.817Z]    7️⃣ MAX 按鈕（3M）: ❌
+[2025-11-24T03:26:00.819Z]    8️⃣ MIN 按鈕（200）: ❌
+[2025-11-24T03:26:00.823Z]    9️⃣ + 按鈕 28 次: ❌
+[2025-11-24T03:26:00.824Z]    🔟 - 按鈕 28 次: ✅
+[2025-11-24T03:26:00.826Z]    1️⃣1️⃣ Spin Round + 按鈕 4 次: ✅
+[2025-11-24T03:26:00.829Z]    1️⃣2️⃣ Spin Round - 按鈕 5 次: ✅
+[2025-11-24T03:26:00.832Z]    1️⃣3️⃣ 點擊綠色 PLAY 鈕: ✅
+[2025-11-24T03:26:00.833Z]    1️⃣4️⃣ 送禮測試: ✅
+[2025-11-24T03:26:00.834Z]    1️⃣5️⃣ 聊天視窗輸入: ✅
+[2025-11-24T03:26:00.834Z] ⏱️  60秒後自動關閉，或請手動關閉瀏覽器...
+[2025-11-24T03:26:22.044Z] Browser closed after 60 seconds
+[2025-11-24T03:33:24.253Z] Start navigation to http://lobby.sns.lab/?isAgentApi
+[2025-11-24T03:33:32.112Z] Stream n'Spin 彈窗未出現，繼續下一步測試
+[2025-11-24T03:33:32.115Z] 1️⃣ Stream n'Spin 彈窗測試: {"found":false,"clicked":false,"message":"Stream n'Spin 彈窗未出現","debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-before-2025-11-24T03-33-24-253Z.png"}}
+[2025-11-24T03:33:40.158Z] 找到可點擊元素: 普通卡片 DIV "3 viewersgame01"
+[2025-11-24T03:33:40.160Z] 位置: (481, 260)
+[2025-11-24T03:33:40.595Z] 點擊元素...
+[2025-11-24T03:33:40.741Z] ✅ 新視窗已開啟！
+[2025-11-24T03:33:43.884Z] ✅ 新視窗 URL: http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&b=iqazwsxi&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&serverurl=http%3A%2F%2Fgs.sns.lab&homeurl=&token=MTc1MDM5MTIwNTQwMjk4NTQ3MgPyHX6agsFO1eqAMZclyKX6jwIS4huDQ2foBO0a&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&lang=en&mode=0&t=123456&lobby=http%3A%2F%2Flobby.sns.lab
+[2025-11-24T03:33:43.885Z] 4️⃣ 在新視窗中尋找 "Cara Bermain" 對話框...
+[2025-11-24T03:33:46.214Z] ❌ MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到
+[2025-11-24T03:33:46.215Z] 5️⃣ 在新視窗中檢測 gVersion...
+[2025-11-24T03:33:46.223Z] gVersion 檢測結果: {"found":true,"version":"v0.60-0558a69"}
+[2025-11-24T03:33:46.232Z] 7️⃣ 測試 MAX 按鈕（目標金額: 3,000,000）...
+[2025-11-24T03:33:47.260Z] ❌ MAX 按鈕未找到
+[2025-11-24T03:33:47.264Z] MAX 按鈕測試（3M）結果: {"success":false,"message":"MAX 按鈕未找到"}
+[2025-11-24T03:33:47.267Z] 8️⃣ 測試 MIN 按鈕（目標金額: 200）...
+[2025-11-24T03:33:48.275Z] ❌ MIN 按鈕未找到
+[2025-11-24T03:33:48.276Z] MIN 按鈕測試（200）結果: {"success":false,"message":"MIN 按鈕未找到"}
+[2025-11-24T03:33:48.277Z] 9️⃣ 測試 + 按鈕點擊 28 次...
+[2025-11-24T03:33:55.966Z] + 按鈕測試結果: {"success":false,"message":"金額沒有持續遞增，只有 17/28 次遞增","amountBefore":2000,"amountAfter":400000,"clickCount":28,"increasingCount":17,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-plus-28-2025-11-24T03-33-24-253Z.png"}}
+[2025-11-24T03:33:55.969Z] 🔟 測試 - 按鈕點擊 28 次...
+[2025-11-24T03:34:01.005Z] - 按鈕測試結果: {"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"- 按鈕測試失敗: page.waitForTimeout: Target page, context or browser has been closed"}
+[2025-11-24T03:34:01.006Z] 1️⃣1️⃣ 測試 Spin Round + 按鈕點擊 4 次...
+[2025-11-24T03:34:01.028Z] Spin Round + 按鈕測試結果: {"success":false,"timestamp":"2025-11-24T03-33-24-253Z","error":"Error: page.evaluate: Target page, context or browser has been closed"}
+[2025-11-24T03:34:01.031Z] 1️⃣2️⃣ 測試 Spin Round - 按鈕點擊 5 次...
+[2025-11-24T03:34:01.038Z] Spin Round - 按鈕測試結果: {"success":false,"timestamp":"2025-11-24T03-33-24-253Z","error":"Error: page.evaluate: Target page, context or browser has been closed"}
+[2025-11-24T03:34:01.060Z] 1️⃣3️⃣ 測試點擊綠色 PLAY 鈕...
+[2025-11-24T03:34:01.066Z] ❌ PLAY 鈕測試錯誤: page.waitForTimeout: Target page, context or browser has been closed
+[2025-11-24T03:34:01.073Z] PLAY 鈕測試結果: {"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"PLAY 鈕測試失敗: page.waitForTimeout: Target page, context or browser has been closed"}
+[2025-11-24T03:34:01.076Z] 1️⃣4️⃣ 測試送禮功能...
+[2025-11-24T03:34:01.086Z] ❌ 送禮測試錯誤: page.waitForTimeout: Target page, context or browser has been closed
+[2025-11-24T03:34:01.090Z] 送禮測試結果: {"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"送禮測試失敗: page.waitForTimeout: Target page, context or browser has been closed"}
+[2025-11-24T03:34:01.095Z] 1️⃣5️⃣ 測試聊天視窗輸入...
+[2025-11-24T03:34:01.103Z] ❌ 聊天視窗輸入測試錯誤: page.waitForTimeout: Target page, context or browser has been closed
+[2025-11-24T03:34:01.105Z] 聊天視窗輸入測試結果: {"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"聊天視窗輸入測試失敗: page.waitForTimeout: Target page, context or browser has been closed"}
+[2025-11-24T03:34:01.107Z] ✅ 所有測試完成，停留在新視窗...
+[2025-11-24T03:34:01.109Z] 2️⃣-10️⃣ 測試結果: {"clicked":true,"newPageOpened":true,"newPageUrl":"http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&b=iqazwsxi&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&serverurl=http%3A%2F%2Fgs.sns.lab&homeurl=&token=MTc1MDM5MTIwNTQwMjk4NTQ3MgPyHX6agsFO1eqAMZclyKX6jwIS4huDQ2foBO0a&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&lang=en&mode=0&t=123456&lobby=http%3A%2F%2Flobby.sns.lab","clickedElement":{"tag":"DIV","text":"3 viewersgame01","isLiveCard":false},"howToPlayClosed":false,"howToPlayMessage":"MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到","gVersion":{"found":true,"version":"v0.60-0558a69"},"maxButton3M":{"success":false,"message":"MAX 按鈕未找到"},"minButton200":{"success":false,"message":"MIN 按鈕未找到"},"plusButton28":{"success":false,"message":"金額沒有持續遞增，只有 17/28 次遞增","amountBefore":2000,"amountAfter":400000,"clickCount":28,"increasingCount":17,"debug":{"screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-plus-28-2025-11-24T03-33-24-253Z.png"}},"minusButton28":{"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"- 按鈕測試失敗: page.waitForTimeout: Target page, context or browser has been closed"},"spinRoundPlus4":{"success":false,"timestamp":"2025-11-24T03-33-24-253Z","error":"Error: page.evaluate: Target page, context or browser has been closed"},"spinRoundMinus5":{"success":false,"timestamp":"2025-11-24T03-33-24-253Z","error":"Error: page.evaluate: Target page, context or browser has been closed"},"playButton":{"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"PLAY 鈕測試失敗: page.waitForTimeout: Target page, context or browser has been closed"},"giftTest":{"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"送禮測試失敗: page.waitForTimeout: Target page, context or browser has been closed"},"chatInput":{"success":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"聊天視窗輸入測試失敗: page.waitForTimeout: Target page, context or browser has been closed"},"message":"✅ 全部測試完成！點擊卡片 -> 開啟新視窗 -> 點擊 MULAI BERMAIN -> gVersion: v0.60-0558a69","debug":{"screenshotBeforeClick":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-before-click-2025-11-24T03-33-24-253Z.png","screenshotNewPage":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-new-page-2025-11-24T03-33-24-253Z.png","screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-how-to-play-before-2025-11-24T03-33-24-253Z.png"}}
+[2025-11-24T03:34:01.112Z] ⚠️  測試未完全成功，瀏覽器保持開啟 60 秒以供檢查...
+[2025-11-24T03:34:01.121Z]    1️⃣ Stream n'Spin 彈窗: ❌
+[2025-11-24T03:34:01.123Z]    2️⃣ 點擊 LIVE 卡片: ✅
+[2025-11-24T03:34:01.125Z]    3️⃣ 新視窗開啟: ✅
+[2025-11-24T03:34:01.127Z]    4️⃣ Cara Bermain 關閉: ❌
+[2025-11-24T03:34:01.129Z]    5️⃣ gVersion 檢測: ✅
+[2025-11-24T03:34:01.135Z]    7️⃣ MAX 按鈕（3M）: ❌
+[2025-11-24T03:34:01.136Z]    8️⃣ MIN 按鈕（200）: ❌
+[2025-11-24T03:34:01.139Z]    9️⃣ + 按鈕 28 次: ❌
+[2025-11-24T03:34:01.141Z]    🔟 - 按鈕 28 次: ❌
+[2025-11-24T03:34:01.142Z]    1️⃣1️⃣ Spin Round + 按鈕 4 次: ❌
+[2025-11-24T03:34:01.154Z]    1️⃣2️⃣ Spin Round - 按鈕 5 次: ❌
+[2025-11-24T03:34:01.157Z]    1️⃣3️⃣ 點擊綠色 PLAY 鈕: ❌
+[2025-11-24T03:34:01.161Z]    1️⃣4️⃣ 送禮測試: ❌
+[2025-11-24T03:34:01.171Z]    1️⃣5️⃣ 聊天視窗輸入: ❌
+[2025-11-24T03:34:01.178Z] ⏱️  60秒後自動關閉，或請手動關閉瀏覽器...
+[2025-11-24T03:34:02.005Z] Browser closed after 60 seconds
+[2025-11-24T03:34:06.964Z] Start navigation to http://lobby.sns.lab/?isAgentApi
+[2025-11-24T03:34:11.181Z] 找到 Stream n'Spin 彈窗，點擊 Confirm 按鈕: Confirm
+[2025-11-24T03:34:13.102Z] 已點擊 Confirm 按鈕，彈窗已關閉
+[2025-11-24T03:34:13.105Z] 1️⃣ Stream n'Spin 彈窗測試: {"found":true,"clicked":true,"buttonText":"Confirm","message":"找到 Stream n'Spin 彈窗並點擊 Confirm","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-before-2025-11-24T03-34-06-963Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-after-2025-11-24T03-34-06-963Z.png"}}
+[2025-11-24T03:34:19.820Z] 2️⃣-10️⃣ 測試結果: {"clicked":false,"error":"page.waitForTimeout: Target page, context or browser has been closed","message":"測試失敗: page.waitForTimeout: Target page, context or browser has been closed"}
+[2025-11-24T03:34:19.821Z] ⚠️  測試未完全成功，瀏覽器保持開啟 60 秒以供檢查...
+[2025-11-24T03:34:19.821Z]    1️⃣ Stream n'Spin 彈窗: ✅
+[2025-11-24T03:34:19.821Z]    2️⃣ 點擊 LIVE 卡片: ❌
+[2025-11-24T03:34:19.822Z]    3️⃣ 新視窗開啟: ❌
+[2025-11-24T03:34:19.823Z]    4️⃣ Cara Bermain 關閉: ❌
+[2025-11-24T03:34:19.823Z]    5️⃣ gVersion 檢測: ❌
+[2025-11-24T03:34:19.824Z]    7️⃣ MAX 按鈕（3M）: ❌
+[2025-11-24T03:34:19.824Z]    8️⃣ MIN 按鈕（200）: ❌
+[2025-11-24T03:34:19.825Z]    9️⃣ + 按鈕 28 次: ❌
+[2025-11-24T03:34:19.826Z]    🔟 - 按鈕 28 次: ❌
+[2025-11-24T03:34:19.826Z]    1️⃣1️⃣ Spin Round + 按鈕 4 次: ❌
+[2025-11-24T03:34:19.827Z]    1️⃣2️⃣ Spin Round - 按鈕 5 次: ❌
+[2025-11-24T03:34:19.827Z]    1️⃣3️⃣ 點擊綠色 PLAY 鈕: ❌
+[2025-11-24T03:34:19.828Z]    1️⃣4️⃣ 送禮測試: ❌
+[2025-11-24T03:34:19.829Z]    1️⃣5️⃣ 聊天視窗輸入: ❌
+[2025-11-24T03:34:19.831Z] ⏱️  60秒後自動關閉，或請手動關閉瀏覽器...
+[2025-11-24T03:34:20.281Z] Browser closed after 60 seconds
+[2025-11-24T03:34:22.921Z] Start navigation to http://lobby.sns.lab/?isAgentApi
+[2025-11-24T03:34:31.747Z] 找到 Stream n'Spin 彈窗，點擊 Confirm 按鈕: Confirm
+[2025-11-24T03:34:33.822Z] 已點擊 Confirm 按鈕，彈窗已關閉
+[2025-11-24T03:34:33.825Z] 1️⃣ Stream n'Spin 彈窗測試: {"found":true,"clicked":true,"buttonText":"Confirm","message":"找到 Stream n'Spin 彈窗並點擊 Confirm","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-before-2025-11-24T03-34-22-921Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-stream-n-spin-after-2025-11-24T03-34-22-921Z.png"}}
+[2025-11-24T03:34:41.875Z] 找到可點擊元素: 普通卡片 DIV "6 viewersgame01"
+[2025-11-24T03:34:41.877Z] 位置: (481, 260)
+[2025-11-24T03:34:42.331Z] 點擊元素...
+[2025-11-24T03:34:42.408Z] ✅ 新視窗已開啟！
+[2025-11-24T03:34:47.304Z] ✅ 新視窗 URL: http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&mode=0&t=123456&b=iqazwsxi&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&homeurl=&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&lang=en&serverurl=http%3A%2F%2Fgs.sns.lab&token=MTc1MTI3MjI2NTMzMDQxODE3NgCFiI2U3jzM2erHU6jzMYbrEQ3jwIVboAN3gsFV&lobby=http%3A%2F%2Flobby.sns.lab
+[2025-11-24T03:34:47.305Z] 4️⃣ 在新視窗中尋找 "Cara Bermain" 對話框...
+[2025-11-24T03:34:49.459Z] ❌ MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到
+[2025-11-24T03:34:49.461Z] 5️⃣ 在新視窗中檢測 gVersion...
+[2025-11-24T03:34:49.475Z] gVersion 檢測結果: {"found":false,"version":null}
+[2025-11-24T03:34:49.476Z] 7️⃣ 測試 MAX 按鈕（目標金額: 3,000,000）...
+[2025-11-24T03:34:50.504Z] ❌ MAX 按鈕未找到
+[2025-11-24T03:34:50.506Z] MAX 按鈕測試（3M）結果: {"success":false,"message":"MAX 按鈕未找到"}
+[2025-11-24T03:34:50.507Z] 8️⃣ 測試 MIN 按鈕（目標金額: 200）...
+[2025-11-24T03:34:51.522Z] ❌ MIN 按鈕未找到
+[2025-11-24T03:34:51.524Z] MIN 按鈕測試（200）結果: {"success":false,"message":"MIN 按鈕未找到"}
+[2025-11-24T03:34:51.524Z] 9️⃣ 測試 + 按鈕點擊 28 次...
+[2025-11-24T03:34:52.538Z] ❌ + 按鈕未找到
+[2025-11-24T03:34:52.541Z] + 按鈕測試結果: {"success":false,"message":"+ 按鈕未找到"}
+[2025-11-24T03:34:52.543Z] 🔟 測試 - 按鈕點擊 28 次...
+[2025-11-24T03:34:53.556Z] ❌ - 按鈕未找到
+[2025-11-24T03:34:53.557Z] - 按鈕測試結果: {"success":false,"message":"- 按鈕未找到"}
+[2025-11-24T03:34:53.557Z] 1️⃣1️⃣ 測試 Spin Round + 按鈕點擊 4 次...
+[2025-11-24T03:34:59.081Z] ❌ Spin Round 初始值未找到: CONTROLS_PANEL 未找到
+[2025-11-24T03:34:59.082Z] Spin Round + 按鈕測試結果: {"success":false,"step":"locate-initial","timestamp":"2025-11-24T03-34-22-921Z","error":"CONTROLS_PANEL 未找到"}
+[2025-11-24T03:34:59.084Z] 1️⃣2️⃣ 測試 Spin Round - 按鈕點擊 5 次...
+[2025-11-24T03:35:04.607Z] ✅ 找到 Spin Round 初始值: 50
+[2025-11-24T03:35:48.650Z] Spin Round - 按鈕測試結果: {"success":false,"timestamp":"2025-11-24T03-34-22-921Z","error":"TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('#CONTROLS_PANEL > div._controlBar_1qzyb_139.hstack > div._wrapper_1qt5t_234 > div > button:nth-child(1) > svg')\n    - locator resolved to <svg width=\"1em\" height=\"1em\" stroke-width=\"0\" fill=\"currentColor\" stroke=\"currentColor\" viewBox=\"0 0 448 512\" xmlns=\"http://www.w3.org/2000/svg\">…</svg>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n      - waiting 100ms\n    56 × waiting for element to be visible, enabled and stable\n       - element is not enabled\n     - retrying click action\n       - waiting 500ms\n"}
+[2025-11-24T03:35:48.652Z] 1️⃣3️⃣ 測試點擊綠色 PLAY 鈕...
+[2025-11-24T03:35:49.666Z] ✅ 找到 PLAY 鈕，位置: (512, 684)
+[2025-11-24T03:35:51.226Z] ✅ 已點擊 PLAY 鈕
+[2025-11-24T03:35:51.228Z] PLAY 鈕測試結果: {"success":true,"message":"已成功點擊綠色 PLAY 鈕","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-before-2025-11-24T03-34-22-921Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-after-2025-11-24T03-34-22-921Z.png"}}
+[2025-11-24T03:35:51.229Z] 1️⃣4️⃣ 測試送禮功能...
+[2025-11-24T03:35:52.249Z] ✅ 找到送禮按鈕，位置: (1326, 736)
+[2025-11-24T03:35:52.540Z] 🖱️  已點擊送禮按鈕，等待彈窗出現...
+[2025-11-24T03:35:54.562Z] ✅ 找到禮物選項，位置: (1195, 597)
+[2025-11-24T03:35:54.576Z] 🖱️  已點擊禮物選項，等待按鈕出現...
+[2025-11-24T03:35:56.598Z] ✅ 找到確認按鈕，位置: (1195, 626)
+[2025-11-24T03:35:56.640Z] 🖱️  已點擊確認按鈕，等待視窗出現...
+[2025-11-24T03:35:58.657Z] ✅ 找到關閉按鈕，位置: (1347, 448)
+[2025-11-24T03:35:58.682Z] 🖱️  已點擊關閉按鈕
+[2025-11-24T03:36:00.008Z] ✅ 送禮測試完成
+[2025-11-24T03:36:00.010Z] 送禮測試結果: {"success":true,"message":"已成功完成送禮測試（包含4個步驟）","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-before-2025-11-24T03-34-22-921Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-after-2025-11-24T03-34-22-921Z.png"}}
+[2025-11-24T03:36:00.013Z] 1️⃣5️⃣ 測試聊天視窗輸入...
+[2025-11-24T03:36:01.021Z] ✅ 找到聊天輸入欄位，位置: (1169, 736)
+[2025-11-24T03:36:01.461Z] 📝 已輸入文字: SNS-Test
+[2025-11-24T03:36:01.994Z] ✅ 找到 Send 按鈕，位置: (1315, 736)
+[2025-11-24T03:36:02.066Z] 🖱️  已點擊 Send 按鈕
+[2025-11-24T03:36:03.356Z] ✅ 聊天視窗輸入測試完成
+[2025-11-24T03:36:03.359Z] 聊天視窗輸入測試結果: {"success":true,"message":"已成功完成聊天視窗輸入測試（輸入文字並發送）","textEntered":"SNS-Test","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-before-2025-11-24T03-34-22-921Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-after-2025-11-24T03-34-22-921Z.png"}}
+[2025-11-24T03:36:03.361Z] ✅ 所有測試完成，停留在新視窗...
+[2025-11-24T03:36:03.364Z] 2️⃣-10️⃣ 測試結果: {"clicked":true,"newPageOpened":true,"newPageUrl":"http://gc.sns.lab/snsclient/?gameid=1001&ws=ws%3A%2F%2Fliveslot.sns.lab&mode=0&t=123456&b=iqazwsxi&chat=ws%3A%2F%2Fchat.sns.lab%2Fws&homeurl=&betrecordurl=http%3A%2F%2Fgc.sns.lab%2Fbetrecord%2F&lang=en&serverurl=http%3A%2F%2Fgs.sns.lab&token=MTc1MTI3MjI2NTMzMDQxODE3NgCFiI2U3jzM2erHU6jzMYbrEQ3jwIVboAN3gsFV&lobby=http%3A%2F%2Flobby.sns.lab","clickedElement":{"tag":"DIV","text":"6 viewersgame01","isLiveCard":false},"howToPlayClosed":false,"howToPlayMessage":"MULAI BERMAIN 按鈕未找到: Cara Bermain 對話框未找到","gVersion":{"found":false,"version":null},"maxButton3M":{"success":false,"message":"MAX 按鈕未找到"},"minButton200":{"success":false,"message":"MIN 按鈕未找到"},"plusButton28":{"success":false,"message":"+ 按鈕未找到"},"minusButton28":{"success":false,"message":"- 按鈕未找到"},"spinRoundPlus4":{"success":false,"step":"locate-initial","timestamp":"2025-11-24T03-34-22-921Z","error":"CONTROLS_PANEL 未找到"},"spinRoundMinus5":{"success":false,"timestamp":"2025-11-24T03-34-22-921Z","error":"TimeoutError: page.click: Timeout 30000ms exceeded.\nCall log:\n  - waiting for locator('#CONTROLS_PANEL > div._controlBar_1qzyb_139.hstack > div._wrapper_1qt5t_234 > div > button:nth-child(1) > svg')\n    - locator resolved to <svg width=\"1em\" height=\"1em\" stroke-width=\"0\" fill=\"currentColor\" stroke=\"currentColor\" viewBox=\"0 0 448 512\" xmlns=\"http://www.w3.org/2000/svg\">…</svg>\n  - attempting click action\n    2 × waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n    - waiting 20ms\n    2 × waiting for element to be visible, enabled and stable\n      - element is not enabled\n    - retrying click action\n      - waiting 100ms\n    56 × waiting for element to be visible, enabled and stable\n       - element is not enabled\n     - retrying click action\n       - waiting 500ms\n"},"playButton":{"success":true,"message":"已成功點擊綠色 PLAY 鈕","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-before-2025-11-24T03-34-22-921Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-play-button-after-2025-11-24T03-34-22-921Z.png"}},"giftTest":{"success":true,"message":"已成功完成送禮測試（包含4個步驟）","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-before-2025-11-24T03-34-22-921Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-gift-after-2025-11-24T03-34-22-921Z.png"}},"chatInput":{"success":true,"message":"已成功完成聊天視窗輸入測試（輸入文字並發送）","textEntered":"SNS-Test","debug":{"screenshotBefore":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-before-2025-11-24T03-34-22-921Z.png","screenshotAfter":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-chat-input-after-2025-11-24T03-34-22-921Z.png"}},"message":"⚠️  點擊卡片、開啟新視窗、點擊 MULAI BERMAIN 成功，但 gVersion 檢測失敗","debug":{"screenshotBeforeClick":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-before-click-2025-11-24T03-34-22-921Z.png","screenshotNewPage":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-new-page-2025-11-24T03-34-22-921Z.png","screenshot":"C:\\Users\\penny\\OneDrive\\Desktop\\stream-lobby\\debug\\test2-how-to-play-before-2025-11-24T03-34-22-921Z.png"}}
+[2025-11-24T03:36:03.367Z] ⚠️  測試未完全成功，瀏覽器保持開啟 60 秒以供檢查...
+[2025-11-24T03:36:03.367Z]    1️⃣ Stream n'Spin 彈窗: ✅
+[2025-11-24T03:36:03.368Z]    2️⃣ 點擊 LIVE 卡片: ✅
+[2025-11-24T03:36:03.372Z]    3️⃣ 新視窗開啟: ✅
+[2025-11-24T03:36:03.375Z]    4️⃣ Cara Bermain 關閉: ❌
+[2025-11-24T03:36:03.381Z]    5️⃣ gVersion 檢測: ❌
+[2025-11-24T03:36:03.382Z]    7️⃣ MAX 按鈕（3M）: ❌
+[2025-11-24T03:36:03.384Z]    8️⃣ MIN 按鈕（200）: ❌
+[2025-11-24T03:36:03.385Z]    9️⃣ + 按鈕 28 次: ❌
+[2025-11-24T03:36:03.388Z]    🔟 - 按鈕 28 次: ❌
+[2025-11-24T03:36:03.392Z]    1️⃣1️⃣ Spin Round + 按鈕 4 次: ❌
+[2025-11-24T03:36:03.395Z]    1️⃣2️⃣ Spin Round - 按鈕 5 次: ❌
+[2025-11-24T03:36:03.396Z]    1️⃣3️⃣ 點擊綠色 PLAY 鈕: ✅
+[2025-11-24T03:36:03.397Z]    1️⃣4️⃣ 送禮測試: ✅
+[2025-11-24T03:36:03.398Z]    1️⃣5️⃣ 聊天視窗輸入: ✅
+[2025-11-24T03:36:03.410Z] ⏱️  60秒後自動關閉，或請手動關閉瀏覽器...
+[2025-11-24T03:37:04.106Z] Browser closed after 60 seconds

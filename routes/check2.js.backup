@@ -1,0 +1,1341 @@
+const { chromium } = require('playwright');
+const fs = require('fs');
+const path = require('path');
+
+// Ensure debug directory exists
+const debugDir = path.join(__dirname, '..', 'debug');
+if (!fs.existsSync(debugDir)) {
+  fs.mkdirSync(debugDir, { recursive: true });
+}
+
+async function checkWebsite(url) {
+  const browser = await chromium.launch({ headless: false });
+  const context = await browser.newContext({ viewport: { width: 1366, height: 768 } });
+  const page = await context.newPage();
+  
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+  const results = {
+    url,
+    timestamp: new Date().toISOString(),
+    checks: {},
+    debug: {
+      screenshots: [],
+      pageStructure: null
+    }
+  };
+
+  try {
+    console.log(`Start navigation to ${url}`);
+    try {
+      await page.goto(url, { waitUntil: 'networkidle', timeout: 30000 });
+    } catch (e) {
+      console.log('networkidle timed out, retry with domcontentloaded');
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
+    }
+
+    await page.waitForTimeout(1500);
+
+    const initialShot = path.join(debugDir, `test2-initial-${timestamp}.png`);
+    await page.screenshot({ path: initialShot, fullPage: true }).catch(() => {});
+    results.debug.screenshots.push({ step: 'initial', path: initialShot });
+
+    // Basic page structure
+    results.debug.pageStructure = await analyzePageStructure(page);
+
+    // 1️⃣ gVersion 版號測試
+    try {
+      results.checks.gVersion = await checkGVersion(page);
+      console.log('1️⃣ gVersion 版號測試:', JSON.stringify(results.checks.gVersion));
+    } catch (err) {
+      results.checks.gVersion = { found: false, error: String(err && err.message || err) };
+    }
+
+    // 2️⃣ Stream n'Spin 彈窗測試
+    try {
+      results.checks.streamNSpinDialog = await checkStreamNSpinDialog(page, timestamp);
+      console.log('2️⃣ Stream n\'Spin 彈窗測試:', JSON.stringify(results.checks.streamNSpinDialog));
+    } catch (err) {
+      results.checks.streamNSpinDialog = { found: false, error: String(err && err.message || err) };
+    }
+
+    // 3️⃣ 點擊 Streaming Now 下方 UI 元件開啟新網站 + 4️⃣ 關閉 How to Play
+    try {
+      results.checks.streamingNowClick = await checkStreamingNowClick(page, context, timestamp, url);
+      console.log('3️⃣ Streaming Now 點擊測試:', JSON.stringify(results.checks.streamingNowClick));
+    } catch (err) {
+      results.checks.streamingNowClick = { clicked: false, error: String(err && err.message || err) };
+    }
+
+  } catch (error) {
+    console.error('checkWebsite error:', error);
+    results.error = String(error && error.message || error);
+    results.stack = error && error.stack ? error.stack : undefined;
+  } finally {
+    console.log('Wait 3s then close browser...');
+    await page.waitForTimeout(3000).catch(() => {});
+    await browser.close().catch(() => {});
+    console.log('Browser closed');
+  }
+
+  return results;
+}
+
+async function analyzePageStructure(page) {
+  try {
+    return await page.evaluate(() => {
+      const structure = { title: document.title, url: location.href };
+      return structure;
+    });
+  } catch (e) {
+    return { error: String(e && e.message || e) };
+  }
+}
+
+// 1️⃣ gVersion 版號測試
+async function checkGVersion(page) {
+  const gVersion = await page.evaluate(() => {
+    try {
+      if (typeof window !== 'undefined' && window.gVersion !== undefined) {
+        return window.gVersion;
+      }
+      const metas = document.querySelectorAll('meta[name="gVersion"], meta[property="gVersion"]');
+      for (const m of metas) {
+        const v = m.getAttribute('content');
+        if (v) return v;
+      }
+      const scripts = document.querySelectorAll('script');
+      for (const s of scripts) {
+        const txt = (s.textContent || '').toString();
+        let m = txt.match(/gVersion\s*[=:]\s*['"]([^'"\n]+)['"]/);
+        if (m && m[1]) return m[1];
+        m = txt.match(/gVersion\s*[=:]\s*(\d+\.\d+\.\d+)/);
+        if (m && m[1]) return m[1];
+      }
+    } catch (e) {
+      return null;
+    }
+    return null;
+  });
+  return { found: gVersion != null, version: gVersion };
+}
+
+// 2️⃣ Stream n'Spin 彈窗測試
+async function checkStreamNSpinDialog(page, timestamp) {
+  console.log('開始 Stream n\'Spin 彈窗測試...');
+  
+  try {
+    await page.waitForTimeout(1000);
+    
+    // Check if there's a Stream n'Spin dialog
+    const dialogInfo = await page.evaluate(() => {
+      const dialogs = document.querySelectorAll('[role="dialog"], .modal, .ant-modal, .dialog, [class*="modal" i], [class*="dialog" i]');
+      
+      for (const dialog of dialogs) {
+        if (dialog.offsetParent === null) continue; // Skip hidden dialogs
+        
+        const text = (dialog.textContent || '').toLowerCase();
+        const hasStreamSpin = text.includes('stream') && (text.includes('spin') || text.includes('n'));
+        
+        if (hasStreamSpin) {
+          // Look for confirm button in this dialog
+          const buttons = Array.from(dialog.querySelectorAll('button'));
+          for (const btn of buttons) {
+            const rect = btn.getBoundingClientRect();
+            const btnText = (btn.textContent || '').toLowerCase();
+            if (rect.width > 0 && rect.height > 0 && 
+                (btnText.includes('confirm') || btnText.includes('ok') || btnText.includes('確認'))) {
+              return {
+                found: true,
+                buttonText: btn.textContent,
+                x: rect.x + rect.width / 2,
+                y: rect.y + rect.height / 2
+              };
+            }
+          }
+          // Dialog found but no confirm button
+          return { found: true, buttonText: null };
+        }
+      }
+      return { found: false };
+    });
+    
+    const shotBefore = path.join(debugDir, `test2-stream-n-spin-before-${timestamp}.png`);
+    await page.screenshot({ path: shotBefore, fullPage: false }).catch(() => {});
+    
+    if (!dialogInfo.found) {
+      console.log('Stream n\'Spin 彈窗未出現，繼續下一步測試');
+      return {
+        found: false,
+        clicked: false,
+        message: 'Stream n\'Spin 彈窗未出現',
+        debug: { screenshot: shotBefore }
+      };
+    }
+    
+    if (!dialogInfo.buttonText) {
+      console.log('找到 Stream n\'Spin 彈窗但未找到 Confirm 按鈕');
+      return {
+        found: true,
+        clicked: false,
+        message: '找到彈窗但未找到 Confirm 按鈕',
+        debug: { screenshot: shotBefore }
+      };
+    }
+    
+    console.log(`找到 Stream n'Spin 彈窗，點擊 Confirm 按鈕: ${dialogInfo.buttonText}`);
+    await page.mouse.click(dialogInfo.x, dialogInfo.y);
+    await page.waitForTimeout(1500);
+    
+    const shotAfter = path.join(debugDir, `test2-stream-n-spin-after-${timestamp}.png`);
+    await page.screenshot({ path: shotAfter, fullPage: false }).catch(() => {});
+    
+    console.log('已點擊 Confirm 按鈕，彈窗已關閉');
+    
+    return {
+      found: true,
+      clicked: true,
+      buttonText: dialogInfo.buttonText,
+      message: `找到 Stream n'Spin 彈窗並點擊 Confirm`,
+      debug: {
+        screenshotBefore: shotBefore,
+        screenshotAfter: shotAfter
+      }
+    };
+    
+  } catch (error) {
+    console.error('Stream n\'Spin 彈窗測試錯誤:', error);
+    return {
+      found: false,
+      clicked: false,
+      error: String(error && error.message || error),
+      message: `Stream n'Spin 彈窗測試失敗: ${error && error.message || error}`
+    };
+  }
+}
+
+// 3️⃣ 點擊 Streaming Now 下方 UI 元件並處理新頁面
+async function checkStreamingNowClick(page, context, timestamp, url) {
+  console.log('開始 Streaming Now 點擊測試...');
+  
+  try {
+    // 等待頁面完全載入
+    console.log('等待直播內容載入...');
+    await page.waitForTimeout(5000); // 增加到5秒確保內容載入
+    
+    // 滾動到 Streaming Now 區域
+    console.log('滾動到 Streaming Now 區域...');
+    await page.evaluate(() => {
+      const allEls = Array.from(document.querySelectorAll('*'));
+      const streamingNow = allEls.find(el => {
+        const text = (el.textContent || '').trim();
+        return text === 'Streaming Now' || text.startsWith('Streaming Now');
+      });
+      
+      if (streamingNow) {
+        const rect = streamingNow.getBoundingClientRect();
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        // 滾動到 Streaming Now 上方 150px 的位置
+        window.scrollTo({ 
+          top: Math.max(0, scrollTop + rect.top - 150), 
+          behavior: 'smooth' 
+        });
+      }
+    }).catch(() => {});
+    
+    await page.waitForTimeout(3000); // 等待滾動完成和內容載入
+    
+    // 截圖當前頁面
+    const debugShot = path.join(debugDir, `test2-streaming-now-debug-${timestamp}.png`);
+    await page.screenshot({ path: debugShot, fullPage: false }).catch(() => {}); // 只截當前視窗
+    
+    // 搜尋 Streaming Now 和 Promotion 之間的 LIVE 元素
+    const streamingNowInfo = await page.evaluate(() => {
+      const allElements = Array.from(document.querySelectorAll('*'));
+      
+      // 用於調試的候選元素列表
+      const candidates = [];
+      
+      // Step 1: 找到 Streaming Now 元素
+      let streamingNowElement = null;
+      for (const el of allElements) {
+        const text = (el.textContent || '').trim();
+        if ((text === 'Streaming Now' || text.startsWith('Streaming Now')) && el.offsetParent !== null) {
+          const rect = el.getBoundingClientRect();
+          
+          // 記錄候選元素
+          candidates.push({
+            tag: el.tagName,
+            text: text.substring(0, 50),
+            className: el.className || '',
+            visible: rect.width > 0 && rect.height > 0,
+            position: `(${Math.round(rect.x)}, ${Math.round(rect.y)})`
+          });
+          
+          if (rect.width > 0 && rect.height > 0) {
+            streamingNowElement = el;
+            break;
+          }
+        }
+      }
+      
+      if (!streamingNowElement) {
+        return { found: false, error: 'Streaming Now element not found', candidates: candidates };
+      }
+      
+      const streamingNowRect = streamingNowElement.getBoundingClientRect();
+      console.log(`✓ Streaming Now 位置: (${Math.round(streamingNowRect.x)}, ${Math.round(streamingNowRect.y)}), 底部: ${Math.round(streamingNowRect.bottom)}`);
+      
+      // Step 2: 找到 Promotion 元素，定義搜尋範圍的上限
+      let promotionElement = null;
+      for (const el of allElements) {
+        const text = (el.textContent || '').trim();
+        if ((text === 'Promotion' || text.startsWith('Promotion')) && el.offsetParent !== null) {
+          const rect = el.getBoundingClientRect();
+          if (rect.width > 0 && rect.height > 0 && rect.top > streamingNowRect.bottom) {
+            promotionElement = el;
+            break;
+          }
+        }
+      }
+      
+      let searchRangeBottom;
+      if (promotionElement) {
+        const promotionRect = promotionElement.getBoundingClientRect();
+        searchRangeBottom = promotionRect.top;
+        console.log(`✓ Promotion 位置: (${Math.round(promotionRect.x)}, ${Math.round(promotionRect.y)})`);
+        console.log(`✓ 搜尋範圍: ${Math.round(streamingNowRect.bottom)} ~ ${Math.round(searchRangeBottom)} (高度: ${Math.round(searchRangeBottom - streamingNowRect.bottom)}px)`);
+      } else {
+        // 如果沒找到 Promotion，使用 Streaming Now 下方 500px 作為範圍
+        searchRangeBottom = streamingNowRect.bottom + 500;
+        console.log(`⚠ Promotion 未找到，使用預設範圍: ${Math.round(streamingNowRect.bottom)} ~ ${Math.round(searchRangeBottom)}`);
+      }
+      
+      // Step 3: 新策略 - 直接搜尋卡片容器，然後檢查每個卡片是否有LIVE標籤
+      const clickableElements = [];
+      
+      let debugInfo = { 
+        totalScanned: allElements.length, 
+        searchRangeHeight: Math.round(searchRangeBottom - streamingNowRect.bottom),
+        cardsFound: 0,
+        cardsWithLive: 0,
+        strategies: ['direct-card-search']
+      };
+      
+      // 先找到所有的卡片容器
+      const allCards = [];
+      for (const el of allElements) {
+        const rect = el.getBoundingClientRect();
+        
+        // 在範圍內，且是合適的卡片尺寸
+        if (rect.width > 150 && rect.width < 600 && 
+            rect.height > 150 && rect.height < 500 &&
+            rect.top >= streamingNowRect.bottom && 
+            rect.top < searchRangeBottom &&
+            el.offsetParent !== null) {
+          
+          const hasImage = el.querySelector('img') !== null;
+          const hasVideo = el.querySelector('video') !== null;
+          
+          // 必須包含圖片或視頻
+          if (hasImage || hasVideo) {
+            allCards.push({ el: el, rect: rect });
+            debugInfo.cardsFound++;
+          }
+        }
+      }
+      
+      // 對每個卡片，檢查是否包含LIVE標籤（紅色小元素）
+      for (const card of allCards) {
+        let hasLiveTag = false;
+        const cardChildren = Array.from(card.el.querySelectorAll('*'));
+        
+        // 在卡片內搜尋紅色背景的小元素（LIVE標籤特徵）
+        for (const child of cardChildren) {
+          const childRect = child.getBoundingClientRect();
+          const styles = window.getComputedStyle(child);
+          const bgColor = styles.backgroundColor;
+          
+          // 紅色背景 + 小尺寸 = LIVE標籤
+          const isRedBg = bgColor && (
+            bgColor.includes('rgb(255') || 
+            bgColor.includes('rgb(240') ||
+            bgColor.includes('rgb(220') ||
+            bgColor.includes('rgb(200')
+          );
+          
+          const isSmallTag = childRect.width > 15 && childRect.width < 100 && 
+                            childRect.height > 10 && childRect.height < 60;
+          
+          if (isRedBg && isSmallTag) {
+            hasLiveTag = true;
+            debugInfo.cardsWithLive++;
+            break;
+          }
+        }
+        
+        if (hasLiveTag) {
+          // 這是一個有LIVE標籤的卡片
+          const distance = card.rect.top - streamingNowRect.bottom;
+          
+          clickableElements.push({
+            el: card.el,
+            text: (card.el.textContent || '').trim().substring(0, 50),
+            tag: card.el.tagName,
+            className: card.el.className || '',
+            x: card.rect.x + card.rect.width / 2,
+            y: card.rect.y + card.rect.height / 2,
+            width: card.rect.width,
+            height: card.rect.height,
+            distance: distance,
+            isLiveCard: true,
+            cardX: Math.round(card.rect.x),
+            cardY: Math.round(card.rect.y)
+          });
+        }
+      }
+      
+      // 按 X 座標排序，選擇最左邊的 LIVE 卡片
+      if (clickableElements.length > 0) {
+        clickableElements.sort((a, b) => a.cardX - b.cardX);
+      }
+      
+      // 如果新策略沒找到，使用通用搜尋作為後備
+      if (clickableElements.length === 0) {
+        debugInfo.strategies.push('fallback-general-search');
+        
+        for (const el of allElements) {
+          const rect = el.getBoundingClientRect();
+          
+          if (rect.top >= streamingNowRect.bottom && 
+              rect.top < searchRangeBottom &&
+              rect.width > 100 && rect.height > 100 &&
+              el.offsetParent !== null) {
+            
+            const hasImage = !!el.querySelector('img');
+            const hasVideo = !!el.querySelector('video');
+            
+            if (hasImage || hasVideo) {
+              const distance = rect.top - streamingNowRect.bottom;
+              
+              clickableElements.push({
+                el: el,
+                text: (el.textContent || '').trim().substring(0, 50),
+                tag: el.tagName,
+                className: el.className || '',
+                x: rect.x + rect.width / 2,
+                y: rect.y + rect.height / 2,
+                width: rect.width,
+                height: rect.height,
+                distance: distance,
+                isLiveCard: false,
+                cardX: Math.round(rect.x),
+                cardY: Math.round(rect.y)
+              });
+            }
+          }
+        }
+        
+        // 排序並選擇最左邊的
+        if (clickableElements.length > 0) {
+          clickableElements.sort((a, b) => a.cardX - b.cardX);
+        }
+      }
+      
+      // 排序：優先選擇有 LIVE 標籤的卡片，然後按 X 座標（最左邊）
+      clickableElements.sort((a, b) => {
+        // 優先選擇有 LIVE 標籤的卡片
+        if (a.isLiveCard && !b.isLiveCard) return -1;
+        if (!a.isLiveCard && b.isLiveCard) return 1;
+        
+        // 都是 LIVE 卡片時，選最左邊的
+        if (a.isLiveCard && b.isLiveCard) {
+          return a.cardX - b.cardX;
+        }
+        
+        // 其他情況按X座標
+        return a.cardX - b.cardX;
+      });
+      
+      if (clickableElements.length === 0) {
+        return { found: true, hasClickable: false, candidates: candidates, debugInfo: debugInfo };
+      }
+      
+      // 輸出調試信息
+      debugInfo.selectedCount = clickableElements.length;
+      
+      // 選擇第一個元素
+      const selectedElement = clickableElements[0];
+      
+      return { 
+        found: true, 
+        hasClickable: true,
+        ...selectedElement,
+        candidates: candidates,
+        allClickables: clickableElements.slice(0, 10),
+        debugInfo: debugInfo
+      };
+    });
+    
+    // 檢查結果
+    if (!streamingNowInfo || !streamingNowInfo.found) {
+      const shot = path.join(debugDir, `test2-streaming-now-not-found-${timestamp}.png`);
+      await page.screenshot({ path: shot, fullPage: false }).catch(() => {});
+      
+      return {
+        clicked: false,
+        newPageOpened: false,
+        howToPlayClosed: false,
+        message: 'Streaming Now 元件未找到',
+        candidates: streamingNowInfo?.candidates || [],
+        debug: { screenshot: shot, debugScreenshot: debugShot }
+      };
+    }
+    
+    // 檢查是否找到可點擊元素
+    if (!streamingNowInfo.hasClickable || !streamingNowInfo.x || !streamingNowInfo.y) {
+      const shot = path.join(debugDir, `test2-streaming-now-no-clickable-${timestamp}.png`);
+      await page.screenshot({ path: shot, fullPage: false }).catch(() => {});
+      
+      console.log('❌ Streaming Now 下方沒有找到可點擊的元素');
+      
+      // 輸出調試信息
+      if (streamingNowInfo.debugInfo) {
+        console.log('===== LIVE 元素搜尋調試信息 =====');
+        console.log(`掃描的元素總數: ${streamingNowInfo.debugInfo.totalScanned}`);
+        console.log(`搜尋範圍高度: ${streamingNowInfo.debugInfo.searchRangeHeight || 'N/A'}px`);
+        console.log(`找到的卡片總數: ${streamingNowInfo.debugInfo.cardsFound || 0}`);
+        console.log(`其中帶LIVE標籤的卡片: ${streamingNowInfo.debugInfo.cardsWithLive || 0}`);
+        console.log('使用的搜尋策略:');
+        streamingNowInfo.debugInfo.strategies?.forEach(s => console.log(`  - ${s}`));
+        console.log('================================');
+      }
+      
+      return {
+        clicked: false,
+        newPageOpened: false,
+        howToPlayClosed: false,
+        message: 'Streaming Now 下方沒有可點擊的元素',
+        candidates: streamingNowInfo?.candidates || [],
+        allClickables: streamingNowInfo?.allClickables || [],
+        debugInfo: streamingNowInfo?.debugInfo || {},
+        debug: { screenshot: shot, debugScreenshot: debugShot }
+      };
+    }
+    
+    // 輸出找到的元素信息
+    const cardType = streamingNowInfo.isLiveCard ? 'LIVE卡片' : '普通卡片';
+    console.log(`Found clickable element below Streaming Now: ${cardType} ${streamingNowInfo.tag} "${streamingNowInfo.text}"`);
+    
+    const shotBeforeClick = path.join(debugDir, `test2-before-click-${timestamp}.png`);
+    await page.screenshot({ path: shotBeforeClick, fullPage: false }).catch(() => {});
+    
+    // Step 3: 點擊元素並等待新頁面
+    console.log(`Clicking element at (${Math.round(streamingNowInfo.x)}, ${Math.round(streamingNowInfo.y)})...`);
+    
+    // 記錄原始 URL
+    const originalUrl = page.url();
+    
+    // 監聽新頁面打開
+    const newPagePromise = context.waitForEvent('page', { timeout: 10000 });
+    
+    await page.mouse.click(streamingNowInfo.x, streamingNowInfo.y);
+    
+    let newPage;
+    let isNewWindow = false;
+    
+    try {
+      newPage = await newPagePromise;
+      isNewWindow = true;
+      console.log('✅ 新視窗已開啟！');
+      await newPage.waitForLoadState('domcontentloaded', { timeout: 15000 });
+      await newPage.waitForTimeout(2000);
+    } catch (e) {
+      console.log('❌ 沒有開啟新視窗');
+      
+      // 檢查是否在同一頁面導航
+      await page.waitForTimeout(2000);
+      const currentUrl = page.url();
+      
+      if (currentUrl !== originalUrl) {
+        console.log(`⚠️  同頁面導航偵測到（原始: ${originalUrl}, 現在: ${currentUrl}）`);
+        
+        const shotSamePage = path.join(debugDir, `test2-same-page-navigation-${timestamp}.png`);
+        await page.screenshot({ path: shotSamePage, fullPage: false }).catch(() => {});
+        
+        return {
+          clicked: true,
+          newPageOpened: false,
+          howToPlayClosed: false,
+          message: '❌ 點擊了元件但沒有開啟新視窗（只在同頁面導航）',
+          originalUrl: originalUrl,
+          navigatedUrl: currentUrl,
+          clickedElement: {
+            tag: streamingNowInfo.tag,
+            text: streamingNowInfo.text,
+            className: streamingNowInfo.className
+          },
+          debug: { 
+            screenshotBeforeClick: shotBeforeClick,
+            screenshotSamePageNavigation: shotSamePage
+          }
+        };
+      } else {
+        console.log('❌ 點擊後沒有任何導航');
+        return {
+          clicked: true,
+          newPageOpened: false,
+          howToPlayClosed: false,
+          message: '❌ 點擊了元件但沒有開啟新視窗或導航',
+          clickedElement: {
+            tag: streamingNowInfo.tag,
+            text: streamingNowInfo.text,
+            className: streamingNowInfo.className
+          },
+          debug: { screenshotBeforeClick: shotBeforeClick }
+        };
+      }
+    }
+    
+    // 只有真正開啟新視窗時才會執行到這裡
+    const shotNewPage = path.join(debugDir, `test2-new-page-${timestamp}.png`);
+    await newPage.screenshot({ path: shotNewPage, fullPage: true }).catch(() => {});
+    
+    const newPageUrl = newPage.url();
+    console.log(`✅ 新視窗 URL: ${newPageUrl}`);
+    
+    // Step 4: 在新視窗中找到 "How to Play" 並點擊 X 關閉
+    console.log('在新視窗中尋找 "How to Play" 對話框...');
+    
+    const howToPlayResult = await checkHowToPlayDialog(newPage, timestamp);
+    
+    return {
+      clicked: true,
+      newPageOpened: true,
+      newPageUrl: newPageUrl,
+      clickedElement: {
+        tag: streamingNowInfo.tag,
+        text: streamingNowInfo.text,
+        className: streamingNowInfo.className
+      },
+      howToPlayClosed: howToPlayResult.closed,
+      howToPlayMessage: howToPlayResult.message,
+      message: howToPlayResult.closed ? 
+               '✅ 成功點擊元件、開啟新視窗並關閉 How to Play 視窗' :
+               `⚠️  成功點擊元件並開啟新視窗，但 ${howToPlayResult.message}`,
+      debug: {
+        screenshotBeforeClick: shotBeforeClick,
+        screenshotNewPage: shotNewPage,
+        ...howToPlayResult.debug
+      }
+    };
+    
+  } catch (error) {
+    console.error('Streaming Now 點擊測試錯誤:', error);
+    return {
+      clicked: false,
+      newPageOpened: false,
+      howToPlayClosed: false,
+      error: String(error && error.message || error),
+      message: `測試失敗: ${error && error.message || error}`
+    };
+  }
+}
+
+// 4️⃣ 在新頁面找到並關閉 How to Play 視窗
+          const rect = el.getBoundingClientRect();
+          
+          // *** 先檢查範圍 ***
+          if (rect.width > 0 && rect.height > 0 &&
+              rect.top >= streamingNowRect.bottom && 
+              rect.top < searchRangeBottom &&
+              el.offsetParent !== null) {
+            
+            const styles = window.getComputedStyle(el);
+            const bgColor = styles.backgroundColor;
+            
+            // 檢測紅色背景
+            const isRedBg = bgColor && (
+              bgColor.includes('rgb(255') || 
+              bgColor.includes('rgb(220') || 
+              bgColor.includes('rgb(200') ||
+              bgColor.includes('rgb(240')
+            );
+            
+            // LIVE 標籤通常很小（20-100px）
+            const isSmallTag = rect.width > 20 && rect.width < 100 && 
+                              rect.height > 15 && rect.height < 60;
+            
+            if (isRedBg) {
+              debugInfo.redBackgroundFound++;
+              
+              if (isSmallTag) {
+                liveElements.push({
+                  el: el,
+                  rect: rect,
+                  text: (el.textContent || '').trim().substring(0, 100),
+                  x: rect.x,
+                  y: rect.y,
+                  width: rect.width,
+                  height: rect.height,
+                  strategy: 'red-background',
+                  bgColor: bgColor
+                });
+              }
+            }
+          }
+        }
+        console.log(`  找到 ${liveElements.length} 個紅色背景元素`);
+      }
+      
+      // 策略3: 如果還沒找到，找包含圖片的卡片容器（在精確範圍內）
+      if (liveElements.length === 0) {
+        debugInfo.strategies.push('strategy-3-card-container');
+        console.log('策略3: 搜尋卡片容器...');
+        
+        const cardContainers = [];
+        for (const el of allElements) {
+          const rect = el.getBoundingClientRect();
+          
+          // *** 先檢查範圍 ***
+          if (rect.width > 100 && rect.width < 600 && 
+              rect.height > 100 && rect.height < 500 &&
+              rect.top >= streamingNowRect.bottom && 
+              rect.top < searchRangeBottom &&
+              el.offsetParent !== null) {
+            
+            const hasImage = el.querySelector('img') !== null;
+            const hasVideo = el.querySelector('video') !== null;
+            const text = (el.textContent || '').toLowerCase();
+            
+            // 必須包含圖片或視頻
+            if (hasImage || hasVideo) {
+              cardContainers.push({
+                el: el,
+                rect: rect,
+                text: (el.textContent || '').trim().substring(0, 50),
+                x: rect.x,
+                y: rect.y,
+                width: rect.width,
+                height: rect.height,
+                hasImage: hasImage,
+                hasVideo: hasVideo,
+                hasViewers: text.includes('viewer'),
+                strategy: 'card-container'
+              });
+            }
+          }
+        }
+        
+        debugInfo.cardFound = cardContainers.length;
+        console.log(`  找到 ${cardContainers.length} 個卡片容器`);
+        
+        if (cardContainers.length > 0) {
+          // 按 X 座標排序，選擇最左邊的卡片
+          cardContainers.sort((a, b) => a.x - b.x);
+          const leftmost = cardContainers[0];
+          
+          liveElements.push(leftmost);
+          console.log(`  選擇最左邊的卡片: (${Math.round(leftmost.x)}, ${Math.round(leftmost.y)}), ${Math.round(leftmost.width)}x${Math.round(leftmost.height)}`);
+          
+          // 記錄所有找到的卡片（供調試）
+          debugInfo.allCardsFound = cardContainers.slice(0, 5).map(c => ({
+            x: Math.round(c.x),
+            y: Math.round(c.y),
+            width: Math.round(c.width),
+            height: Math.round(c.height),
+            hasImage: c.hasImage,
+            hasVideo: c.hasVideo,
+            hasViewers: c.hasViewers
+          }));
+        }
+      }
+      
+      debugInfo.liveElementsCount = liveElements.length;
+      
+      // 如果找到 LIVE 元素，按 X 座標排序（左到右）
+      if (liveElements.length > 0) {
+        // 按 X 座標排序（選擇最左邊的）
+        liveElements.sort((a, b) => a.x - b.x);
+        
+        debugInfo.liveElementsDetails = liveElements.slice(0, 5).map(le => ({
+          x: Math.round(le.x),
+          y: Math.round(le.y),
+          text: le.text.substring(0, 50),
+          strategy: le.strategy,
+          bgColor: le.bgColor || 'N/A',
+          hasImage: le.hasImage || false
+        }));
+        
+        // 只處理最左邊的 LIVE 元素
+        const selectedLive = liveElements[0];
+        console.log(`✓ 選擇最左邊的 LIVE 元素: (${Math.round(selectedLive.x)}, ${Math.round(selectedLive.y)})`);
+        
+        // 向上尋找包含直播卡片的父容器
+        let cardContainer = null;
+        let current = selectedLive.el;
+        
+        for (let i = 0; i < 10; i++) {
+          if (!current.parentElement) break;
+          current = current.parentElement;
+          
+          const parentRect = current.getBoundingClientRect();
+          
+          // 找到合適尺寸的父容器（直播卡片容器）
+          if (parentRect.width > 100 && parentRect.height > 100 && 
+              parentRect.top >= streamingNowRect.bottom &&
+              parentRect.top < searchRangeBottom &&
+              parentRect.width < 800 && parentRect.height < 600) {
+            
+            cardContainer = current;
+            console.log(`  找到卡片容器: ${current.tagName}.${current.className || 'no-class'} (${Math.round(parentRect.width)}x${Math.round(parentRect.height)})`);
+            break;
+          }
+        }
+        
+        if (cardContainer) {
+          // 在卡片容器內尋找真正會開啟新視窗的連結
+          const links = Array.from(cardContainer.querySelectorAll('a[href], [href], img[src]'));
+          console.log(`  容器內找到 ${links.length} 個潛在連結`);
+          
+          for (const link of links) {
+            const linkRect = link.getBoundingClientRect();
+            
+            // 確保連結可見且在合理範圍內
+            if (linkRect.width > 0 && linkRect.height > 0 &&
+                linkRect.top >= streamingNowRect.bottom &&
+                linkRect.top < searchRangeBottom) {
+              
+              const distance = linkRect.top - streamingNowRect.bottom;
+              
+              clickableElements.push({
+                text: (link.textContent || link.alt || '').trim().substring(0, 50),
+                tag: link.tagName,
+                className: link.className || '',
+                x: linkRect.x + linkRect.width / 2,
+                y: linkRect.y + linkRect.height / 2,
+                width: linkRect.width,
+                height: linkRect.height,
+                distance: distance,
+                href: link.href || link.src || '',
+                isLink: true,
+                isLiveElement: true,
+                liveX: Math.round(selectedLive.x),
+                liveY: Math.round(selectedLive.y),
+                strategy: selectedLive.strategy + '-link'
+              });
+            }
+          }
+          
+          console.log(`  在容器內找到 ${clickableElements.length} 個可點擊的連結`);
+          
+          // 如果沒找到連結，則退回點擊容器本身
+          if (clickableElements.length === 0) {
+            console.log(`  容器內沒有連結，退回點擊容器本身`);
+            const containerRect = cardContainer.getBoundingClientRect();
+            const distance = containerRect.top - streamingNowRect.bottom;
+            
+            clickableElements.push({
+              text: (cardContainer.textContent || '').trim().substring(0, 50),
+              tag: cardContainer.tagName,
+              className: cardContainer.className || '',
+              x: containerRect.x + containerRect.width / 2,
+              y: containerRect.y + containerRect.height / 2,
+              width: containerRect.width,
+              height: containerRect.height,
+              distance: distance,
+              href: cardContainer.href || '',
+              isLink: false,
+              isLiveElement: true,
+              liveX: Math.round(selectedLive.x),
+              liveY: Math.round(selectedLive.y),
+              strategy: selectedLive.strategy + '-container'
+            });
+          }
+        } else {
+          console.log(`  未找到合適的卡片容器`);
+        }
+      }
+      
+      debugInfo.liveContainersCount = clickableElements.length;
+      
+      // 方法2: 如果沒找到 LIVE 元素，使用通用搜尋（在精確範圍內）
+      if (clickableElements.length === 0) {
+        debugInfo.strategies.push('strategy-4-general-search');
+        console.log('策略4: 通用搜尋...');
+        
+        for (const el of allElements) {
+          const rect = el.getBoundingClientRect();
+          
+          // *** 使用 searchRangeBottom 限制範圍 ***
+          if (rect.top >= streamingNowRect.bottom && 
+              rect.top < searchRangeBottom &&
+              rect.width > 100 && rect.height > 100 &&
+              el.offsetParent !== null) {
+            
+            const hasImage = !!el.querySelector('img');
+            const hasVideo = !!el.querySelector('video');
+            
+            // 必須包含圖片或視頻（直播卡片特徵）
+            if (hasImage || hasVideo) {
+              const distance = rect.top - streamingNowRect.bottom;
+              
+              clickableElements.push({
+                text: (el.textContent || '').trim().substring(0, 50),
+                tag: el.tagName,
+                className: el.className || '',
+                x: rect.x + rect.width / 2,
+                y: rect.y + rect.height / 2,
+                width: rect.width,
+                height: rect.height,
+                distance: distance,
+                href: el.href || '',
+                hasImage: hasImage,
+                hasVideo: hasVideo,
+                isLiveElement: false,
+                strategy: 'general'
+              });
+            }
+          }
+        }
+        console.log(`  找到 ${clickableElements.length} 個可能的元素`);
+        
+        console.log(`Found ${clickableElements.length} potential clickable elements from general search`);
+      }
+      } // ===== 跳過舊的策略代碼結束 =====
+      
+      // 新的排序邏輯（優先 LIVE 卡片）
+      clickableElements.sort((a, b) => {
+        // 優先選擇有 LIVE 標籤的卡片
+        if (a.isLiveCard && !b.isLiveCard) return -1;
+        if (!a.isLiveCard && b.isLiveCard) return 1;
+        
+        // 都是 LIVE 卡片時，選最左邊的
+        if (a.isLiveCard && b.isLiveCard) {
+          return a.cardX - b.cardX;
+        }
+        
+        // 其他情況按X座標
+        return a.cardX - b.cardX;
+      });
+      
+      
+      if (clickableElements.length === 0) {
+        console.log('No clickable elements found below Streaming Now');
+        return { found: true, hasClickable: false, candidates: candidates, debugInfo: debugInfo };
+      }
+      
+      // 輸出前5個候選元素供調試
+      console.log(`找到 ${clickableElements.length} 個可點擊元素，前5個:`);
+      clickableElements.slice(0, 5).forEach((el, idx) => {
+        const liveInfo = el.isLiveCard ? '⭐LIVE卡片' : '普通卡片';
+        console.log(`  [${idx}] ${liveInfo} ${el.tag}.${el.className || 'no-class'} 位置:(${Math.round(el.x)}, ${Math.round(el.y)}) 尺寸:${Math.round(el.width)}x${Math.round(el.height)}`);
+      });
+      
+      // 選擇第一個元素（優先級最高的）
+      const selectedElement = clickableElements[0];
+      const selectedType = selectedElement.isLiveCard ? 'LIVE卡片' : '普通卡片';
+      console.log(`✅ 選中元素: ${selectedType} ${selectedElement.tag} 位置:(${Math.round(selectedElement.x)}, ${Math.round(selectedElement.y)})`);
+      
+      // 返回完整信息，包括 found 標記和調試信息
+      return { 
+        found: true, 
+        hasClickable: true,
+        ...selectedElement,
+        candidates: candidates,
+        allClickables: clickableElements.slice(0, 10),  // 返回前10個供調試
+        debugInfo: debugInfo  // 添加調試信息
+      };
+    });
+    
+    // 檢查是否找到 Streaming Now 元素
+    if (!streamingNowInfo || !streamingNowInfo.found) {
+      const shot = path.join(debugDir, `test2-streaming-now-not-found-${timestamp}.png`);
+      await page.screenshot({ path: shot, fullPage: false }).catch(() => {});
+      
+      console.log('Streaming Now 元件未找到，候選元素數量:', streamingNowInfo?.candidates?.length || 0);
+      if (streamingNowInfo?.candidates && streamingNowInfo.candidates.length > 0) {
+        console.log('候選元素列表:', JSON.stringify(streamingNowInfo.candidates, null, 2));
+      }
+      
+      return {
+        clicked: false,
+        newPageOpened: false,
+        howToPlayClosed: false,
+        message: 'Streaming Now 元件未找到',
+        candidates: streamingNowInfo?.candidates || [],
+        debug: { screenshot: shot, debugScreenshot: debugShot }
+      };
+    }
+    
+    // 檢查是否找到可點擊元素
+    if (!streamingNowInfo.hasClickable || !streamingNowInfo.x || !streamingNowInfo.y) {
+      const shot = path.join(debugDir, `test2-streaming-now-no-clickable-${timestamp}.png`);
+      await page.screenshot({ path: shot, fullPage: false }).catch(() => {});
+      
+      console.log('❌ Streaming Now 下方沒有找到可點擊的元素');
+      
+      // 輸出調試信息
+      if (streamingNowInfo.debugInfo) {
+        console.log('===== LIVE 元素搜尋調試信息 =====');
+        console.log(`掃描的元素總數: ${streamingNowInfo.debugInfo.totalScanned}`);
+        console.log(`搜尋範圍高度: ${streamingNowInfo.debugInfo.searchRangeHeight || 'N/A'}px`);
+        console.log(`找到的卡片總數: ${streamingNowInfo.debugInfo.cardsFound || 0}`);
+        console.log(`其中帶LIVE標籤的卡片: ${streamingNowInfo.debugInfo.cardsWithLive || 0}`);
+        if (streamingNowInfo.debugInfo.strategies && streamingNowInfo.debugInfo.strategies.length > 0) {
+          console.log('使用的搜尋策略:');
+          streamingNowInfo.debugInfo.strategies.forEach(s => console.log(`  - ${s}`));
+        }
+        if (streamingNowInfo.debugInfo.allCardsFound && streamingNowInfo.debugInfo.allCardsFound.length > 0) {
+          console.log('找到的所有卡片（前5個）:');
+          streamingNowInfo.debugInfo.allCardsFound.forEach((c, idx) => {
+            console.log(`  [${idx}] 位置:(${c.x}, ${c.y}) 尺寸:${c.width}x${c.height} 文字:"${c.text}"`);
+          });
+        }
+        console.log(`最終找到的元素數量: ${streamingNowInfo.debugInfo.liveElementsCount || 0}`);
+        if (streamingNowInfo.debugInfo.liveElementsDetails && streamingNowInfo.debugInfo.liveElementsDetails.length > 0) {
+          console.log('元素詳情（按X座標排序）:');
+          streamingNowInfo.debugInfo.liveElementsDetails.forEach((le, idx) => {
+            console.log(`  [${idx}] 策略:${le.strategy} 位置:(${le.x}, ${le.y}) 文字:"${le.text}" bgColor:${le.bgColor}`);
+          });
+        }
+        console.log(`找到的父容器數量: ${streamingNowInfo.debugInfo.liveContainersCount || 0}`);
+        console.log('================================');
+      }
+      
+      console.log('Streaming Now 候選元素列表:', JSON.stringify(streamingNowInfo.candidates || [], null, 2));
+      if (streamingNowInfo.allClickables && streamingNowInfo.allClickables.length > 0) {
+        console.log('找到的所有潛在可點擊元素（前10個）:');
+        streamingNowInfo.allClickables.forEach((el, idx) => {
+          console.log(`  [${idx}] ${el.tag}.${el.className || 'no-class'} "${el.text}" clickable:${el.isClickable} size:${Math.round(el.width)}x${Math.round(el.height)}`);
+        });
+      }
+      
+      return {
+        clicked: false,
+        newPageOpened: false,
+        howToPlayClosed: false,
+        message: 'Streaming Now 下方沒有可點擊的元素',
+        candidates: streamingNowInfo?.candidates || [],
+        allClickables: streamingNowInfo?.allClickables || [],
+        debugInfo: streamingNowInfo?.debugInfo || {},
+        debug: { screenshot: shot, debugScreenshot: debugShot }
+      };
+    }
+    
+    // 輸出調試信息到 Node.js 日誌
+    if (streamingNowInfo.debugInfo) {
+      console.log('===== LIVE 元素搜尋調試信息 =====');
+      console.log(`掃描的元素總數: ${streamingNowInfo.debugInfo.totalScanned}`);
+      console.log(`找到的 LIVE 文字元素: ${streamingNowInfo.debugInfo.liveFound || 0}`);
+      console.log(`找到的紅色背景元素: ${streamingNowInfo.debugInfo.redBackgroundFound || 0}`);
+      console.log(`找到的卡片容器: ${streamingNowInfo.debugInfo.cardContainersFound || 0}`);
+      if (streamingNowInfo.debugInfo.strategies && streamingNowInfo.debugInfo.strategies.length > 0) {
+        console.log('使用的搜尋策略:');
+        streamingNowInfo.debugInfo.strategies.forEach(s => console.log(`  - ${s}`));
+      }
+      if (streamingNowInfo.debugInfo.allCardsFound && streamingNowInfo.debugInfo.allCardsFound.length > 0) {
+        console.log('找到的所有卡片（前5個）:');
+        streamingNowInfo.debugInfo.allCardsFound.forEach((c, idx) => {
+          console.log(`  [${idx}] 位置:(${c.x}, ${c.y}) 尺寸:${c.width}x${c.height} 文字:"${c.text}"`);
+        });
+      }
+      console.log(`最終找到的元素數量: ${streamingNowInfo.debugInfo.liveElementsCount || 0}`);
+      if (streamingNowInfo.debugInfo.liveElementsDetails && streamingNowInfo.debugInfo.liveElementsDetails.length > 0) {
+        console.log('元素詳情（按X座標排序）:');
+        streamingNowInfo.debugInfo.liveElementsDetails.forEach((le, idx) => {
+          console.log(`  [${idx}] 策略:${le.strategy} 位置:(${le.x}, ${le.y}) 文字:"${le.text}" bgColor:${le.bgColor}`);
+        });
+      }
+      console.log(`找到的父容器數量: ${streamingNowInfo.debugInfo.liveContainersCount || 0}`);
+      console.log('================================');
+    }
+    
+    console.log(`Found clickable element below Streaming Now: ${streamingNowInfo.tag} "${streamingNowInfo.text}"`);
+    if (streamingNowInfo.isLiveElement) {
+      console.log(`✅ 這是一個 LIVE 元素！LIVE 標記位置: (${streamingNowInfo.liveX}, ${streamingNowInfo.liveY})`);
+    }
+    
+    const shotBeforeClick = path.join(debugDir, `test2-before-click-${timestamp}.png`);
+    await page.screenshot({ path: shotBeforeClick, fullPage: false }).catch(() => {});
+    
+    // Step 3: 點擊元素並等待新頁面
+    console.log(`Clicking element at (${Math.round(streamingNowInfo.x)}, ${Math.round(streamingNowInfo.y)})...`);
+    
+    // 監聽新頁面打開
+    const newPagePromise = context.waitForEvent('page', { timeout: 10000 });
+    
+    await page.mouse.click(streamingNowInfo.x, streamingNowInfo.y);
+    
+    let newPage;
+    let isNewWindow = false;
+    
+    try {
+      newPage = await newPagePromise;
+      isNewWindow = true;
+      console.log('✅ 新視窗已開啟！');
+      await newPage.waitForLoadState('domcontentloaded', { timeout: 15000 });
+      await newPage.waitForTimeout(2000);
+    } catch (e) {
+      console.log('❌ 沒有開啟新視窗');
+      
+      // 檢查是否在同一頁面導航
+      await page.waitForTimeout(2000);
+      const currentUrl = page.url();
+      
+      if (currentUrl !== url) {
+        console.log(`⚠️  同頁面導航偵測到（原始: ${url}, 現在: ${currentUrl}）`);
+        
+        const shotSamePage = path.join(debugDir, `test2-same-page-navigation-${timestamp}.png`);
+        await page.screenshot({ path: shotSamePage, fullPage: false }).catch(() => {});
+        
+        return {
+          clicked: true,
+          newPageOpened: false,
+          howToPlayClosed: false,
+          message: '❌ 點擊了元件但沒有開啟新視窗（只在同頁面導航）',
+          originalUrl: url,
+          navigatedUrl: currentUrl,
+          clickedElement: {
+            tag: streamingNowInfo.tag,
+            text: streamingNowInfo.text,
+            className: streamingNowInfo.className
+          },
+          debug: { 
+            screenshotBeforeClick: shotBeforeClick,
+            screenshotSamePageNavigation: shotSamePage
+          }
+        };
+      } else {
+        console.log('❌ 點擊後沒有任何導航');
+        return {
+          clicked: true,
+          newPageOpened: false,
+          howToPlayClosed: false,
+          message: '❌ 點擊了元件但沒有開啟新視窗或導航',
+          clickedElement: {
+            tag: streamingNowInfo.tag,
+            text: streamingNowInfo.text,
+            className: streamingNowInfo.className
+          },
+          debug: { screenshotBeforeClick: shotBeforeClick }
+        };
+      }
+    }
+    
+    // 只有真正開啟新視窗時才會執行到這裡
+    const shotNewPage = path.join(debugDir, `test2-new-page-${timestamp}.png`);
+    await newPage.screenshot({ path: shotNewPage, fullPage: true }).catch(() => {});
+    
+    const newPageUrl = newPage.url();
+    console.log(`✅ 新視窗 URL: ${newPageUrl}`);
+    
+    // Step 4: 在新視窗中找到 "How to Play" 並點擊 X 關閉
+    console.log('在新視窗中尋找 "How to Play" 對話框...');
+    
+    const howToPlayResult = await checkHowToPlayDialog(newPage, timestamp);
+    
+    return {
+      clicked: true,
+      newPageOpened: true,
+      newPageUrl: newPageUrl,
+      clickedElement: {
+        tag: streamingNowInfo.tag,
+        text: streamingNowInfo.text,
+        className: streamingNowInfo.className
+      },
+      howToPlayClosed: howToPlayResult.closed,
+      howToPlayMessage: howToPlayResult.message,
+      message: howToPlayResult.closed ? 
+        '✅ 成功點擊元件、開啟新視窗並關閉 How to Play 視窗' :
+        `⚠️  成功點擊元件並開啟新視窗，但 ${howToPlayResult.message}`,
+      debug: {
+        screenshotBeforeClick: shotBeforeClick,
+        screenshotNewPage: shotNewPage,
+        ...howToPlayResult.debug
+      }
+    };
+    
+  } catch (error) {
+    console.error('Streaming Now 點擊測試錯誤:', error);
+    return {
+      clicked: false,
+      newPageOpened: false,
+      howToPlayClosed: false,
+      error: String(error && error.message || error),
+      message: `測試失敗: ${error && error.message || error}`
+    };
+  }
+}
+
+// 4️⃣ 在新頁面找到並關閉 How to Play 視窗
+async function checkHowToPlayDialog(page, timestamp) {
+  console.log('開始 How to Play 關閉測試...');
+  
+  try {
+    await page.waitForTimeout(1500);
+    
+    const shotBefore = path.join(debugDir, `test2-how-to-play-before-${timestamp}.png`);
+    await page.screenshot({ path: shotBefore, fullPage: false }).catch(() => {});
+    
+    // 找到 "How to Play" 視窗
+    const howToPlayInfo = await page.evaluate(() => {
+      // 尋找包含 "How to Play" 文字的對話框或容器
+      const allElements = Array.from(document.querySelectorAll('*'));
+      let howToPlayElement = null;
+      
+      for (const el of allElements) {
+        const text = (el.textContent || '').toLowerCase();
+        const className = (el.className || '').toString().toLowerCase();
+        
+        // 尋找 "How to Play" 文字
+        if ((text.includes('how to play') || className.includes('howtoplay') || className.includes('how-to-play')) &&
+            el.offsetParent !== null) {
+          howToPlayElement = el;
+          console.log(`Found How to Play element: ${el.tagName}, class: "${el.className}"`);
+          break;
+        }
+      }
+      
+      if (!howToPlayElement) {
+        console.log('How to Play element not found');
+        return { found: false };
+      }
+      
+      const rect = howToPlayElement.getBoundingClientRect();
+      
+      // 找到關閉按鈕（X）
+      // 先在 How to Play 元素內找
+      let closeButton = null;
+      const potentialCloseButtons = Array.from(howToPlayElement.querySelectorAll('button, [role="button"], svg, [onclick], [class*="close" i]'));
+      
+      for (const btn of potentialCloseButtons) {
+        const btnRect = btn.getBoundingClientRect();
+        if (btnRect.width === 0 || btnRect.height === 0) continue;
+        
+        const btnText = (btn.textContent || '').trim();
+        const ariaLabel = (btn.getAttribute('aria-label') || '').toLowerCase();
+        const className = (btn.className || '').toString().toLowerCase();
+        
+        // 檢查是否為關閉按鈕
+        const isCloseButton = btnText === '×' || btnText === 'X' || btnText === '✕' ||
+                             ariaLabel.includes('close') || ariaLabel.includes('關閉') ||
+                             className.includes('close');
+        
+        // 另外檢查位置：通常 X 在右上角
+        const isTopRight = btnRect.right > rect.right - 100 && btnRect.top < rect.top + 100;
+        
+        if (isCloseButton || isTopRight) {
+          closeButton = btn;
+          console.log(`Found close button: ${btn.tagName}, text: "${btnText}", class: "${className}"`);
+          break;
+        }
+      }
+      
+      // 如果在內部沒找到，往上找到對話框容器的關閉按鈕
+      if (!closeButton) {
+        // 找到父級對話框
+        let dialogParent = howToPlayElement;
+        for (let i = 0; i < 5; i++) {
+          if (!dialogParent.parentElement) break;
+          dialogParent = dialogParent.parentElement;
+          
+          const dialogClass = (dialogParent.className || '').toString().toLowerCase();
+          if (dialogClass.includes('dialog') || dialogClass.includes('modal') || dialogClass.includes('popup')) {
+            // 在對話框容器中找關閉按鈕
+            const dialogCloseButtons = Array.from(dialogParent.querySelectorAll('button, [role="button"], svg, [onclick], [class*="close" i]'));
+            
+            for (const btn of dialogCloseButtons) {
+              const btnRect = btn.getBoundingClientRect();
+              if (btnRect.width === 0 || btnRect.height === 0) continue;
+              
+              const btnText = (btn.textContent || '').trim();
+              const ariaLabel = (btn.getAttribute('aria-label') || '').toLowerCase();
+              const className = (btn.className || '').toString().toLowerCase();
+              
+              const isCloseButton = btnText === '×' || btnText === 'X' || btnText === '✕' ||
+                                   ariaLabel.includes('close') || ariaLabel.includes('關閉') ||
+                                   className.includes('close');
+              
+              if (isCloseButton) {
+                closeButton = btn;
+                console.log(`Found close button in parent dialog: ${btn.tagName}, text: "${btnText}"`);
+                break;
+              }
+            }
+            
+            if (closeButton) break;
+          }
+        }
+      }
+      
+      if (!closeButton) {
+        console.log('Close button not found in How to Play dialog');
+        return { found: true, hasCloseButton: false };
+      }
+      
+      const closeRect = closeButton.getBoundingClientRect();
+      
+      return {
+        found: true,
+        hasCloseButton: true,
+        closeButton: {
+          x: closeRect.x + closeRect.width / 2,
+          y: closeRect.y + closeRect.height / 2,
+          text: closeButton.textContent || 'Close Icon',
+          tag: closeButton.tagName,
+          className: closeButton.className || ''
+        }
+      };
+    });
+    
+    if (!howToPlayInfo.found) {
+      console.log('How to Play 視窗未找到');
+      return {
+        closed: false,
+        message: 'How to Play 視窗未找到',
+        debug: { screenshot: shotBefore }
+      };
+    }
+    
+    if (!howToPlayInfo.hasCloseButton) {
+      console.log('How to Play 視窗找到但關閉按鈕未找到');
+      return {
+        closed: false,
+        message: 'How to Play 視窗找到但關閉按鈕未找到',
+        debug: { screenshot: shotBefore }
+      };
+    }
+    
+    console.log(`Found How to Play close button at (${Math.round(howToPlayInfo.closeButton.x)}, ${Math.round(howToPlayInfo.closeButton.y)})`);
+    
+    // 點擊關閉按鈕
+    await page.mouse.click(howToPlayInfo.closeButton.x, howToPlayInfo.closeButton.y);
+    await page.waitForTimeout(1000);
+    
+    const shotAfter = path.join(debugDir, `test2-how-to-play-after-${timestamp}.png`);
+    await page.screenshot({ path: shotAfter, fullPage: false }).catch(() => {});
+    
+    console.log('Successfully clicked How to Play close button');
+    
+    return {
+      closed: true,
+      message: '已成功關閉 How to Play 視窗',
+      closeButton: howToPlayInfo.closeButton,
+      debug: {
+        screenshotBefore: shotBefore,
+        screenshotAfter: shotAfter
+      }
+    };
+    
+  } catch (error) {
+    console.error('How to Play 關閉測試錯誤:', error);
+    return {
+      closed: false,
+      error: String(error && error.message || error),
+      message: `How to Play 關閉測試失敗: ${error && error.message || error}`
+    };
+  }
+}
+
+module.exports = { checkWebsite };
+

@@ -1,0 +1,72 @@
+[2025-11-20T03:18:45.427Z] 📝 日誌文件已創建: C:\Users\penny\OneDrive\Desktop\stream-lobby\logs\server-2025-11-20T03-18-45-426Z.log
+[2025-11-20T03:18:45.432Z] 
+🚀 檢查工具伺服器運行在 http://localhost:3000
+[2025-11-20T03:18:45.433Z] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2025-11-20T03:18:45.434Z] 📋 測試工具 1 (7項測試): http://localhost:3000/
+[2025-11-20T03:18:45.434Z] 🎮 測試工具 2 (10項測試): http://localhost:3000/test2.html
+[2025-11-20T03:18:45.434Z] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2025-11-20T03:18:45.435Z] 📝 所有日誌將保存到: C:\Users\penny\OneDrive\Desktop\stream-lobby\logs\server-2025-11-20T03-18-45-426Z.log
+
+[2025-11-20T03:19:24.329Z] 開始 Stream n'Spin 彈窗測試...
+[2025-11-20T03:19:27.309Z] 開始更名功能測試 (點擊帳號名稱 -> 開啟視窗 -> 點擊 X 關閉)...
+[2025-11-20T03:19:29.769Z] 開始排序按鈕測試...
+[2025-11-20T03:19:35.570Z] 開始 Promotion 圖片檢查...
+[2025-11-20T03:19:38.129Z] 開始 All Streamers 圖片檢查...
+[2025-11-20T03:19:39.644Z] 開始 All Streamers 排列按鈕測試...
+[2025-11-20T03:19:46.389Z] 開始直播主介紹卡片點擊測試...
+[2025-11-20T03:19:53.932Z] 開始 Lobby 送禮測試...
+[2025-11-20T03:19:55.182Z] 禮物按鈕查找結果: {
+  "found": true,
+  "x": 713.0390625,
+  "y": 380.84375,
+  "element": "SPAN",
+  "isClickable": false,
+  "hasGiftKeyword": false,
+  "debug": "找到 1 個候選元素，選擇: SPAN (可點擊: false, 禮物關鍵字: false, 優先級: 0)"
+}
+[2025-11-20T03:19:57.701Z] 方法1失敗: page.click: Timeout 2000ms exceeded.
+Call log:
+  - waiting for locator('#root > div > div > div._streamerInfo_1upir_82 > div._streamerDetails_1upir_205 > div > img')
+
+[2025-11-20T03:19:58.022Z] 方法2成功: 點擊父元素
+[2025-11-20T03:19:59.039Z] 禮物按鈕已點擊，等待禮物清單出現...
+[2025-11-20T03:20:00.060Z] 禮物清單檢查結果 (嘗試 1/5): {
+  "overlayFound": false,
+  "overlayVisible": false,
+  "giftGridFound": false,
+  "giftGridVisible": false,
+  "giftOverlaysFound": 0,
+  "giftOverlaysVisible": 0
+}
+[2025-11-20T03:20:01.076Z] 禮物清單檢查結果 (嘗試 2/5): {
+  "overlayFound": false,
+  "overlayVisible": false,
+  "giftGridFound": false,
+  "giftGridVisible": false,
+  "giftOverlaysFound": 0,
+  "giftOverlaysVisible": 0
+}
+[2025-11-20T03:20:02.091Z] 禮物清單檢查結果 (嘗試 3/5): {
+  "overlayFound": false,
+  "overlayVisible": false,
+  "giftGridFound": false,
+  "giftGridVisible": false,
+  "giftOverlaysFound": 0,
+  "giftOverlaysVisible": 0
+}
+[2025-11-20T03:20:03.101Z] 禮物清單檢查結果 (嘗試 4/5): {
+  "overlayFound": false,
+  "overlayVisible": false,
+  "giftGridFound": false,
+  "giftGridVisible": false,
+  "giftOverlaysFound": 0,
+  "giftOverlaysVisible": 0
+}
+[2025-11-20T03:20:04.109Z] 禮物清單檢查結果 (嘗試 5/5): {
+  "overlayFound": false,
+  "overlayVisible": false,
+  "giftGridFound": false,
+  "giftGridVisible": false,
+  "giftOverlaysFound": 0,
+  "giftOverlaysVisible": 0
+}

@@ -1,0 +1,21 @@
+{
+  "name": "stream-lobby",
+  "version": "1.0.0",
+  "description": "Stream Lobby - 網頁自動化測試工具",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "playwright": "^1.48.2"
+  }
+}
+
+
+
+
+
+
+

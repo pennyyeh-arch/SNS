@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Stream LiveSlot - 測試工具 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0f0f23;
+            color: #e0e0e0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .left-panel {
+            width: 400px;
+            background: #1a1a2e;
+            border-right: 1px solid #2a2a3e;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .header {
+            padding: 20px;
+            border-bottom: 1px solid #2a2a3e;
+            background: linear-gradient(135deg, #ff7eb3 0%, #ff758c 100%);
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header .subtitle {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 13px;
+        }
+
+        .nav-links {
+            padding: 15px 20px;
+            background: #16213e;
+            border-bottom: 1px solid #2a2a3e;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 8px 12px;
+            background: #0f0f23;
+            border: 1px solid #2a2a3e;
+            border-radius: 6px;
+            color: #e0e0e0;
+            text-decoration: none;
+            text-align: center;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: #2a2a3e;
+            border-color: #ff7eb3;
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #ff7eb3 0%, #ff758c 100%);
+            border-color: transparent;
+        }
+
+        .controls {
+            padding: 20px;
+            border-bottom: 1px solid #2a2a3e;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b0b0b0;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            background: #0f0f23;
+            border: 1px solid #2a2a3e;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #ff7eb3;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ff7eb3 0%, #ff758c 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 118, 156, 0.4);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #c82333;
+        }
+
+        .btn:disabled {
+            background: #2a2a3e;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .test-items {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-card {
+            background: #16213e;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ff7eb3;
+        }
+
+        .status-card h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .status-card p {
+            font-size: 13px;
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        .test-item {
+            background: #16213e;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .test-item.pending {
+            border-left-color: #6c757d;
+        }
+
+        .test-item.success {
+            border-left-color: #28a745;
+        }
+
+        .test-item.failed {
+            border-left-color: #dc3545;
+        }
+
+        .test-item.error {
+            border-left-color: #dc3545;
+        }
+
+        .test-item.warning {
+            border-left-color: #ffc107;
+        }
+
+        .test-item.skipped {
+            border-left-color: #ffc107;
+            opacity: 0.7;
+        }
+
+        .test-item-label {
+            font-size: 13px;
+            color: #e0e0e0;
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .test-item-status {
+            font-size: 20px;
+        }
+
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #16213e;
+        }
+
+        .preview-header {
+            padding: 15px 20px;
+            background: #1a1a2e;
+            border-bottom: 1px solid #2a2a3e;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .preview-title {
+            font-size: 14px;
+            color: #b0b0b0;
+        }
+
+        .preview-url {
+            font-size: 12px;
+            color: #ff7eb3;
+            font-family: monospace;
+        }
+
+        .preview-content {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #666;
+            font-size: 14px;
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+            padding: 0 30px;
+        }
+
+        .loading-spinner {
+            border: 3px solid #2a2a3e;
+            border-top: 3px solid #ff7eb3;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .summary {
+            padding: 20px;
+            background: #16213e;
+            border-top: 1px solid #2a2a3e;
+        }
+
+        .summary h3 {
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .summary-stats {
+            display: flex;
+            gap: 15px;
+        }
+
+        .stat {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: #0f0f23;
+            border-radius: 6px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #b0b0b0;
+            text-transform: uppercase;
+        }
+
+        .stat.total .stat-value { color: #ff7eb3; }
+        .stat.pass .stat-value { color: #28a745; }
+        .stat.fail .stat-value { color: #dc3545; }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="header">
+                <h1>🎮 Stream LiveSlot</h1>
+                <p class="subtitle">測試工具 2 - Stream n'Spin 流程</p>
+            </div>
+
+            <div class="nav-links">
+                <a href="/" class="nav-btn">📋 測試工具 1</a>
+                <a href="/test2.html" class="nav-btn active">🎮 測試工具 2</a>
+            </div>
+
+            <div class="controls">
+                <div class="input-group">
+                    <label for="urlInput">測試目標網址</label>
+                    <input 
+                        type="text" 
+                        id="urlInput" 
+                        placeholder="http://lobby.sns.lab/?isAgentApi"
+                        value="http://lobby.sns.lab/?isAgentApi"
+                    >
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" id="startBtn" onclick="startTest2()">🚀 開始測試</button>
+                    <button class="btn btn-danger" id="stopBtn" onclick="stopTest()" disabled>⏹️ 停止測試</button>
+                </div>
+            </div>
+
+            <div class="test-items">
+                <div class="section-title">🎯 測試項目（依序進行）</div>
+                <div class="status-card">
+                    <h3>📌 測試流程說明</h3>
+                    <p>
+                        1️⃣ Stream n'Spin 彈窗確認<br>
+                        2️⃣ Streaming Now 區塊點擊 LIVE 卡片<br>
+                        3️⃣ 檢查是否開啟新視窗<br>
+                        4️⃣ 讀取 window.gVersion<br>
+                        5️⃣ 在新視窗中關閉「Cara Bermain / MULAI BERMAIN」彈窗<br>
+                        6️⃣~1️⃣2️⃣ 檢查下注/Spin 控制按鈕（MAX、MIN、+/-、Spin Round、PLAY）<br>
+                        1️⃣3️⃣ 送禮流程測試<br>
+                        1️⃣4️⃣ 聊天視窗輸入測試<br>
+                        ⚠️ 任一測試失敗時仍會繼續執行後續項目，結果逐項呈現
+                    </p>
+                </div>
+
+                <div id="testList" class="hidden">
+                    <div class="test-item pending" data-test="streamNSpinDialog" data-label="1️⃣ Stream n'Spin 彈窗測試">
+                        <span class="test-item-label">1️⃣ Stream n'Spin 彈窗測試</span>
+                        <span class="test-item-status">⏸️</span>
+                        </div>
+                    <div class="test-item pending" data-test="liveCardClick" data-label="2️⃣ LIVE 卡片點擊測試">
+                        <span class="test-item-label">2️⃣ LIVE 卡片點擊測試</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="newWindow" data-label="3️⃣ 新視窗開啟檢查">
+                        <span class="test-item-label">3️⃣ 新視窗開啟檢查</span>
+                        <span class="test-item-status">⏸️</span>
+                        </div>
+                    <div class="test-item pending" data-test="gVersion" data-label="4️⃣ gVersion 檢測">
+                        <span class="test-item-label">4️⃣ gVersion 檢測</span>
+                        <span class="test-item-status">⏸️</span>
+                        </div>
+                    <div class="test-item pending" data-test="howToPlay" data-label="5️⃣ Cara Bermain / MULAI BERMAIN">
+                        <span class="test-item-label">5️⃣ Cara Bermain / MULAI BERMAIN</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="maxButton3M" data-label="6️⃣ MAX 3,000,000 按鈕測試">
+                        <span class="test-item-label">6️⃣ MAX 3,000,000 按鈕測試</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="minButton200" data-label="7️⃣ MIN 200 按鈕測試">
+                        <span class="test-item-label">7️⃣ MIN 200 按鈕測試</span>
+                        <span class="test-item-status">⏸️</span>
+                        </div>
+                    <div class="test-item pending" data-test="plusButton28" data-label="8️⃣ + 按鈕點擊 28 次">
+                        <span class="test-item-label">8️⃣ + 按鈕點擊 28 次</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="minusButton28" data-label="9️⃣ - 按鈕點擊 28 次">
+                        <span class="test-item-label">9️⃣ - 按鈕點擊 28 次</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="spinRoundPlus4" data-label="🔟 Spin Round + 4 次">
+                        <span class="test-item-label">🔟 Spin Round + 4 次</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="spinRoundMinus5" data-label="1️⃣1️⃣ Spin Round - 5 次">
+                        <span class="test-item-label">1️⃣1️⃣ Spin Round - 5 次</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="playButton" data-label="1️⃣2️⃣ 綠色 PLAY 按鈕">
+                        <span class="test-item-label">1️⃣2️⃣ 綠色 PLAY 按鈕</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="giftTest" data-label="1️⃣3️⃣ 送禮流程測試">
+                        <span class="test-item-label">1️⃣3️⃣ 送禮流程測試</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="chatInput" data-label="1️⃣5️⃣ 聊天視窗輸入">
+                        <span class="test-item-label">1️⃣5️⃣ 聊天視窗輸入</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="spinBalance" data-label="1️⃣6️⃣ Spin 20次 Balance計算">
+                        <span class="test-item-label">1️⃣6️⃣ Spin 20次 Balance計算</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary">
+                <h3>測試結果摘要</h3>
+                <div class="summary-stats">
+                    <div class="stat total">
+                        <div class="stat-value" id="totalCount">0</div>
+                        <div class="stat-label">測試項目</div>
+                    </div>
+                    <div class="stat pass">
+                        <div class="stat-value" id="passCount">0</div>
+                        <div class="stat-label">通過</div>
+                    </div>
+                    <div class="stat fail">
+                        <div class="stat-value" id="failCount">0</div>
+                        <div class="stat-label">失敗</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="preview-header">
+                <span class="preview-title">📺 測試目標預覽</span>
+                <span class="preview-url" id="previewUrl">等待輸入測試網址...</span>
+            </div>
+            <div class="preview-content">
+                <div class="preview-placeholder">
+                    <div class="loading-spinner hidden" id="loadingSpinner"></div>
+                    <span id="placeholderText">等待開始測試...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isTestRunning = false;
+
+        function startTest2() {
+            const urlInput = document.getElementById('urlInput');
+            const startBtn = document.getElementById('startBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const placeholderText = document.getElementById('placeholderText');
+            const testList = document.getElementById('testList');
+            const previewUrl = document.getElementById('previewUrl');
+
+            const url = urlInput.value.trim();
+            if (!url) {
+                alert('請輸入測試目標網址');
+                return;
+            }
+
+            isTestRunning = true;
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            loadingSpinner.classList.remove('hidden');
+            placeholderText.textContent = '正在執行測試...';
+            previewUrl.textContent = url;
+            testList.classList.remove('hidden');
+
+            resetTestItems();
+            updateSummary(0, 0, 0);
+
+            fetch('/api/check2', {
+                    method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url })
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`Server error: ${response.status}`);
+                return response.json();
+            })
+            .then(data => displayTestResults(data))
+            .catch(error => {
+                console.error('Test tool 2 error:', error);
+                placeholderText.textContent = `❌ 測試失敗: ${error.message}`;
+                alert(`測試執行失敗: ${error.message}`);
+            })
+            .finally(() => {
+                isTestRunning = false;
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                loadingSpinner.classList.add('hidden');
+            });
+        }
+
+        function stopTest() {
+            isTestRunning = false;
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+            document.getElementById('placeholderText').textContent = '測試已手動停止';
+        }
+
+        function resetTestItems() {
+            document.querySelectorAll('.test-item').forEach(item => {
+                item.className = 'test-item pending';
+                const label = item.querySelector('.test-item-label');
+                const status = item.querySelector('.test-item-status');
+                if (label && item.dataset.label) {
+                    label.textContent = item.dataset.label;
+                }
+                if (status) status.textContent = '⏸️';
+            });
+        }
+
+        function setTestItemStatus(id, state, text) {
+            const item = document.querySelector(`[data-test="${id}"]`);
+            if (!item) return;
+            const label = item.querySelector('.test-item-label');
+            const status = item.querySelector('.test-item-status');
+            if (label) label.textContent = text;
+            if (status) {
+                status.textContent = state === 'success' ? '✅' : state === 'warning' ? '⚠️' : '❌';
+            }
+            let className = 'test-item';
+            if (state === 'success') className += ' success';
+            else if (state === 'warning') className += ' warning';
+            else className += ' error';
+            item.className = className;
+        }
+
+        function getBaseLabel(id) {
+            const item = document.querySelector(`[data-test="${id}"]`);
+            return (item && item.dataset.label) ? item.dataset.label : id;
+        }
+
+        function updateTestItemStatus(testId, result) {
+            const item = document.querySelector(`.test-item[data-test="${testId}"]`);
+            if (!item) return;
+
+            const statusSpan = item.querySelector('.test-item-status');
+            if (!statusSpan) return;
+
+            // 清掉舊狀態
+            item.classList.remove('pending', 'success', 'failed', 'skipped');
+
+            // 如果還沒有結果（例如尚未開始），維持 pending
+            if (!result) {
+                item.classList.add('pending');
+                statusSpan.textContent = '⏸️';
+                statusSpan.removeAttribute('title');
+                return;
+            }
+
+            // 有結果：先根據 success / failed 切
+            if (result.success) {
+                item.classList.add('success');
+
+                // 這裡再看 howToPlayClosed
+                // false 但 success=true = 「本次未出現，略過」
+                if (result.hasOwnProperty('howToPlayClosed') && result.howToPlayClosed === false) {
+                    item.classList.add('skipped');
+                    statusSpan.textContent = '⏭️';
+                    statusSpan.title = result.message || 'Cara Bermain 對話框本次未出現，略過關閉步驟。';
+                } else {
+                    statusSpan.textContent = '✅';
+                    statusSpan.title = result.message || '已成功關閉 Cara Bermain 對話框。';
+                }
+            } else {
+                // 失敗狀態
+                item.classList.add('failed');
+                statusSpan.textContent = '❌';
+                statusSpan.title = result.message || 'Cara Bermain 關閉失敗。';
+            }
+        }
+
+        function applyTestResults(results) {
+            // 第四點 Cara Bermain / MULAI BERMAIN 的卡片
+            if (results.howToPlay) {
+                updateTestItemStatus('howToPlay', results.howToPlay);
+            }
+
+            // 其它點例如：betMin、betPlus、spinRound、playButton...照樣呼叫
+            // updateTestItemStatus('betMin', results.betMin);
+            // ...
+        }
+
+        function updateSummary(total, pass, fail) {
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('passCount').textContent = pass;
+            document.getElementById('failCount').textContent = fail;
+        }
+
+        function describeCard(clickedElement) {
+            if (!clickedElement) return '';
+            const parts = [];
+            if (clickedElement.isLiveCard) parts.push('LIVE 卡片');
+            if (clickedElement.tag) parts.push(clickedElement.tag);
+            if (clickedElement.text) parts.push(`內容: ${clickedElement.text.slice(0, 30)}`);
+            return parts.join(' / ');
+        }
+
+        function displayTestResults(data) {
+            const placeholderText = document.getElementById('placeholderText');
+            const checks = data?.checks || {};
+            const streaming = checks.streamingNowClick;
+
+            let stats = { total: 0, pass: 0, fail: 0 };
+
+            const recordResult = (id, passed, opts = {}) => {
+                const base = getBaseLabel(id);
+                let text = base;
+                if (passed) {
+                    text += opts.successMsg ? ` ✓ ${opts.successMsg}` : ' ✓';
+                    setTestItemStatus(id, 'success', text);
+                    stats.pass++;
+                } else {
+                    text += opts.failMsg ? ` ✗ ${opts.failMsg}` : ' ✗';
+                    setTestItemStatus(id, opts.allowWarning ? 'warning' : 'error', text);
+                    stats.fail++;
+                }
+                stats.total++;
+            };
+
+            try {
+                if (checks.streamNSpinDialog) {
+                    const popup = checks.streamNSpinDialog;
+                    if (popup.found) {
+                        recordResult('streamNSpinDialog', !!popup.clicked, {
+                            successMsg: '已點擊 Confirm',
+                            failMsg: popup.message || '未成功點擊 Confirm'
+                        });
+                    } else {
+                        recordResult('streamNSpinDialog', true, { successMsg: '未出現彈窗（視為通過）' });
+                    }
+                } else {
+                    recordResult('streamNSpinDialog', false, { failMsg: '無測試結果' });
+                }
+
+                if (!streaming) {
+                    const reason = checks.streamingNowClick?.error || '沒有 Streaming Now 測試結果';
+                    ['liveCardClick','newWindow','howToPlay','gVersion','maxButton3M','minButton200','plusButton28','minusButton28','spinRoundPlus4','spinRoundMinus5','playButton','giftTest','chatInput','spinBalance']
+                        .forEach(id => recordResult(id, false, { failMsg: reason }));
+                    updateSummary(stats.total, stats.pass, stats.fail);
+                    placeholderText.textContent = `測試完成 - ${stats.pass}/${stats.total} 項通過`;
+                    return;
+                }
+
+                recordResult('liveCardClick', !!streaming.clicked, {
+                    successMsg: describeCard(streaming.clickedElement) || '已點擊卡片',
+                    failMsg: streaming.message || streaming.error || '未成功點擊 LIVE 卡片'
+                });
+
+                recordResult('newWindow', !!streaming.newPageOpened, {
+                    successMsg: streaming.newPageUrl ? `URL: ${streaming.newPageUrl}` : '已開啟新視窗',
+                    failMsg: streaming.message || '未偵測到新視窗'
+                });
+
+                // 第4點：gVersion 檢測
+                if (streaming.gVersion) {
+                    recordResult('gVersion', !!streaming.gVersion.found, {
+                        successMsg: streaming.gVersion.version ? `版本: ${streaming.gVersion.version}` : '已找到 gVersion',
+                        failMsg: streaming.gVersion.error || '未找到 gVersion'
+                    });
+                } else {
+                    recordResult('gVersion', false, { failMsg: '無 gVersion 檢測結果' });
+                }
+
+                // 第5點使用新的 updateTestItemStatus 函數處理
+                if (streaming.howToPlayClosed !== undefined) {
+                    const message = streaming.howToPlayMessage || '';
+                    const isNotFound = message.includes('未出現') || message.includes('未找到') || message.includes('Modal 對話框未找到');
+                    
+                    // 如果對話框未出現，視為成功（跳過）
+                    const success = streaming.howToPlayClosed || isNotFound;
+                    
+                    const howToPlayResult = {
+                        success: success,
+                        howToPlayClosed: streaming.howToPlayClosed,
+                        message: message || (streaming.howToPlayClosed ? '彈窗已關閉' : (isNotFound ? 'Cara Bermain 對話框本次未出現，略過關閉步驟。' : '點擊 MULAI BERMAIN 後彈窗仍在'))
+                    };
+                    
+                    updateTestItemStatus('howToPlay', howToPlayResult);
+                    
+                    // 統計：成功或跳過都計入通過，只有真正的失敗才計入失敗
+                    if (success) {
+                        stats.pass++;
+                    } else {
+                        stats.fail++;
+                    }
+                    stats.total++;
+                } else {
+                    recordResult('howToPlay', false, {
+                        failMsg: '無測試結果'
+                    });
+                }
+
+                const handleActionResult = (id, result, fallbackLabel) => {
+                    if (!result) {
+                        recordResult(id, false, { failMsg: fallbackLabel || '無測試結果' });
+                        return;
+                    }
+                    recordResult(id, !!result.success, {
+                        successMsg: result.message || '完成',
+                        failMsg: result.message || result.error || `${fallbackLabel || '測試失敗'}`
+                    });
+                };
+
+                handleActionResult('maxButton3M', streaming.maxButton3M, 'MAX 按鈕失敗');
+                handleActionResult('minButton200', streaming.minButton200, 'MIN 按鈕失敗');
+                handleActionResult('plusButton28', streaming.plusButton28, '+ 按鈕失敗');
+                handleActionResult('minusButton28', streaming.minusButton28, '- 按鈕失敗');
+                handleActionResult('spinRoundPlus4', streaming.spinRoundPlus4, 'Spin Round + 失敗');
+                handleActionResult('spinRoundMinus5', streaming.spinRoundMinus5, 'Spin Round - 失敗');
+                handleActionResult('playButton', streaming.playButton, 'PLAY 按鈕失敗');
+                handleActionResult('giftTest', streaming.giftTest, '送禮測試失敗');
+                handleActionResult('chatInput', streaming.chatInput, '聊天測試失敗');
+                
+                // 🔟⑮ Spin 20次 Balance計算測試
+                if (checks.spinBalance) {
+                    const sb = checks.spinBalance;
+                    let spinMsg = '';
+                    if (sb.success) {
+                        spinMsg = `初始: ${sb.initialBalance?.toLocaleString() || 'N/A'} → 最終: ${sb.finalBalance?.toLocaleString() || 'N/A'}`;
+                        if (sb.totalWin > 0) spinMsg += ` | 贏得: ${sb.totalWin.toLocaleString()}`;
+                        if (sb.totalGift > 0) spinMsg += ` | 送禮: ${sb.totalGift.toLocaleString()}`;
+                        if (typeof sb.actualChange === 'number') {
+                            const sign = sb.actualChange >= 0 ? '+' : '';
+                            spinMsg += ` | 變化: ${sign}${sb.actualChange.toLocaleString()}`;
+                        }
+                    }
+                    handleActionResult('spinBalance', sb, 'Spin Balance計算失敗');
+                } else {
+                    recordResult('spinBalance', false, { failMsg: '無 Spin Balance 測試結果' });
+                }
+
+                updateSummary(stats.total, stats.pass, stats.fail);
+                placeholderText.textContent = `測試完成 - ${stats.pass}/${stats.total} 項通過`;
+            } catch (error) {
+                console.error('顯示測試結果時發生錯誤:', error);
+                placeholderText.textContent = `❌ 顯示測試結果時發生錯誤: ${error.message}`;
+            }
+        }
+
+        document.getElementById('urlInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter' && !isTestRunning) {
+                startTest2();
+            }
+        });
+    </script>
+</body>
+</html>
+

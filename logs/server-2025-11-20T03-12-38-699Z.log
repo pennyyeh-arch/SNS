@@ -1,0 +1,45 @@
+[2025-11-20T03:12:38.700Z] 📝 日誌文件已創建: C:\Users\penny\OneDrive\Desktop\stream-lobby\logs\server-2025-11-20T03-12-38-699Z.log
+[2025-11-20T03:12:38.705Z] 
+🚀 檢查工具伺服器運行在 http://localhost:3000
+[2025-11-20T03:12:38.707Z] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2025-11-20T03:12:38.707Z] 📋 測試工具 1 (7項測試): http://localhost:3000/
+[2025-11-20T03:12:38.708Z] 🎮 測試工具 2 (10項測試): http://localhost:3000/test2.html
+[2025-11-20T03:12:38.708Z] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2025-11-20T03:12:38.711Z] 📝 所有日誌將保存到: C:\Users\penny\OneDrive\Desktop\stream-lobby\logs\server-2025-11-20T03-12-38-699Z.log
+
+[2025-11-20T03:13:02.484Z] 開始 Stream n'Spin 彈窗測試...
+[2025-11-20T03:13:03.739Z] 開始更名功能測試 (點擊帳號名稱 -> 開啟視窗 -> 點擊 X 關閉)...
+[2025-11-20T03:13:06.209Z] 開始排序按鈕測試...
+[2025-11-20T03:13:11.925Z] 開始 Promotion 圖片檢查...
+[2025-11-20T03:13:14.443Z] 開始 All Streamers 圖片檢查...
+[2025-11-20T03:13:16.000Z] 開始 All Streamers 排列按鈕測試...
+[2025-11-20T03:13:21.776Z] 開始直播主介紹卡片點擊測試...
+[2025-11-20T03:13:28.274Z] 開始 Lobby 送禮測試...
+[2025-11-20T03:13:29.520Z] 禮物按鈕查找結果: {
+  "found": true,
+  "x": 1047,
+  "y": 144,
+  "element": "IMG (by selector)",
+  "isClickable": true,
+  "hasGiftKeyword": true,
+  "debug": "使用選擇器找到禮物按鈕"
+}
+[2025-11-20T03:13:30.121Z] 方法1成功: Playwright 選擇器點擊
+[2025-11-20T03:13:31.137Z] 禮物按鈕已點擊，等待禮物清單出現...
+[2025-11-20T03:13:32.154Z] 禮物清單檢查結果 (嘗試 1/5): {
+  "overlayFound": true,
+  "overlayVisible": false,
+  "giftGridFound": true,
+  "giftGridVisible": true,
+  "giftOverlaysFound": 0,
+  "giftOverlaysVisible": 0
+}
+[2025-11-20T03:13:32.155Z] 禮物清單已出現！
+[2025-11-20T03:13:32.155Z] 嘗試點擊選中的禮物...
+[2025-11-20T03:13:32.157Z] 禮物選擇結果: {
+  "found": false,
+  "clicked": false,
+  "selectedGiftFound": false,
+  "anyGiftFound": true,
+  "giftItemsCount": 9
+}

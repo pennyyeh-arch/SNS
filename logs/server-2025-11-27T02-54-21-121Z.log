@@ -1,0 +1,84 @@
+[2025-11-27T02:54:21.122Z] 📝 日誌文件已創建: C:\Users\penny\OneDrive\Desktop\stream-lobby\logs\server-2025-11-27T02-54-21-121Z.log
+[2025-11-27T02:54:21.126Z] 
+🚀 檢查工具伺服器運行在 http://localhost:3000
+[2025-11-27T02:54:21.127Z] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2025-11-27T02:54:21.128Z] 📋 測試工具 1 (7項測試): http://localhost:3000/
+[2025-11-27T02:54:21.129Z] 🎮 測試工具 2 (10項測試): http://localhost:3000/test2.html
+[2025-11-27T02:54:21.129Z] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2025-11-27T02:54:21.132Z] 📝 所有日誌將保存到: C:\Users\penny\OneDrive\Desktop\stream-lobby\logs\server-2025-11-27T02-54-21-121Z.log
+
+[2025-11-27T02:54:56.099Z] 開始執行測試項目 1/12: gVersion 版號測試
+[2025-11-27T02:54:56.107Z] 測試項目 1/12 完成
+[2025-11-27T02:54:56.108Z] 開始執行測試項目 2/12: Stream n'Spin 彈窗測試
+[2025-11-27T02:54:56.109Z] 開始 Stream n'Spin 彈窗測試...
+[2025-11-27T02:54:59.049Z] 測試項目 2/12 完成
+[2025-11-27T02:54:59.050Z] 開始執行測試項目 3/12: 更名功能測試
+[2025-11-27T02:54:59.052Z] 開始更名功能測試 (點擊帳號名稱 -> 開啟視窗 -> 點擊 X 關閉)...
+[2025-11-27T02:55:00.250Z] 找到輸入框，先清空原本的名字...
+[2025-11-27T02:55:01.163Z] 已清空原本名字，截圖: C:\Users\penny\OneDrive\Desktop\stream-lobby\debug\account-name-cleared-2025-11-27T02-54-48-780Z.png
+[2025-11-27T02:55:01.164Z] 輸入 IDN...
+[2025-11-27T02:55:02.466Z] 已輸入 IDN，截圖: C:\Users\penny\OneDrive\Desktop\stream-lobby\debug\account-name-idn-2025-11-27T02-54-48-780Z.png
+[2025-11-27T02:55:02.471Z] ✅ 偵測到錯誤訊息: Conqueror8321Balance 30,000,000Streaming Now4 viewersgame014 viewersgame025 viewersgame034 viewersgame044 viewersmanagerPromotionAll Streamersgame01game02game03game04game05managermayStream n' Spin×Please enter your nicknameNickname cannot start with "idn"Confirm
+[2025-11-27T02:55:02.472Z] 等待 1 秒...
+[2025-11-27T02:55:03.484Z] 刪除 IDN...
+[2025-11-27T02:55:04.096Z] 已刪除 IDN，截圖: C:\Users\penny\OneDrive\Desktop\stream-lobby\debug\account-name-deleted-idn-2025-11-27T02-54-48-780Z.png
+[2025-11-27T02:55:04.097Z] 生成的隨機名字: David2346
+[2025-11-27T02:55:04.098Z] 輸入隨機名字...
+[2025-11-27T02:55:05.926Z] 已輸入隨機名字，截圖: C:\Users\penny\OneDrive\Desktop\stream-lobby\debug\account-name-random-2025-11-27T02-54-48-780Z.png
+[2025-11-27T02:55:05.927Z] 尋找 Confirm 按鈕...
+[2025-11-27T02:55:05.933Z] 找到 Confirm 按鈕: Confirm
+[2025-11-27T02:55:07.166Z] 已點擊 Confirm 按鈕，截圖: C:\Users\penny\OneDrive\Desktop\stream-lobby\debug\account-name-confirmed-2025-11-27T02-54-48-780Z.png
+[2025-11-27T02:55:07.170Z] 測試項目 3/12 完成
+[2025-11-27T02:55:07.171Z] 開始執行測試項目 4/12: 排序按鈕測試
+[2025-11-27T02:55:07.172Z] 開始排序按鈕測試...
+[2025-11-27T02:55:09.959Z] 測試項目 4/12 完成
+[2025-11-27T02:55:09.960Z] 開始執行測試項目 5/12: Promotion 圖片檢查
+[2025-11-27T02:55:09.962Z] 開始 Promotion 圖片檢查...
+[2025-11-27T02:55:11.154Z] 測試項目 5/12 完成
+[2025-11-27T02:55:11.155Z] 開始執行測試項目 6/12: All Streamers 圖片檢查
+[2025-11-27T02:55:11.156Z] 開始 All Streamers 圖片檢查...
+[2025-11-27T02:55:11.949Z] 測試項目 6/12 完成
+[2025-11-27T02:55:11.949Z] 開始執行測試項目 7/12: All Streamers 排列按鈕測試
+[2025-11-27T02:55:11.950Z] 開始 All Streamers 排列按鈕測試...
+[2025-11-27T02:55:17.625Z] 測試項目 7/12 完成
+[2025-11-27T02:55:18.140Z] 開始執行測試項目 8/12: 直播主介紹卡片點擊測試
+[2025-11-27T02:55:18.145Z] 開始直播主介紹卡片點擊測試...
+[2025-11-27T02:55:24.113Z] 測試項目 8/12 完成
+[2025-11-27T02:55:24.114Z] 開始執行測試項目 9/12: 排行榜檢查
+[2025-11-27T02:55:24.114Z] 開始排行榜檢查...
+[2025-11-27T02:55:25.364Z] 滾動到 All Times 區域 (y: 340)...
+[2025-11-27T02:55:26.883Z] 移動滑鼠到 All Times 區域 (座標: 32, 340)...
+[2025-11-27T02:55:27.600Z] 已截圖 All Times 區域: C:\Users\penny\OneDrive\Desktop\stream-lobby\debug\ranking-all-times-2025-11-27T02-54-48-780Z.png
+[2025-11-27T02:55:27.601Z] 檢查 All Times 資料...
+[2025-11-27T02:55:27.605Z] 滾動到 Weekly Ranking 區域 (y: 412)...
+[2025-11-27T02:55:29.124Z] 移動滑鼠到 Weekly Ranking 區域 (座標: 50, 412)...
+[2025-11-27T02:55:29.823Z] 已截圖 Weekly Ranking 區域: C:\Users\penny\OneDrive\Desktop\stream-lobby\debug\ranking-weekly-2025-11-27T02-54-48-780Z.png
+[2025-11-27T02:55:29.824Z] 檢查 Weekly Ranking 資料...
+[2025-11-27T02:55:29.997Z] 測試項目 9/12 完成
+[2025-11-27T02:55:29.999Z] 開始執行測試項目 10/12: 直播主照片檢查
+[2025-11-27T02:55:29.999Z] 開始直播主照片檢查...
+[2025-11-27T02:55:30.069Z] 已點擊 Photo 分頁
+[2025-11-27T02:55:30.072Z] 找到 3 張照片（含破圖也算）
+[2025-11-27T02:55:30.111Z] 照片統計：總數=3，正常=0，破圖=3（第 1、2、3 張為破圖）
+[2025-11-27T02:55:30.205Z] 已點擊第 1 張照片
+[2025-11-27T02:55:31.223Z] 偵測到照片大圖彈窗，嘗試關閉...
+[2025-11-27T02:55:31.230Z] 照片大圖彈窗已透過 Esc 關閉
+[2025-11-27T02:55:31.305Z] 已點擊第 2 張照片
+[2025-11-27T02:55:32.324Z] 偵測到照片大圖彈窗，嘗試關閉...
+[2025-11-27T02:55:32.331Z] 照片大圖彈窗已透過 Esc 關閉
+[2025-11-27T02:55:32.331Z] ❌ 照片異常：共 3 張，正常 0 張，破圖 3 張（第 1、2、3 張為破圖）
+[2025-11-27T02:55:32.332Z] 測試項目 10/12 完成
+[2025-11-27T02:55:32.334Z] 開始執行測試項目 12/12: 返回按鈕測試
+[2025-11-27T02:55:32.336Z] 開始返回按鈕測試...
+[2025-11-27T02:55:33.001Z] 截圖（點擊前）: C:\Users\penny\OneDrive\Desktop\stream-lobby\debug\back-button-before-2025-11-27T02-54-48-780Z.png
+[2025-11-27T02:55:33.004Z] 找到返回按鈕，位置: {
+  "x": 317,
+  "y": 48
+}
+[2025-11-27T02:55:33.006Z] 點擊前的 URL: http://lobby.sns.lab/?isAgentApi=&token=MTc1NTI0NzA4ODk4NTMwMzU1MgQzxiGcDavqyzOuMclHEJEduAYNOenskzHIJTuh
+[2025-11-27T02:55:34.730Z] 截圖（點擊後）: C:\Users\penny\OneDrive\Desktop\stream-lobby\debug\back-button-after-2025-11-27T02-54-48-780Z.png
+[2025-11-27T02:55:34.731Z] 點擊後的 URL: http://lobby.sns.lab/?isAgentApi=&token=MTc1NTI0NzA4ODk4NTMwMzU1MgQzxiGcDavqyzOuMclHEJEduAYNOenskzHIJTuh
+[2025-11-27T02:55:34.732Z] ⚠️ 返回按鈕已點擊，但 URL 未改變
+[2025-11-27T02:55:34.733Z] 測試項目 12/12 完成
+[2025-11-27T02:55:34.733Z] 所有測試項目執行完成
+[2025-11-27T02:55:34.734Z] ✅ 所有 10 個測試項目都已執行

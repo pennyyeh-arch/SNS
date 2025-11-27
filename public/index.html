@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎬 Stream Lobby - 自動化測試工具</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: #0f0f23;
+            color: #e0e0e0;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            width: 100%;
+        }
+
+        /* Left Panel - Test Controls */
+        .left-panel {
+            width: 400px;
+            background: #1a1a2e;
+            border-right: 1px solid #2a2a3e;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .header {
+            padding: 20px;
+            border-bottom: 1px solid #2a2a3e;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .header h1 {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header .subtitle {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13px;
+        }
+
+        .nav-links {
+            padding: 15px 20px;
+            background: #16213e;
+            border-bottom: 1px solid #2a2a3e;
+            display: flex;
+            gap: 10px;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 8px 12px;
+            background: #0f0f23;
+            border: 1px solid #2a2a3e;
+            border-radius: 6px;
+            color: #e0e0e0;
+            text-decoration: none;
+            text-align: center;
+            font-size: 12px;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: #2a2a3e;
+            border-color: #667eea;
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: transparent;
+        }
+
+        .controls {
+            padding: 20px;
+            border-bottom: 1px solid #2a2a3e;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #b0b0b0;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            background: #0f0f23;
+            border: 1px solid #2a2a3e;
+            border-radius: 6px;
+            color: #e0e0e0;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover:not(:disabled) {
+            background: #c82333;
+        }
+
+        .btn:disabled {
+            background: #2a2a3e;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        /* Test Items Section */
+        .test-items {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .status-card {
+            background: #16213e;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .status-card h3 {
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .status-card p {
+            font-size: 13px;
+            color: #b0b0b0;
+            line-height: 1.6;
+        }
+
+        .test-item {
+            background: #16213e;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .test-item:hover {
+            background: #1e2a47;
+        }
+
+        .test-item.pending {
+            border-left-color: #6c757d;
+        }
+
+        .test-item.running {
+            border-left-color: #ffc107;
+            animation: pulse 2s infinite;
+        }
+
+        .test-item.success {
+            border-left-color: #28a745;
+        }
+
+        .test-item.error {
+            border-left-color: #dc3545;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .test-item-label {
+            font-size: 13px;
+            color: #e0e0e0;
+        }
+
+        .test-item-status {
+            font-size: 20px;
+        }
+
+        .summary {
+            padding: 20px;
+            background: #16213e;
+            border-top: 1px solid #2a2a3e;
+        }
+
+        .summary h3 {
+            font-size: 14px;
+            margin-bottom: 12px;
+            color: #fff;
+        }
+
+        .summary-stats {
+            display: flex;
+            gap: 15px;
+        }
+
+        .stat {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: #0f0f23;
+            border-radius: 6px;
+        }
+
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #b0b0b0;
+            text-transform: uppercase;
+        }
+
+        .stat.total .stat-value { color: #667eea; }
+        .stat.pass .stat-value { color: #28a745; }
+        .stat.fail .stat-value { color: #dc3545; }
+
+        /* Right Panel - Preview */
+        .right-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #16213e;
+        }
+
+        .preview-header {
+            padding: 15px 20px;
+            background: #1a1a2e;
+            border-bottom: 1px solid #2a2a3e;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .preview-title {
+            font-size: 14px;
+            color: #b0b0b0;
+        }
+
+        .preview-url {
+            font-size: 12px;
+            color: #667eea;
+            font-family: monospace;
+        }
+
+        .preview-content {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .preview-content iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .preview-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            color: #666;
+            font-size: 14px;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .loading-spinner {
+            border: 3px solid #2a2a3e;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <div class="header">
+                <h1>🎬 Stream Lobby</h1>
+                <p class="subtitle">自動化測試工具</p>
+            </div>
+
+            <div class="nav-links">
+                <a href="/" class="nav-btn active">📋 測試工具 1</a>
+                <a href="/test2.html" class="nav-btn">🎮 測試工具 2</a>
+            </div>
+
+            <div class="controls">
+                <div class="input-group">
+                    <label for="urlInput">測試目標網址</label>
+                    <input 
+                        type="text" 
+                        id="urlInput" 
+                        placeholder="http://lobby.sns.lab/?isAgentApi"
+                        value="http://lobby.sns.lab/?isAgentApi"
+                    >
+                </div>
+                <div class="button-group">
+                    <button class="btn btn-primary" id="startBtn" onclick="startTest()">
+                        🚀 開始測試
+                    </button>
+                    <button class="btn btn-danger" id="stopBtn" onclick="stopTest()" disabled>
+                        ⏹️ 停止測試
+                    </button>
+                </div>
+            </div>
+
+            <div class="test-items">
+                <div class="section-title">🎯 測試項目</div>
+                <div class="status-card">
+                    <h3>📌 測試流程說明</h3>
+                    <p>
+                        1️⃣ gVersion 版號測試<br>
+                        2️⃣ Stream n'Spin 彈窗測試<br>
+                        3️⃣ 更名功能測試<br>
+                        4️⃣ 排序按鈕測試（先左後右）<br>
+                        5️⃣ Promotion 圖片檢查<br>
+                        6️⃣ All Streamers 圖片檢查<br>
+                        7️⃣ All Streamers 排列按鈕測試（先左後右）<br>
+                        8️⃣ 直播主介紹卡片點擊測試<br>
+                        9️⃣ 排行榜檢查（All Times、Weekly Ranking）<br>
+                        🔟 直播主照片檢查（點擊 Photo 分頁並點擊照片）<br>
+                        🔟②  返回按鈕測試（檢查完照片後點擊返回按鈕回到上一頁）
+                    </p>
+                </div>
+
+                <div id="testList" class="hidden">
+                    <div class="test-item pending" data-test="gVersion">
+                        <span class="test-item-label">1️⃣ gVersion 版號測試</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="streamNSpinDialog">
+                        <span class="test-item-label">2️⃣ Stream n'Spin 彈窗測試</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="renameFunction">
+                        <span class="test-item-label">3️⃣ 更名功能測試</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="sortButton">
+                        <span class="test-item-label">4️⃣ 排序按鈕測試（先左後右）</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="promotionImages">
+                        <span class="test-item-label">5️⃣ Promotion 圖片檢查</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="allStreamersImages">
+                        <span class="test-item-label">6️⃣ All Streamers 圖片檢查</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="allStreamersSortButton">
+                        <span class="test-item-label">7️⃣ All Streamers 排列按鈕測試</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="streamerCardClick">
+                        <span class="test-item-label">8️⃣ 直播主介紹卡片點擊測試</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="rankingData">
+                        <span class="test-item-label">9️⃣ 排行榜檢查</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="streamerPhoto">
+                        <span class="test-item-label">🔟 直播主照片檢查</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                    <div class="test-item pending" data-test="backButton">
+                        <span class="test-item-label">🔟②  返回按鈕測試（返回上一頁）</span>
+                        <span class="test-item-status">⏸️</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary">
+                <h3>測試結果摘要</h3>
+                <div class="summary-stats">
+                    <div class="stat total">
+                        <div class="stat-value" id="totalCount">0</div>
+                        <div class="stat-label">測試項目</div>
+                    </div>
+                    <div class="stat pass">
+                        <div class="stat-value" id="passCount">0</div>
+                        <div class="stat-label">通過</div>
+                    </div>
+                    <div class="stat fail">
+                        <div class="stat-value" id="failCount">0</div>
+                        <div class="stat-label">失敗</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <div class="preview-header">
+                <span class="preview-title">📺 測試目標預覽</span>
+                <span class="preview-url" id="previewUrl">載入測試目標網站...</span>
+            </div>
+            <div class="preview-content" id="previewContent">
+                <div class="preview-placeholder">
+                    <div class="loading-spinner hidden" id="loadingSpinner"></div>
+                    <span id="placeholderText">等待開始測試...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let isTestRunning = false;
+
+        async function startTest() {
+            const urlInput = document.getElementById('urlInput');
+            const startBtn = document.getElementById('startBtn');
+            const stopBtn = document.getElementById('stopBtn');
+            const testList = document.getElementById('testList');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const placeholderText = document.getElementById('placeholderText');
+            const previewUrl = document.getElementById('previewUrl');
+
+            const url = urlInput.value.trim();
+            if (!url) {
+                alert('請輸入測試目標網址');
+                return;
+            }
+
+            isTestRunning = true;
+            startBtn.disabled = true;
+            stopBtn.disabled = false;
+            testList.classList.remove('hidden');
+            loadingSpinner.classList.remove('hidden');
+            placeholderText.textContent = '正在執行測試...';
+            previewUrl.textContent = url;
+
+            // Reset test items
+            document.querySelectorAll('.test-item').forEach(item => {
+                item.className = 'test-item pending';
+                item.querySelector('.test-item-status').textContent = '⏸️';
+            });
+
+            // Reset summary
+            updateSummary(0, 0, 0);
+
+            try {
+                const response = await fetch('/api/check', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ url: url })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Server error: ${response.status}`);
+                }
+
+                const data = await response.json();
+                displayTestResults(data);
+
+            } catch (error) {
+                console.error('Test error:', error);
+                placeholderText.textContent = `❌ 測試失敗: ${error.message}`;
+                alert(`測試執行失敗: ${error.message}`);
+            } finally {
+                isTestRunning = false;
+                startBtn.disabled = false;
+                stopBtn.disabled = true;
+                loadingSpinner.classList.add('hidden');
+            }
+        }
+
+        function stopTest() {
+            isTestRunning = false;
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+            document.getElementById('placeholderText').textContent = '測試已停止';
+        }
+
+        function displayTestResults(data) {
+            try {
+                const checks = data.checks || {};
+                let total = 0, pass = 0, fail = 0;
+
+                // 1️⃣ gVersion 版號測試
+                if (checks.gVersion) {
+                total++;
+                const item = document.querySelector('[data-test="gVersion"]');
+                const label = item.querySelector('.test-item-label');
+                
+                let detailMsg = '1️⃣ gVersion 版號測試';
+                if (checks.gVersion.found) {
+                    detailMsg += ` ✓ (版本: ${checks.gVersion.version})`;
+                    pass++;
+                    item.className = 'test-item success';
+                    item.querySelector('.test-item-status').textContent = '✅';
+                } else {
+                    detailMsg += ' ✗未找到';
+                    if (checks.gVersion.error) {
+                        detailMsg += ` (${checks.gVersion.error})`;
+                    }
+                    fail++;
+                    item.className = 'test-item error';
+                    item.querySelector('.test-item-status').textContent = '❌';
+                }
+                label.textContent = detailMsg;
+            }
+
+            // 2️⃣ Stream n'Spin 彈窗測試
+            if (checks.streamNSpinDialog) {
+                total++;
+                const item = document.querySelector('[data-test="streamNSpinDialog"]');
+                const label = item.querySelector('.test-item-label');
+                
+                let detailMsg = '2️⃣ Stream n\'Spin 彈窗測試';
+                if (checks.streamNSpinDialog.found) {
+                    if (checks.streamNSpinDialog.clicked) {
+                        detailMsg += ' ✓ 已點擊 Confirm';
+                        pass++;
+                        item.className = 'test-item success';
+                        item.querySelector('.test-item-status').textContent = '✅';
+                    } else {
+                        detailMsg += ' ✗ 未點擊';
+                        fail++;
+                        item.className = 'test-item error';
+                        item.querySelector('.test-item-status').textContent = '❌';
+                    }
+                } else {
+                    detailMsg += ' ⚠️ 未出現彈窗（正常）';
+                    pass++;
+                    item.className = 'test-item success';
+                    item.querySelector('.test-item-status').textContent = '✅';
+                }
+                label.textContent = detailMsg;
+            }
+
+            // 3️⃣ 更名功能測試
+            if (checks.renameFunction) {
+                try {
+                    total++;
+                    const item = document.querySelector('[data-test="renameFunction"]');
+                    if (!item) {
+                        console.error('找不到更名功能測試項目元素');
+                        fail++;
+                    } else {
+                        const label = item.querySelector('.test-item-label');
+                        
+                        let detailMsg = '3️⃣ 更名功能測試';
+                        
+                        // 🔥 只要點擊了 Confirm 按鈕就算成功
+                        if (checks.renameFunction.confirmButtonClicked) {
+                            detailMsg += ` ✓ 更名成功 (原名稱: ${checks.renameFunction.name || '未知'})`;
+                            
+                            // 顯示 IDN 錯誤檢測結果
+                            if (typeof checks.renameFunction.idnErrorDetected !== 'undefined') {
+                                if (checks.renameFunction.idnErrorDetected) {
+                                    detailMsg += ' | IDN 錯誤: ✓';
+                                } else {
+                                    detailMsg += ' | IDN 錯誤: ✗';
+                                }
+                            }
+                            
+                            // 顯示隨機名字
+                            if (checks.renameFunction.randomName) {
+                                detailMsg += ` | 新名稱: ${checks.renameFunction.randomName}`;
+                            }
+                            
+                            detailMsg += ' | Confirm: ✓';
+                            
+                            pass++;
+                            item.className = 'test-item success';
+                            item.querySelector('.test-item-status').textContent = '✅';
+                        } else {
+                            // 未點擊 Confirm 按鈕
+                            detailMsg += ' ✗ 未點擊 Confirm 按鈕';
+                            
+                            // 顯示執行過程
+                            if (checks.renameFunction.clicked) {
+                                detailMsg += ' | 開啟視窗: ✓';
+                            }
+                            if (checks.renameFunction.randomName) {
+                                detailMsg += ` | 輸入名稱: ${checks.renameFunction.randomName}`;
+                            }
+                            
+                            if (checks.renameFunction.message) {
+                                detailMsg += ` | ${checks.renameFunction.message}`;
+                            }
+                            
+                            fail++;
+                            item.className = 'test-item error';
+                            item.querySelector('.test-item-status').textContent = '❌';
+                        }
+                        label.textContent = detailMsg;
+                    }
+                } catch (error) {
+                    console.error('處理更名功能測試結果時發生錯誤:', error);
+                    fail++;
+                }
+            }
+
+            // 4️⃣ 排序按鈕測試（先左後右）
+            if (checks.sortButton) {
+                total++;
+                const item = document.querySelector('[data-test="sortButton"]');
+                const label = item.querySelector('.test-item-label');
+                
+                let detailMsg = '4️⃣ 排序按鈕測試（先左後右）';
+                if (checks.sortButton.clicked) {
+                    if (checks.sortButton.leftButtonWorking && checks.sortButton.rightButtonWorking) {
+                        detailMsg += ' ✓ 左右按鈕都有效';
+                        pass++;
+                        item.className = 'test-item success';
+                        item.querySelector('.test-item-status').textContent = '✅';
+                    } else if (checks.sortButton.leftButtonWorking || checks.sortButton.rightButtonWorking) {
+                        detailMsg += ' ⚠️ 部分按鈕有效';
+                        if (checks.sortButton.leftButtonWorking) detailMsg += '（左✓）';
+                        if (checks.sortButton.rightButtonWorking) detailMsg += '（右✓）';
+                        pass++;
+                        item.className = 'test-item success';
+                        item.querySelector('.test-item-status').textContent = '⚠️';
+                    } else {
+                        detailMsg += ' ✗ 按鈕無效';
+                        fail++;
+                        item.className = 'test-item error';
+                        item.querySelector('.test-item-status').textContent = '❌';
+                    }
+                } else {
+                    detailMsg += ' ✗ 未找到按鈕';
+                    if (checks.sortButton.message) {
+                        detailMsg += ` (${checks.sortButton.message})`;
+                    }
+                    fail++;
+                    item.className = 'test-item error';
+                    item.querySelector('.test-item-status').textContent = '❌';
+                }
+                label.textContent = detailMsg;
+            }
+
+            // 5️⃣ Promotion 圖片檢查
+            if (checks.promotionImages) {
+                total++;
+                const item = document.querySelector('[data-test="promotionImages"]');
+                const label = item.querySelector('.test-item-label');
+                
+                let detailMsg = '5️⃣ Promotion 圖片檢查';
+                if (checks.promotionImages.found) {
+                    if (checks.promotionImages.hasImages) {
+                        const { imageCount, loadedCount, brokenCount, allImagesOK } = checks.promotionImages;
+                        detailMsg += ` ✓ ${imageCount} 張圖片`;
+                        
+                        if (allImagesOK) {
+                            detailMsg += ' 全部正常';
+                            pass++;
+                            item.className = 'test-item success';
+                            item.querySelector('.test-item-status').textContent = '✅';
+                        } else {
+                            if (brokenCount > 0) {
+                                detailMsg += ` ⚠️ ${brokenCount} 張錯誤`;
+                            }
+                            if (loadedCount < imageCount) {
+                                detailMsg += ` ${imageCount - loadedCount} 張未載入`;
+                            }
+                            fail++;
+                            item.className = 'test-item error';
+                            item.querySelector('.test-item-status').textContent = '❌';
+                        }
+                    } else {
+                        detailMsg += ' ⚠️ 沒有圖片';
+                        fail++;
+                        item.className = 'test-item error';
+                        item.querySelector('.test-item-status').textContent = '⚠️';
+                    }
+                } else {
+                    detailMsg += ' ✗ 未找到 Promotion 區域';
+                    if (checks.promotionImages.message) {
+                        detailMsg += ` (${checks.promotionImages.message})`;
+                    }
+                    fail++;
+                    item.className = 'test-item error';
+                    item.querySelector('.test-item-status').textContent = '❌';
+                }
+                label.textContent = detailMsg;
+            }
+
+            // 6️⃣ All Streamers 圖片檢查
+            if (checks.allStreamersImages) {
+                total++;
+                const item = document.querySelector('[data-test="allStreamersImages"]');
+                const label = item.querySelector('.test-item-label');
+                
+                let detailMsg = '6️⃣ All Streamers 圖片檢查';
+                if (checks.allStreamersImages.found) {
+                    if (checks.allStreamersImages.hasImages) {
+                        const { imageCount, loadedCount, brokenCount, allImagesOK } = checks.allStreamersImages;
+                        detailMsg += ` ✓ ${imageCount} 張頭像`;
+                        
+                        if (allImagesOK) {
+                            detailMsg += ' 全部正常';
+                            pass++;
+                            item.className = 'test-item success';
+                            item.querySelector('.test-item-status').textContent = '✅';
+                        } else {
+                            detailMsg += ` (正常:${loadedCount}`;
+                            if (brokenCount > 0) {
+                                detailMsg += `, 未顯示:${brokenCount}`;
+                            }
+                            detailMsg += ')';
+                            // 如果有圖片未顯示，還是算失敗
+                            fail++;
+                            item.className = 'test-item error';
+                            item.querySelector('.test-item-status').textContent = '⚠️';
+                        }
+                    } else {
+                        detailMsg += ' ⚠️ 沒有頭像';
+                        fail++;
+                        item.className = 'test-item error';
+                        item.querySelector('.test-item-status').textContent = '⚠️';
+                    }
+                } else {
+                    detailMsg += ' ✗ 未找到 All Streamers 區域';
+                    if (checks.allStreamersImages.message) {
+                        detailMsg += ` (${checks.allStreamersImages.message})`;
+                    }
+                    fail++;
+                    item.className = 'test-item error';
+                    item.querySelector('.test-item-status').textContent = '❌';
+                }
+                label.textContent = detailMsg;
+            }
+
+            // 7️⃣ All Streamers 排列按鈕測試
+            if (checks.allStreamersSortButton) {
+                total++;
+                const item = document.querySelector('[data-test="allStreamersSortButton"]');
+                const label = item.querySelector('.test-item-label');
+                
+                let detailMsg = '7️⃣ All Streamers 排列按鈕測試';
+                if (checks.allStreamersSortButton.clicked) {
+                    if (checks.allStreamersSortButton.sortWorking) {
+                        detailMsg += ' ✓ 排序正常';
+                        if (checks.allStreamersSortButton.leftSortChanged && checks.allStreamersSortButton.rightSortChanged) {
+                            detailMsg += '（左按鈕有變化，右按鈕有變化）';
+                        } else if (checks.allStreamersSortButton.leftSortChanged) {
+                            detailMsg += '（左按鈕有變化）';
+                        } else if (checks.allStreamersSortButton.rightSortChanged) {
+                            detailMsg += '（右按鈕有變化）';
+                        }
+                        pass++;
+                        item.className = 'test-item success';
+                        item.querySelector('.test-item-status').textContent = '✅';
+                    } else {
+                        detailMsg += ' ⚠️ 已點擊但排序未變化';
+                        if (checks.allStreamersSortButton.message) {
+                            detailMsg += ` (${checks.allStreamersSortButton.message})`;
+                        }
+                        fail++;
+                        item.className = 'test-item error';
+                        item.querySelector('.test-item-status').textContent = '⚠️';
+                    }
+                } else {
+                    detailMsg += ' ✗ 按鈕未找到或點擊失敗';
+                    if (checks.allStreamersSortButton.error) {
+                        detailMsg += ` (${checks.allStreamersSortButton.error})`;
+                    } else if (checks.allStreamersSortButton.message) {
+                        detailMsg += ` (${checks.allStreamersSortButton.message})`;
+                    }
+                    fail++;
+                    item.className = 'test-item error';
+                    item.querySelector('.test-item-status').textContent = '❌';
+                }
+                label.textContent = detailMsg;
+            }
+
+            // 8️⃣ 直播主介紹卡片點擊測試
+            if (checks.streamerCardClick) {
+                total++;
+                const item = document.querySelector('[data-test="streamerCardClick"]');
+                const label = item.querySelector('.test-item-label');
+                
+                let detailMsg = '8️⃣ 直播主介紹卡片點擊測試';
+                if (checks.streamerCardClick.clicked) {
+                    if (checks.streamerCardClick.opened) {
+                        detailMsg += ' ✓ 成功開啟直播主介紹頁面';
+                        if (checks.streamerCardClick.urlChanged) {
+                            detailMsg += '（URL已改變）';
+                        } else if (checks.streamerCardClick.pageChanged) {
+                            detailMsg += '（頁面內容已改變）';
+                        }
+                        pass++;
+                        item.className = 'test-item success';
+                        item.querySelector('.test-item-status').textContent = '✅';
+                    } else {
+                        detailMsg += ' ⚠️ 已點擊但未檢測到頁面變化';
+                        if (checks.streamerCardClick.message) {
+                            detailMsg += ` (${checks.streamerCardClick.message})`;
+                        }
+                        fail++;
+                        item.className = 'test-item error';
+                        item.querySelector('.test-item-status').textContent = '⚠️';
+                    }
+                } else {
+                    detailMsg += ' ✗ 卡片未找到或點擊失敗';
+                    if (checks.streamerCardClick.error) {
+                        detailMsg += ` (${checks.streamerCardClick.error})`;
+                    } else if (checks.streamerCardClick.message) {
+                        detailMsg += ` (${checks.streamerCardClick.message})`;
+                    }
+                    fail++;
+                    item.className = 'test-item error';
+                    item.querySelector('.test-item-status').textContent = '❌';
+                }
+                label.textContent = detailMsg;
+            }
+
+            // 9️⃣ 排行榜檢查
+            if (checks.rankingData) {
+                total++;
+                const item = document.querySelector('[data-test="rankingData"]');
+                const label = item.querySelector('.test-item-label');
+                
+                let detailMsg = '9️⃣ 排行榜檢查';
+                let hasError = false;
+                
+                // All Times 檢查
+                if (checks.rankingData.allTimes) {
+                    if (checks.rankingData.allTimes.found) {
+                        if (checks.rankingData.allTimes.hasData) {
+                            detailMsg += ' | All Times: ✓ 有資料';
+                        } else {
+                            detailMsg += ' | All Times: ⚠️ 沒有資料';
+                            hasError = true;
+                        }
+                    } else {
+                        detailMsg += ' | All Times: ✗ 未找到';
+                        hasError = true;
+                    }
+                }
+                
+                // Weekly Ranking 檢查
+                if (checks.rankingData.weeklyRanking) {
+                    if (checks.rankingData.weeklyRanking.found) {
+                        if (checks.rankingData.weeklyRanking.hasData) {
+                            detailMsg += ' | Weekly Ranking: ✓ 有資料';
+                        } else {
+                            detailMsg += ' | Weekly Ranking: ⚠️ 沒有資料';
+                            hasError = true;
+                        }
+                    } else {
+                        detailMsg += ' | Weekly Ranking: ✗ 未找到';
+                        hasError = true;
+                    }
+                }
+                
+                // 處理錯誤訊息
+                if (checks.rankingData.error) {
+                    detailMsg += ` | 錯誤: ${checks.rankingData.error}`;
+                    hasError = true;
+                }
+                
+                // 設定狀態
+                if (!hasError && checks.rankingData.success) {
+                    pass++;
+                    item.className = 'test-item success';
+                    item.querySelector('.test-item-status').textContent = '✅';
+                } else {
+                    fail++;
+                    item.className = 'test-item error';
+                    item.querySelector('.test-item-status').textContent = hasError ? '❌' : '⚠️';
+                }
+                
+                label.textContent = detailMsg;
+            }
+
+            // 🔟 直播主照片檢查
+            if (checks.streamerPhoto) {
+                total++;
+                const item = document.querySelector('[data-test="streamerPhoto"]');
+                const label = item.querySelector('.test-item-label');
+
+                const sp = checks.streamerPhoto;
+
+                let detailMsg = '🔟 直播主照片檢查';
+
+                // 預設狀態先清掉 class
+                item.className = 'test-item';
+
+                // ✅ 成功情境（沒有破圖）
+                if (sp.success && (!sp.brokenPhotos || sp.brokenPhotos === 0)) {
+                    // 如果後端已經組好 message，就吃後端的
+                    if (sp.message) {
+                        detailMsg += ` | ${sp.message}`;
+                    } else {
+                        // fallback：自己組一個 OK 文案
+                        detailMsg += ' ✓ Photo 分頁和照片都已成功點擊';
+                        if (typeof sp.totalPhotos === 'number') {
+                            detailMsg += `（共 ${sp.totalPhotos} 張，無破圖）`;
+                        }
+                    }
+
+                    pass++;
+                    item.className += ' success';
+                    item.querySelector('.test-item-status').textContent = '✅';
+                } else {
+                    // ❌ 失敗/異常情境（包含有破圖 or 真的 error）
+
+                    // 1) Photo 分頁 / 照片點擊狀態
+                    if (sp.photoTabClicked) {
+                        detailMsg += ' | Photo 分頁: ✓';
+                    } else {
+                        detailMsg += ' | Photo 分頁: ✗';
+                    }
+
+                    if (sp.photoClicked) {
+                        detailMsg += ' | 照片: ✓';
+                    } else {
+                        detailMsg += ' | 照片: ✗';
+                    }
+
+                    // 2) 照片統計：有帶 total / brokenPhotos 就顯示「照片異常」
+                    if (typeof sp.totalPhotos === 'number') {
+                        const normal = typeof sp.normalPhotos === 'number'
+                            ? sp.normalPhotos
+                            : (sp.totalPhotos - (sp.brokenPhotos || 0));
+
+                        if (sp.brokenPhotos && sp.brokenPhotos > 0) {
+                            // 🔥 這就是你要的「照片異常」敘述
+                            detailMsg += ` | 照片異常：共 ${sp.totalPhotos} 張，正常 ${normal} 張，破圖 ${sp.brokenPhotos} 張`;
+                            if (Array.isArray(sp.brokenIndexes) && sp.brokenIndexes.length > 0) {
+                                detailMsg += `（第 ${sp.brokenIndexes.join('、')} 張為破圖）`;
+                            }
+                        } else {
+                            // 有統計但 success = false 的其他情況（理論上比較少）
+                            detailMsg += ` | 照片統計：共 ${sp.totalPhotos} 張，正常 ${normal} 張`;
+                        }
+                    }
+
+                    // 3) 後端已經有組好的 message，就順帶貼上（例如錯誤說明）
+                    if (sp.message) {
+                        detailMsg += ` | ${sp.message}`;
+                    }
+
+                    // 4) 真正 code 層面的 error（try/catch 那種）
+                    if (sp.error) {
+                        detailMsg += ` | 錯誤: ${sp.error}`;
+                    }
+
+                    fail++;
+                    item.className += ' error';
+                    item.querySelector('.test-item-status').textContent = '❌';
+                }
+
+                label.textContent = detailMsg;
+            }
+
+            // 🔟②  返回按鈕測試
+            if (checks.backButton) {
+                total++;
+                const item = document.querySelector('[data-test="backButton"]');
+                const label = item.querySelector('.test-item-label');
+
+                let detailMsg = '🔟②  返回按鈕測試';
+
+                if (checks.backButton.clicked && checks.backButton.success) {
+                    detailMsg += ' ✓ 已點擊返回按鈕並成功返回上一頁';
+                    
+                    // 顯示置頂狀態
+                    if (checks.backButton.scrolledToTop) {
+                        detailMsg += ' | 已置頂: ✓';
+                    } else {
+                        detailMsg += ' | 已置頂: ✗';
+                    }
+                    
+                    pass++;
+                    item.className = 'test-item success';
+                    item.querySelector('.test-item-status').textContent = '✅';
+                } else if (checks.backButton.clicked && !checks.backButton.success) {
+                    detailMsg += ' ⚠️ 已點擊返回按鈕但頁面未改變';
+                    if (checks.backButton.message) {
+                        detailMsg += ` | ${checks.backButton.message}`;
+                    }
+                    fail++;
+                    item.className = 'test-item error';
+                    item.querySelector('.test-item-status').textContent = '⚠️';
+                } else {
+                    detailMsg += ' ✗ 未找到返回按鈕';
+                    if (checks.backButton.message) {
+                        detailMsg += ` | ${checks.backButton.message}`;
+                    }
+                    if (checks.backButton.error) {
+                        detailMsg += ` | 錯誤: ${checks.backButton.error}`;
+                    }
+                    fail++;
+                    item.className = 'test-item error';
+                    item.querySelector('.test-item-status').textContent = '❌';
+                }
+
+                label.textContent = detailMsg;
+            }
+
+            updateSummary(total, pass, fail);
+            
+            document.getElementById('placeholderText').textContent = 
+                `測試完成 - ${pass}/${total} 項通過`;
+            } catch (error) {
+                console.error('顯示測試結果時發生錯誤:', error);
+                document.getElementById('placeholderText').textContent = 
+                    `❌ 顯示測試結果時發生錯誤: ${error.message}`;
+            }
+        }
+
+        function updateSummary(total, pass, fail) {
+            document.getElementById('totalCount').textContent = total;
+            document.getElementById('passCount').textContent = pass;
+            document.getElementById('failCount').textContent = fail;
+        }
+
+        document.getElementById('urlInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !isTestRunning) {
+                startTest();
+            }
+        });
+    </script>
+</body>
+</html>

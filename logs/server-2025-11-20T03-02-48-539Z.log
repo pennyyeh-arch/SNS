@@ -1,0 +1,36 @@
+[2025-11-20T03:02:48.540Z] 📝 日誌文件已創建: C:\Users\penny\OneDrive\Desktop\stream-lobby\logs\server-2025-11-20T03-02-48-539Z.log
+[2025-11-20T03:02:48.547Z] 
+🚀 檢查工具伺服器運行在 http://localhost:3000
+[2025-11-20T03:02:48.548Z] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2025-11-20T03:02:48.549Z] 📋 測試工具 1 (7項測試): http://localhost:3000/
+[2025-11-20T03:02:48.550Z] 🎮 測試工具 2 (10項測試): http://localhost:3000/test2.html
+[2025-11-20T03:02:48.551Z] ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[2025-11-20T03:02:48.552Z] 📝 所有日誌將保存到: C:\Users\penny\OneDrive\Desktop\stream-lobby\logs\server-2025-11-20T03-02-48-539Z.log
+
+[2025-11-20T03:03:58.935Z] 開始 Stream n'Spin 彈窗測試...
+[2025-11-20T03:04:01.888Z] 開始更名功能測試 (點擊帳號名稱 -> 開啟視窗 -> 點擊 X 關閉)...
+[2025-11-20T03:04:04.292Z] 開始排序按鈕測試...
+[2025-11-20T03:04:10.044Z] 開始 Promotion 圖片檢查...
+[2025-11-20T03:04:12.514Z] 開始 All Streamers 圖片檢查...
+[2025-11-20T03:04:13.980Z] 開始 All Streamers 排列按鈕測試...
+[2025-11-20T03:04:19.683Z] 開始直播主介紹卡片點擊測試...
+[2025-11-20T03:04:26.148Z] 開始 Lobby 送禮測試...
+[2025-11-20T03:04:27.351Z] 禮物按鈕查找結果: {
+  "found": true,
+  "x": 686.015625,
+  "y": 403.5,
+  "element": "DIV._avatarContainer_1upir_296",
+  "isClickable": false,
+  "hasGiftKeyword": false,
+  "debug": "找到 12 個候選元素，選擇: DIV._avatarContainer_1upir_296 (可點擊: false, 禮物關鍵字: false, 優先級: 50)"
+}
+[2025-11-20T03:04:27.356Z] ERROR: 點擊禮物按鈕失敗: {}
+[2025-11-20T03:04:27.357Z] ERROR: 無法點擊禮物按鈕，查找結果: {
+  "found": true,
+  "x": 686.015625,
+  "y": 403.5,
+  "element": "DIV._avatarContainer_1upir_296",
+  "isClickable": false,
+  "hasGiftKeyword": false,
+  "debug": "找到 12 個候選元素，選擇: DIV._avatarContainer_1upir_296 (可點擊: false, 禮物關鍵字: false, 優先級: 50)"
+}
