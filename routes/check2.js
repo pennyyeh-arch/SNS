@@ -35,6 +35,18 @@ async function checkWebsite(url) {
       if (results.checks.streamingNowClick?.giftData) {
         results.checks.gift = results.checks.streamingNowClick.giftData;
       }
+      // 將 checks 對象中的數據提升到 results.checks 層級
+      if (results.checks.streamingNowClick?.checks) {
+        if (results.checks.streamingNowClick.checks.betPlus28) {
+          results.checks.betPlus28 = results.checks.streamingNowClick.checks.betPlus28;
+        }
+        if (results.checks.streamingNowClick.checks.betMinus28) {
+          results.checks.betMinus28 = results.checks.streamingNowClick.checks.betMinus28;
+        }
+        if (results.checks.streamingNowClick.checks.gift) {
+          results.checks.gift = results.checks.streamingNowClick.checks.gift;
+        }
+      }
     } catch (err) {
       results.checks.streamingNowClick = { clicked: false, error: String(err && err.message || err) };
     }
@@ -51,8 +63,8 @@ async function checkWebsite(url) {
                           results.checks.streamingNowClick?.howToPlayClosed &&
                             results.checks.streamingNowClick?.maxButton3M?.success &&
                             results.checks.streamingNowClick?.minButton200?.success &&
-                            results.checks.streamingNowClick?.plusButton28?.success &&
-                            results.checks.streamingNowClick?.minusButton28?.success &&
+                            results.checks.betPlus28?.success &&
+                            results.checks.betMinus28?.success &&
                             results.checks.streamingNowClick?.spinRoundPlus4?.success &&
                             results.checks.streamingNowClick?.spinRoundMinus5?.success &&
                             results.checks.streamingNowClick?.playButton?.success &&
@@ -71,8 +83,24 @@ async function checkWebsite(url) {
       console.log(`   5️⃣ Cara Bermain 關閉: ${results.checks.streamingNowClick?.howToPlayClosed ? '✅' : '❌'}`);
         console.log(`   7️⃣ MAX 按鈕（3M）: ${results.checks.streamingNowClick?.maxButton3M?.success ? '✅' : '❌'}`);
         console.log(`   8️⃣ MIN 按鈕（200）: ${results.checks.streamingNowClick?.minButton200?.success ? '✅' : '❌'}`);
-        console.log(`   9️⃣ + 按鈕 28 次: ${results.checks.streamingNowClick?.plusButton28?.success ? '✅' : '❌'}`);
-        console.log(`   🔟 - 按鈕 28 次: ${results.checks.streamingNowClick?.minusButton28?.success ? '✅' : '❌'}`);
+        
+        // 9️⃣ + 按鈕 28 次
+        if (results.checks.betPlus28) {
+          const r = results.checks.betPlus28;
+          const icon = r.success ? '✅' : '❌';
+          console.log(`   9️⃣ + 按鈕 28 次: ${icon}`);
+        } else {
+          console.log('   9️⃣ + 按鈕 28 次: ❌ (未執行)');
+        }
+        
+        // 🔟 - 按鈕 28 次
+        if (results.checks.betMinus28) {
+          const r = results.checks.betMinus28;
+          const icon = r.success ? '✅' : '❌';
+          console.log(`   🔟 - 按鈕 28 次: ${icon}`);
+        } else {
+          console.log('   🔟 - 按鈕 28 次: ❌ (未執行)');
+        }
         console.log(`   1️⃣1️⃣ Spin Round + 按鈕 4 次: ${results.checks.streamingNowClick?.spinRoundPlus4?.success ? '✅' : '❌'}`);
         console.log(`   1️⃣2️⃣ Spin Round - 按鈕 5 次: ${results.checks.streamingNowClick?.spinRoundMinus5?.success ? '✅' : '❌'}`);
         console.log(`   1️⃣3️⃣ 點擊綠色 PLAY 鈕: ${results.checks.streamingNowClick?.playButton?.success ? '✅' : '❌'}`);
@@ -380,8 +408,12 @@ async function checkStreamingNowClick(page, context, timestamp) {
     
     const maxButton3MResult = await checkMaxButton(newPage, timestamp, 3000000, '3M').catch(err => ({ success: false, error: String(err) }));
     const minButton200Result = await checkMinButton(newPage, timestamp, 200).catch(err => ({ success: false, error: String(err) }));
-    const plusButton28Result = await checkPlusButton28(newPage, timestamp).catch(err => ({ success: false, error: String(err) }));
-    const minusButton28Result = await checkMinusButton28(newPage, timestamp).catch(err => ({ success: false, error: String(err) }));
+    
+    // 創建 checks 對象用於測試函數
+    const checks = {};
+    
+    const plusButton28Result = await testBetPlus28(newPage, checks).catch(err => ({ success: false, error: String(err) }));
+    const minusButton28Result = await testBetMinus28(newPage, checks).catch(err => ({ success: false, error: String(err) }));
     const spinRoundPlus4Result = await checkSpinRoundPlusButton(newPage, timestamp, 4).catch(err => ({ success: false, error: String(err) }));
     const spinRoundMinus5Result = await checkSpinRoundMinusButton(newPage, timestamp, 5).catch(err => ({ success: false, error: String(err) }));
     
@@ -391,9 +423,6 @@ async function checkStreamingNowClick(page, context, timestamp) {
         spinMetrics.balanceBeforePlay = playButtonResult.balanceBeforePlay;
         console.log(`💰 點擊 Play 前餘額: ${spinMetrics.balanceBeforePlay}`);
     }
-
-    // 創建 checks 對象用於 testGiftFlow
-    const checks = {};
     
     let giftTestResult;
     try {
@@ -430,6 +459,7 @@ async function checkStreamingNowClick(page, context, timestamp) {
       giftTest: giftTestResult,
       giftData: checks.gift, // 新的 gift 數據結構
       chatInput: chatInputResult,
+      checks: checks, // 傳遞 checks 對象給 summary 使用
       message: gVersionResult.found ? 
                `✅ 全部測試完成！點擊卡片 -> 開啟新視窗 -> gVersion: ${gVersionResult.version} -> 點擊 MULAI BERMAIN` :
                `⚠️  點擊卡片、開啟新視窗成功，但 gVersion 檢測失敗`,
@@ -868,250 +898,77 @@ async function checkMinButton(page, timestamp, expectedAmount) {
   }
 }
 
-async function checkPlusButton28(page, timestamp) {
+// 9️⃣ 測試：+ 按鈕 28 次
+async function testBetPlus28(page, checks) {
+  const result = {
+    success: false,
+    clicks: 0,
+    error: null,
+  };
   try {
-    await page.waitForTimeout(1000);
-    const plusButtonInfo = await findBetButton(page, '+');
-    
-    if (!plusButtonInfo.found) {
-      return { success: false, message: '+ 按鈕未找到' };
+    console.log('9️⃣ 開始測試 + 按鈕 28 次...');
+    const plusBtn = page.locator(
+      '#CONTROLS_PANEL > div._controlBar_1qzyb_139.hstack > div:nth-child(1) > div > button:nth-child(4)'
+    );
+    // 確保按鈕真的有出現
+    await plusBtn.waitFor({ state: 'visible', timeout: 5000 });
+    for (let i = 0; i < 28; i++) {
+      await plusBtn.click();
+      result.clicks++;
+      // 適度 sleep 一下，避免太快 UI 還沒反應
+      await page.waitForTimeout(80);
     }
-    
-    const amountBefore = await getDisplayedAmount(page);
-    let previousAmount = amountBefore;
-    let increasingCount = 0;
-    
-    for (let i = 1; i <= 28; i++) {
-      if (previousAmount >= 3000000) {
-        break;
-      }
-      
-      await page.mouse.click(plusButtonInfo.x, plusButtonInfo.y);
-      await page.waitForTimeout(150);
-      
-      const currentAmount = await getDisplayedAmount(page);
-      if (currentAmount > previousAmount) increasingCount++;
-      previousAmount = currentAmount;
-    }
-    
-    const amountAfter = await getDisplayedAmount(page);
-    
-    const shot = path.join(debugDir, `test2-plus-28-${timestamp}.png`);
-    await page.screenshot({ path: shot, fullPage: false }).catch(() => {});
-    
-    if (increasingCount >= 26) {
-      return {
-        success: true,
-        message: `金額持續遞增（${increasingCount}/28 次）`,
-        amountBefore,
-        amountAfter,
-        clickCount: 28,
-        increasingCount,
-        debug: { screenshot: shot }
-      };
+    if (result.clicks === 28) {
+      result.success = true;
+      console.log('✅ + 按鈕已成功點擊 28 次');
     } else {
-      return {
-        success: false,
-        message: `金額沒有持續遞增，只有 ${increasingCount}/28 次遞增`,
-        amountBefore,
-        amountAfter,
-        clickCount: 28,
-        increasingCount,
-        debug: { screenshot: shot }
-      };
+      result.success = false;
+      result.error = `實際只點了 ${result.clicks} 次`;
+      console.log(`❌ + 按鈕點擊次數不足: ${result.error}`);
     }
-  } catch (error) {
-    return {
-      success: false,
-      error: String(error && error.message || error),
-      message: `+ 按鈕測試失敗: ${error && error.message || error}`
-    };
+  } catch (err) {
+    result.success = false;
+    result.error = `+ 按鈕測試發生錯誤: ${err}`;
+    console.error(result.error);
   }
+  // 給 summary 用
+  checks.betPlus28 = result;
+  return result;
 }
 
-async function checkMinusButton28(page, timestamp) {
+// 🔟 測試：- 按鈕 28 次
+async function testBetMinus28(page, checks) {
+  const result = {
+    success: false,
+    clicks: 0,
+    error: null,
+  };
   try {
-    await page.waitForTimeout(1000);
-    const minusButtonInfo = await findBetButton(page, '-');
-    
-    if (!minusButtonInfo.found) {
-      return { success: false, message: '- 按鈕未找到' };
+    console.log('🔟 開始測試 - 按鈕 28 次...');
+    const minusBtn = page.locator(
+      '#CONTROLS_PANEL > div._controlBar_1qzyb_139.hstack > div:nth-child(1) > div > button:nth-child(2)'
+    );
+    await minusBtn.waitFor({ state: 'visible', timeout: 5000 });
+    for (let i = 0; i < 28; i++) {
+      await minusBtn.click();
+      result.clicks++;
+      await page.waitForTimeout(80);
     }
-    
-    const amountBefore = await getDisplayedAmount(page);
-    let previousAmount = amountBefore;
-    let decreasingCount = 0;
-    
-    for (let i = 1; i <= 28; i++) {
-      if (previousAmount <= 200) {
-        break;
-      }
-      
-      await page.mouse.click(minusButtonInfo.x, minusButtonInfo.y);
-      await page.waitForTimeout(150);
-      
-      const currentAmount = await getDisplayedAmount(page);
-      if (currentAmount < previousAmount) decreasingCount++;
-      previousAmount = currentAmount;
-    }
-    
-    const amountAfter = await getDisplayedAmount(page);
-    
-    const shot = path.join(debugDir, `test2-minus-28-${timestamp}.png`);
-    await page.screenshot({ path: shot, fullPage: false }).catch(() => {});
-    
-    if (decreasingCount >= 26) {
-      return {
-        success: true,
-        message: `金額持續遞減（${decreasingCount}/28 次）`,
-        amountBefore,
-        amountAfter,
-        clickCount: 28,
-        decreasingCount,
-        debug: { screenshot: shot }
-      };
+    if (result.clicks === 28) {
+      result.success = true;
+      console.log('✅ - 按鈕已成功點擊 28 次');
     } else {
-      return {
-        success: false,
-        message: `金額沒有持續遞減，只有 ${decreasingCount}/28 次遞減`,
-        amountBefore,
-        amountAfter,
-        clickCount: 28,
-        decreasingCount,
-        debug: { screenshot: shot }
-      };
+      result.success = false;
+      result.error = `實際只點了 ${result.clicks} 次`;
+      console.log(`❌ - 按鈕點擊次數不足: ${result.error}`);
     }
-  } catch (error) {
-    return {
-      success: false,
-      error: String(error && error.message || error),
-      message: `- 按鈕測試失敗: ${error && error.message || error}`
-    };
+  } catch (err) {
+    result.success = false;
+    result.error = `- 按鈕測試發生錯誤: ${err}`;
+    console.error(result.error);
   }
-}
-
-async function findBetButton(page, buttonType) {
-  return await page.evaluate((type) => {
-    let scope = document;
-    const panel = document.querySelector('#CONTROLS_PANEL');
-    if (panel) scope = panel;
-
-    const allElements = Array.from(scope.querySelectorAll('button, [role="button"], div, span, svg, i, b, strong'));
-    let amountElement = null;
-    let betAreaY = null;
-    
-    // 找金額顯示
-    for (const el of allElements) {
-      // 快速過濾
-      if (!el.textContent) continue;
-      const text = el.textContent.trim();
-      if (!text || !/\d/.test(text)) continue;
-
-      const cleanText = text.replace(/[,$€£¥\s]/g, '');
-      if (/^\d+$/.test(cleanText) && el.offsetParent !== null) {
-        const num = parseFloat(cleanText);
-        if (num >= 0 && num <= 10000000) {
-          const rect = el.getBoundingClientRect();
-          const styles = window.getComputedStyle(el);
-          const fontSize = parseFloat(styles.fontSize);
-          
-          if (rect.width > 30 && rect.height > 10 && fontSize >= 12) {
-            amountElement = { el, rect, text };
-            betAreaY = rect.top + rect.height / 2;
-            break;
-          }
-        }
-      }
-    }
-    
-    // 找 MAX 和 MIN 按鈕
-    let maxButtonRect = null;
-    let minButtonRect = null;
-    
-    for (const el of allElements) {
-      const text = (el.textContent || '').trim().toUpperCase();
-      if (text === 'MAX' && el.offsetParent !== null) {
-        const rect = el.getBoundingClientRect();
-        if (rect.width > 0 && rect.height > 0) {
-          maxButtonRect = rect;
-          if (!betAreaY) betAreaY = rect.top + rect.height / 2;
-        }
-      }
-      if (text === 'MIN' && el.offsetParent !== null) {
-        const rect = el.getBoundingClientRect();
-        if (rect.width > 0 && rect.height > 0) {
-          minButtonRect = rect;
-          if (!betAreaY) betAreaY = rect.top + rect.height / 2;
-        }
-      }
-    }
-    
-    const candidates = [];
-    
-    for (const el of allElements) {
-      if (el.offsetParent === null) continue;
-      const rect = el.getBoundingClientRect();
-      if (rect.width === 0 || rect.height === 0) continue;
-      
-      if (betAreaY && Math.abs(rect.top + rect.height / 2 - betAreaY) > 80) continue;
-      if (rect.width < 20 || rect.width > 80 || rect.height < 20 || rect.height > 80) continue;
-      
-      const text = (el.textContent || '').trim();
-      const html = el.outerHTML || '';
-      const tagName = el.tagName.toLowerCase();
-      
-      let isInCorrectPosition = false;
-      
-      if (type === '+') {
-        const isRightOfAmount = amountElement && rect.left > amountElement.rect.right - 20;
-        const isLeftOfMax = maxButtonRect && rect.right < maxButtonRect.left + 20;
-        isInCorrectPosition = isRightOfAmount || (maxButtonRect && isLeftOfMax);
-      } else {
-        const isRightOfMin = minButtonRect && rect.left > minButtonRect.right - 20;
-        const isLeftOfAmount = amountElement && rect.right < amountElement.rect.left + 20;
-        isInCorrectPosition = (minButtonRect && isRightOfMin) || isLeftOfAmount;
-      }
-      
-      if (isInCorrectPosition) {
-        if (el === amountElement?.el || text === 'MAX' || text === 'MIN') continue;
-        
-        let score = 0;
-        if (tagName === 'button') score += 100;
-        if (el.hasAttribute('role') && el.getAttribute('role') === 'button') score += 80;
-        if (el.hasAttribute('onclick')) score += 50;
-        
-        const styles = window.getComputedStyle(el);
-        if (styles.cursor === 'pointer') score += 30;
-        
-        if (text.length <= 3) score += 40;
-        if (text.length === 0) score += 20;
-        if (text.length > 5) score -= 20;
-        
-        if (html.includes('<svg') || el.closest('svg')) score += 30;
-        
-        const aspectRatio = rect.width / rect.height;
-        if (aspectRatio >= 0.8 && aspectRatio <= 1.2) score += 25;
-        
-        const hasSymbol = type === '+' 
-          ? (text.includes('+') || html.includes('plus') || html.includes('add'))
-          : (text.includes('-') || text.includes('−') || html.includes('minus') || html.includes('subtract'));
-        if (hasSymbol) score += 50;
-        
-        candidates.push({
-          x: rect.x + rect.width / 2,
-          y: rect.y + rect.height / 2,
-          score: score
-        });
-      }
-    }
-    
-    if (candidates.length > 0) {
-      candidates.sort((a, b) => b.score - a.score);
-      return { found: true, x: candidates[0].x, y: candidates[0].y };
-    }
-    
-    return { found: false };
-  }, buttonType);
+  checks.betMinus28 = result;
+  return result;
 }
 
 async function getDisplayedAmount(page, expectedValue = null) {
