@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -394,7 +394,7 @@
                         5️⃣ 在新視窗中關閉「Cara Bermain / MULAI BERMAIN」彈窗<br>
                         6️⃣~1️⃣2️⃣ 檢查下注/Spin 控制按鈕（MAX、MIN、+/-、Spin Round、PLAY）<br>
                         1️⃣3️⃣ 送禮流程測試<br>
-                        1️⃣4️⃣ 聊天視窗輸入測試<br>
+                        1️⃣5️⃣ 聊天視窗輸入測試<br>
                         ⚠️ 任一測試失敗時仍會繼續執行後續項目，結果逐項呈現
                     </p>
                 </div>
@@ -765,7 +765,7 @@
                 handleActionResult('playButton', streaming.playButton, 'PLAY 按鈕失敗');
                 handleActionResult('giftTest', streaming.giftTest, '送禮測試失敗');
                 handleActionResult('chatInput', streaming.chatInput, '聊天測試失敗');
-                
+
                 updateSummary(stats.total, stats.pass, stats.fail);
                 placeholderText.textContent = `測試完成 - ${stats.pass}/${stats.total} 項通過`;
             } catch (error) {

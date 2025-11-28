@@ -79,7 +79,7 @@ app.listen(PORT, () => {
   console.log(`\n🚀 檢查工具伺服器運行在 http://localhost:${PORT}`);
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('📋 測試工具 1 (7項測試): http://localhost:' + PORT + '/');
-  console.log('🎮 測試工具 2 (10項測試): http://localhost:' + PORT + '/test2.html');
+  console.log('🎮 測試工具 2 (9項測試): http://localhost:' + PORT + '/test2.html');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log(`📝 所有日誌將保存到: ${logFile}\n`);
 });
